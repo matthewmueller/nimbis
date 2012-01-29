@@ -31,7 +31,9 @@ app.configure(function() {
 */
 // Thimble Settings
 thimble({
-  root : "./views"
+  root : "./views",
+  build : "./build",
+  public : "./public"
 });
 
 // Thimble Configuration

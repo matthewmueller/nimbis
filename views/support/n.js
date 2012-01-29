@@ -14,6 +14,7 @@
   n = {
     collections : {},
     models : {},
+    views : {},
     ui : {}
   };
   

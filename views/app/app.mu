@@ -1,23 +1,24 @@
-<!-- Load the stylesheets -->
-<link href="app.styl" type="text/css" rel="stylesheet" />
-
 <!-- Load the model classes -->
+<script src="/support/models/Group.js" type="text/javascript" charset="utf-8"></script>
 
 <!-- Load the collection classes -->
+<script src="/support/collections/Groups.js" type="text/javascript" charset="utf-8"></script>
 
-
-
-<!-- Markup -->
+<!-- Application wrapper -->
 <div id="wrapper">
-  <!-- Load the header -->
-  <include src="header/header.mu" />
+  
+  <!-- Top bar -->
+  <div id="top">
+    <!-- Load the header -->
+    <include src="header/header.mu" />
+  </div>
 
   <!-- Main content -->
   <div id="main">
     
     <div id="left">
       <!-- Load the contacts -->
-      <include src="contacts/contacts.mu" />
+      <include src="groups/index.html" />
     </div>
     
     <div id="middle">
