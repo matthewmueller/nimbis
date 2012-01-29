@@ -3,8 +3,8 @@
 */
 
 exports.index = function(req, res) {
-  res.render('index/index.mu', {
-    layout : 'layout.html',
+  res.render('app/app.mu', {
+    layout : 'app/layout.html',
     planet : "mars"
   });
 };
