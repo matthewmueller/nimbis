@@ -1,4 +1,4 @@
 mate:
-	@mate app/ client/ package.json app.js
+	open app/ views/ app.js package.json
 
 .PHONY: mate
