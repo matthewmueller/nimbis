@@ -1,0 +1,22 @@
+{
+  "private" : "true",
+  "author": "Matthew Mueller <mattmuelle@gmail.com>",
+  "name": "nimbis",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/MatthewMueller/nimbis.git"
+  },
+  "engines": {
+    "node": "~0.4.11"
+  },
+  "dependencies": {
+    "express" : "2.x",
+    "express-resource" : "*",
+    "socket.io" : "0.x",
+    "thimble" : "0.x",
+    "stylus" : "0.x",
+    "hogan.js" : "1.x"
+  },
+  "devDependencies": {}
+}
