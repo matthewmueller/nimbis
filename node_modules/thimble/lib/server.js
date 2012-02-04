@@ -132,8 +132,9 @@ var render = exports.render = function render(options) {
       res.render = _render
       
       // Default to .html if no ext given
-      if(!extname(view)) view += '.html';
-      
+      var ext = thimble.settings['view engine'].trim().replace(/^\./, '');
+      if(!extname(view)) view += '.' + ext;
+
       // Layout already included in production
       if(options.env === 'production') 
         delete locals['layout']
