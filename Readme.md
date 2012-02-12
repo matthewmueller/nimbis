@@ -1,11 +1,11 @@
 ## Namespace Conventions ##
 
-window.nimbis = {
-  models : [...],
-  collections : [...],
-  views  : [...], // Or ui : [...]
-  app    : [...]
-};
+    window.nimbis = {
+      models : [...],
+      collections : [...],
+      views  : [...], // Or ui : [...]
+      app    : [...]
+    };
 
 ### Description
 * models : This will be where the model classes go
