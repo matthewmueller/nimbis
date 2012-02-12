@@ -16,7 +16,10 @@
     "socket.io" : "0.x",
     "thimble" : "0.x",
     "stylus" : "0.x",
-    "hogan.js" : "1.x"
+    "hogan.js" : "1.x",
+    "underscore" : "*",
+    "mime" : "1.x", 
+    "mkdir" : "0.x"
   },
   "devDependencies": {}
 }
