@@ -112,6 +112,7 @@ thimble.configure(function(use) {
   use(thimble.flatten());
   use(thimble.embed());
   use(thimble.bundle());
+  use(thimble.minify());
   use(thimble.package());
 });
 
