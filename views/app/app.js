@@ -2,7 +2,7 @@
   Nimbis application variable
 */
 
-;(function() {
+(function() {
   var exports = this;
   
   if(exports.n) {
