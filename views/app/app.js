@@ -15,7 +15,7 @@
     collections : {},
     models : {},
     views : {},
-    ui : {}
+    app : {}
   };
   
   // Export the n variable

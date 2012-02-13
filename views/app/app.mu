@@ -1,8 +1,8 @@
 <!-- Load the model classes -->
-<script src="/support/models/Group.js" type="text/javascript" charset="utf-8"></script>
+<script src="/models/Group.js" type="text/javascript" charset="utf-8"></script>
 
 <!-- Load the collection classes -->
-<script src="/support/collections/Groups.js" type="text/javascript" charset="utf-8"></script>
+<script src="/collections/Groups.js" type="text/javascript" charset="utf-8"></script>
 
 <!-- Application wrapper -->
 <div id="wrapper">
