@@ -1,6 +1,6 @@
 ## Namespace Conventions ##
 
-    window.nb = {
+    window.app = {
       m : [...],
       c : [...],
       v  : [...],
@@ -13,7 +13,7 @@
 * **v** : This will be where the view classes go
 * **ui** : Instance of the view
 
-> Model and collection instances will be attached onto the main nimbis object. **They will be in lowercase.**
+> Model and collection instances will be attached onto the main application object. **They will be in lowercase.**
 
 #### Examples:
 * **Models** : nb.m.Photo
