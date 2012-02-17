@@ -1,25 +1,25 @@
 ## Namespace Conventions ##
 
-    window.nimbis = {
-      models : [...],
-      collections : [...],
-      views  : [...], // Or ui : [...]
-      app    : [...]
+    window.nb = {
+      m : [...],
+      c : [...],
+      v  : [...],
+      ui : [...]
     };
 
 ### Description
-* **models** : This will be where the model classes go
-* **collections** : This will be where the collection classes go
-* **views** : This will be where the view classes go
-* **view (instance)** : descriptive name of what the view actually is (sidebar, search, etc.)
-* **app** : This will be where the instances of these classes go
+* **m** : This will be where the model classes go
+* **c** : This will be where the collection classes go
+* **v** : This will be where the view classes go
+* **ui** : Instance of the view
 
+> Model and collection instances will be attached onto the main nimbis object. **They will be in lowercase.**
 
 #### Examples:
-* **Models** : nimbis.models.Photo
-* **Model (instance) **: nimbis.app.photo
-* **Collection** : nimbis.collections.Photos
-* **Collection (instance)** : nimbis.app.photos
-* **Main Router** : nimbis.Router
-* **Views** : nimbis.views.photo
-* **View (instance)** : nimbis.app.photoView (photoGallery)
+* **Models** : nb.m.Photo
+* **Model (instance) **: nb.photo
+* **Collection** : nb.c.Photos
+* **Collection (instance)** : nb.photos
+* **Main Router** : nb.router
+* **Views** : nb.v.PhotoList
+* **View (instance)** : nb.ui.photoList
