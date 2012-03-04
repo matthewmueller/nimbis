@@ -55,6 +55,13 @@ thimble.configure(function(use) {
 thimble.start(server);
 
 /*
+  Development-only Routing 
+*/
+server.configure('development', function(){
+  server.resource('examples', require(app.paths.controllers + '/development').examples);
+});
+
+/*
   Routing
 */
 
