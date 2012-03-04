@@ -1,7 +1,7 @@
 /*
   Expose the application `Router`
 */
-var Router = app.Router = Backbone.Router.extend();
+var Router = App.Routers.App = Backbone.Router.extend();
 
 /*
   Routes
@@ -16,7 +16,7 @@ Router.prototype.routes = {
 */
 Router.prototype.loadChat = function(id) {
   // Load the message model
-  var messageModel = app.ds.messages.getByCid(id);
+  var messageModel = app.DS.messages.getByCid(id);
   
   console.log('messageModel', messageModel);
 };

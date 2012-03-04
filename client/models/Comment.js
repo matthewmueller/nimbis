@@ -1,4 +1,4 @@
-var Comment = app.m.Comment = Backbone.Model.extend();
+var Comment = App.Models.Comment = Backbone.Model.extend();
 
 /*
   Set the defaults

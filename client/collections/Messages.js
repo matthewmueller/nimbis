@@ -1,3 +1,3 @@
-var Messages = app.c.Messages = Backbone.Collection.extend();
+var Messages = App.Collections.Messages = Backbone.Collection.extend();
 
-Messages.prototype.model = app.m.Message;
+Messages.prototype.model = App.Models.Message;

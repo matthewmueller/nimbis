@@ -24,7 +24,7 @@ var middleware = exports.middleware = function () {
   var thimble = this,
       options = thimble.settings,
       root = options.root;
-  
+      
   return function thimbleMiddleware(req, res, next) {
     var head = 'HEAD' == req.method,
         get = 'GET' == req.method;
@@ -37,7 +37,7 @@ var middleware = exports.middleware = function () {
 
     // Join and normalize from root
     path = normalize(join(options.root, path));
-
+        
     fs.stat(path, function(err, stat) {
       // Ignore ENOENT (no such file or dir)
       if(err) {

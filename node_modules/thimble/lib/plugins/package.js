@@ -25,8 +25,7 @@ var _ = require('underscore'),
   Library Modules
 */
 
-var thimble = require('../thimble'),
-    utils = thimble.utils,
+var utils = require('../utils'),
     after = utils.after,
     relative = utils.relative,
     needs = utils.needs,

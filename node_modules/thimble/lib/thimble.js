@@ -287,6 +287,8 @@ var eval = exports.eval = function(content, locals, fn) {
   // they're looking for the same thing.
   self.stack.push(self.support());
   
+  self.stack.push(self.path());
+  
   // Kick off the plugins
   handle.call(self, content, options, function(err, output) {
     self.stack = stack;

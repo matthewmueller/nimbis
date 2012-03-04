@@ -124,13 +124,19 @@ var render = exports.render = function render(options) {
   var thimble = this;
   
   return function thimbleRender (req, res, next) {
-    var _render = res.render;
+    var url = parse(req.url),
+        path = decodeURIComponent(url.pathname),
+        _render = res.render;
+        
     res.render = function(view, locals, fn) {
       locals = locals || {};
-
+      
+      // Add the url path for middleware
+      thimble.settings.url = path;
+      
       // Revert back to old after called once
       res.render = _render
-      
+
       // Default to .html if no ext given
       var ext = thimble.settings['view engine'].trim().replace(/^\./, '');
       if(!extname(view)) view += '.' + ext;
@@ -138,7 +144,7 @@ var render = exports.render = function render(options) {
       // Layout already included in production
       if(options.env === 'production') 
         delete locals['layout']
-
+      
       thimble.render(view, locals, function(err, content) {
         if(err) return next(err);
         res.send(content);

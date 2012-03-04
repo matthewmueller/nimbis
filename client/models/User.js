@@ -1,7 +1,7 @@
 /*
   Expose the `User` model
 */
-var User = app.m.User = Backbone.Model.extend();
+var User = App.Models.User = Backbone.Model.extend();
 
 /*
   Augment get functionality to work with functions

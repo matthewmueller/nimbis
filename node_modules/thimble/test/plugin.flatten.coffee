@@ -50,4 +50,16 @@ describe 'plugin', ->
         content.should.include '<p>this is a post</p>'
         
         done()
+        
+    it 'should load index.html when a directory is given', (done) ->
+      str = "<h2><include src = '/' /></h2>"
+      options.src = fixtures + '/title.html'
+      
+      thimble.eval str, options, (err, content) ->
+        if err
+          return done(err)
+        
+        content.should.include 'cool story, man'
+        
+        done()
       

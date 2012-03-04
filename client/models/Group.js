@@ -1,4 +1,4 @@
-var Group = app.m.Group = Backbone.Model.extend();
+var Group = App.Models.Group = Backbone.Model.extend();
 
 /*
   Set the defaults
