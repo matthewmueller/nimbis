@@ -2,10 +2,17 @@
 
 var program = require('commander'),
     exec = require('child_process').exec,
+    spawn = require('child_process').spawn,
     path = require('path'),
     join = path.join,
+    basename = path.basename,
     fs = require('fs'),
     cwd = path.resolve(__dirname+'/..');
+
+/*
+  Development Information
+*/
+var host = 'http://localhost:3000';
 
 /*
   Version
@@ -29,18 +36,26 @@ program
 
 /*
   API: Edit
+
+  Usage: nimbis edit <file|directory>
+
+
 */
 program
   .command('edit <file>')
-  .description('quickly pulls up the files in your favorite editor')
+  .description('Usage: nimbis edit models')
   .option('-e, --editor <editor>', 'Terminal command to open up editor (ex. mate, subl, vim)')
   .action(function(file, options) {
     var editor = options.editor || 'subl';
 
-    find(file, function(err, path) {
+    find(file, 'client', function(err, path) {
       if(err) throw err;
-      console.log(path);
-      // exec(editor + ' ' + path);
+
+      // Fix for sublime - probably just temp solution
+      path = path.replace(cwd + '/', '');
+
+      // $ mate|subl file/dir path
+      exec(editor + ' ' + path);
     });
 
   });
@@ -56,6 +71,27 @@ program
   });
 
 /*
+  API: View
+
+  Usage : nimbis view <ui> 
+
+  The `ui` is a fuzzy match, so `sha` will expand to `ShareComment`
+*/
+program
+  .command('view <ui>')
+  .description('Usage: nimbis view sharemessage')
+  .action(function(ui, options) {
+    find(ui, 'client/views', function(err, path) {
+      if(err) throw err;
+      path = basename(path);
+      
+      var url = join(host, 'examples', path);
+
+      spawn('open', [url]);
+    });
+  });
+
+/*
   Helpers
 */
 
@@ -64,8 +100,8 @@ program
 
   Prefers directories over files  
 */
-var find = function(query, fn) {
-  query = path.basename(query);
+var find = function(query, base, fn) {
+  query = '/' + basename(query);
   var regex = new RegExp(query, 'i');
 
   var search = function(err, found) {
@@ -81,7 +117,7 @@ var find = function(query, fn) {
     return fn(new Error('No file found!'));
   };
 
-  readdirRecursive(join(cwd, 'client'), search);
+  readdirRecursive(join(cwd, base), search);
 };
 
 /*
