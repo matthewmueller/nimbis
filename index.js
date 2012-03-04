@@ -45,6 +45,7 @@ thimble({
 // Thimble Configuration
 thimble.configure(function(use) {
   use(thimble.flatten());
+  use(require('./thimble/environment.js'));
   use(thimble.embed({
     'json' : 'JSON'
   }));

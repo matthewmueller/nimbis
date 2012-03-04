@@ -8,19 +8,19 @@
   /*
     Test comments
   */
-  var g1 = new app.m.Group({
+  var g1 = new App.Models.Group({
     name : "Finance",
     color : "red"
   });
   
-  var g2 = new app.m.Group({
+  var g2 = new App.Models.Group({
     name : "Soccer",
     color : "blue"
   });
   
-  var groupCollection = new app.c.Groups([g1, g2]);
+  var groupCollection = new App.Collections.Groups([g1, g2]);
   
-  var groupView = new app.v.GroupList();
+  var groupView = new App.Views.GroupList();
   groupView.collection = groupCollection;
   
   $('#wrapper').append(groupView.render().el);

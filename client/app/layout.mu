@@ -38,10 +38,10 @@
     <!-- Server: Populate our application with data -->
 
     <!-- Test: Populate our appication with data-->
-    <script type="text/javascript">
+    <script type="text/javascript" data-env="production">
     (function() {
       // var user = 
-
+      console.log('lol');
     })();
     </script>
 
