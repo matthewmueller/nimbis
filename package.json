@@ -21,5 +21,7 @@
     "mime" : "1.x", 
     "mkdir" : "0.x"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "commander" : "*"
+  }
 }
