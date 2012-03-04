@@ -1,0 +1,22 @@
+[
+  {
+    "id" : 0,
+    "name" : "Soccer",
+    "color" : "blue"
+  },
+  {
+    "id" : 1,
+    "name" : "Finance",
+    "color" : "purple"
+  },
+  {
+    "id" : 2,
+    "name" : "Cars",
+    "color" : "black"
+  },
+  {
+    "id" : 3,
+    "name" : "Javascript",
+    "color" : "red"
+  }
+]
