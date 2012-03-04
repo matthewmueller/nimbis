@@ -9,18 +9,18 @@
   /*
     Test comments
   */
-  var comment1 = new app.m.Comment({
+  var comment1 = new App.Models.Comment({
     author : "Matt",
     comment : "this is cool"
   });
-  var comment2 = new app.m.Comment({
+  var comment2 = new App.Models.Comment({
     author : "Jon",
     comment : "I know, right?" 
   });
   
-  var commentCollection = new app.c.Comments([comment1, comment2]);
+  var commentCollection = new App.Collections.Comments([comment1, comment2]);
 
-  var List = new app.v.List();
+  var List = new App.Views.List();
   List.collection = commentCollection;
   
   $('#wrapper').append(List.render().el)

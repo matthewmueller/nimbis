@@ -5,7 +5,7 @@
 
 		<!-- Stylesheets -->
 		<link rel="stylesheet" href="/vendor/normalize.css">
-		<link rel="stylesheet" href="app.styl">
+		<link rel="stylesheet" href="/app/app.styl">
 
     <!-- Third-Party Javascript -->
     <script src="/vendor/jquery.js" type="text/javascript"></script>
@@ -13,7 +13,7 @@
     <script src="/vendor/backbone.js" type="text/javascript"></script>
 
     <!-- Application -->
-    <script src="app.js" type="text/javascript"></script>
+    <script src="/app/app.js" type="text/javascript"></script>
 
     <!-- Models -->
     <script src="/models/Comment.js" type="text/javascript"></script>
@@ -30,10 +30,10 @@
     <script src="/routers/app.js" type="text/javascript"></script>
 
     <!-- Test data -->
-    <script src="/test/data/users.json" type="text/json"></script>
-    <script src="/test/data/groups.json" type="text/json"></script>
-    <script src="/test/data/messages.json" type="text/json"></script>
-    <script src="/test/data/comments.json" type="text/json"></script>
+    <script src="/development/data/users.json" type="text/json"></script>
+    <script src="/development/data/groups.json" type="text/json"></script>
+    <script src="/development/data/messages.json" type="text/json"></script>
+    <script src="/development/data/comments.json" type="text/json"></script>
 
     <!-- Server: Populate our application with data -->
 

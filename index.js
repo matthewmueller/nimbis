@@ -17,8 +17,8 @@ var app = module.exports = {
 /*
   Set up the paths
 */
-app.paths.controllers = './server/controllers';
-app.paths.models = './server/models';
+var controllerPath = app.paths.controllers = './server/controllers';
+var modelPath = app.paths.models = './server/models';
 
 /*
   Express
@@ -32,7 +32,6 @@ server.configure(function() {
   server.use(express.bodyParser());
   server.use(express.favicon());
 });
-
 /*
   Thimble
 */
@@ -58,14 +57,14 @@ thimble.start(server);
   Development-only Routing 
 */
 server.configure('development', function(){
-  server.resource('examples', require(app.paths.controllers + '/development').examples);
+  server.resource('ui/:view?/:example?', require(controllerPath + '/development').examples);
 });
 
 /*
   Routing
 */
 
-server.resource('/', require(app.paths.controllers + '/app'));
+server.resource('/', require(controllerPath + '/app'));
 
 /*
   Listen

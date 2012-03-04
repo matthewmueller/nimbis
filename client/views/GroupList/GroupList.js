@@ -1,7 +1,7 @@
 /*
   Expose Group
 */
-var GroupList = app.v.GroupList = app.v.List.extend();
+var GroupList = App.Views.GroupList = App.Views.List.extend();
 
 /*
   `GroupList` classname
@@ -11,7 +11,7 @@ GroupList.prototype.className = 'group-list';
 /*
   Templates
 */
-GroupList.prototype.itemTemplate = JST['group-list']
+GroupList.prototype.itemTemplate = App.JST['group-list'];
 
 /*
   Initialize `GroupList`

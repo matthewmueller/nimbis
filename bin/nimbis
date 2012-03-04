@@ -95,7 +95,7 @@ program
       if(err) throw err;
       path = basename(path);
       
-      var url = join(host, 'examples', path);
+      var url = join(host, 'ui', path);
 
       spawn('open', [url]);
     });

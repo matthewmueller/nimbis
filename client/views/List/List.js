@@ -1,7 +1,7 @@
 /*
   Expose List
 */
-var List = app.v.List = Backbone.View.extend();
+var List = App.Views.List = Backbone.View.extend();
 
 /*
   `List` classname
@@ -11,8 +11,8 @@ var List = app.v.List = Backbone.View.extend();
 /*
   `List` Templates
 */
-List.prototype.template = JST['list'];
-List.prototype.itemTemplate = JST['item'];
+List.prototype.template = App.JST['list'];
+List.prototype.itemTemplate = App.JST['item'];
 
 /*
   Render `List`
