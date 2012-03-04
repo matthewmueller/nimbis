@@ -23,5 +23,8 @@
   },
   "devDependencies": {
     "commander" : "*"
+  },
+  "bin" : {
+    "nimbis" : "./bin/nimbis"
   }
 }
