@@ -92,6 +92,15 @@ program
   });
 
 /*
+  Default to help
+*/
+program
+  .command('*')
+  .action(function(cmd, options) {
+    console.log(program.commandHelp());
+  });
+
+/*
   Helpers
 */
 
