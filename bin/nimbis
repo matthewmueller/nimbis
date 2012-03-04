@@ -79,7 +79,7 @@ program
 */
 program
   .command('view <ui>')
-  .description('Usage: nimbis view sharemessage')
+  .description('Usage: nimbis view ShareMessage')
   .action(function(ui, options) {
     find(ui, 'client/views', function(err, path) {
       if(err) throw err;
