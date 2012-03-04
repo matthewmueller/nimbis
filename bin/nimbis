@@ -71,6 +71,16 @@ program
   });
 
 /*
+  API: Docs
+*/
+program
+  .command('docs <file>')
+  .description('loads the docs of a given file')
+  .action(function(cmd, options) {
+    console.log('Hold tight! Not yet implemented...');
+  });
+
+/*
   API: View
 
   Usage : nimbis view <ui> 
