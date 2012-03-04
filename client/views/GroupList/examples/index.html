@@ -1,0 +1,31 @@
+<include src="../index.html" />
+
+<!-- HTML -->
+<div id="wrapper"></div>
+
+<!-- Runner -->
+<script type="text/javascript" charset="utf-8">
+  /*
+    Test comments
+  */
+  var g1 = new app.m.Group({
+    name : "Finance",
+    color : "red"
+  });
+  
+  var g2 = new app.m.Group({
+    name : "Soccer",
+    color : "blue"
+  });
+  
+  var groupCollection = new app.c.Groups([g1, g2]);
+  
+  var groupView = new app.v.GroupList();
+  groupView.collection = groupCollection;
+  
+  $('#wrapper').append(groupView.render().el);
+  
+  
+  
+  
+</script>

@@ -1,5 +1,0 @@
---root ./views
---build ./build
---public ./public
---source ./views/app/app.mu
---layout ./views/app/layout.html

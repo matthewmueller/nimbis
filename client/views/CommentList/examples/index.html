@@ -1,0 +1,32 @@
+<include src="../index.html" />
+
+<!-- HTML -->
+<div id="wrapper"></div>
+
+<!-- Runner -->
+<script type="text/javascript" charset="utf-8">
+  /*
+    Test comments
+  */
+  var comment1 = new app.m.Comment({
+    author : "Matt",
+    comment : "this is cool"
+  });
+  var comment2 = new app.m.Comment({
+    author : "Jon",
+    comment : "I know, right?" 
+  });
+    
+  var commentCollection = new app.c.Comments([comment1, comment2]);
+  
+  var commentView = new app.v.CommentList();
+  commentView.collection = commentCollection;
+  
+  $('#wrapper').append(commentView.render().el);
+  
+  commentCollection.add({
+    author : 'Zen',
+    comment : 'lololol'
+  });
+  
+</script>

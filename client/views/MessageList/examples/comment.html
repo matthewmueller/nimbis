@@ -1,0 +1,38 @@
+<include src="../index.html" />
+
+<!-- HTML -->
+<div id="wrapper">
+  <div id="message-list"></div>
+  <div id="chatWindow"></div>
+</div>
+
+<!-- Runner -->
+<script type="text/javascript" charset="utf-8">
+  /*
+    Test messages
+  */
+  var m1 = new app.m.Message({
+      message : "Where's soccer practice tonight?",
+      author : "Ronaldo",
+      groups : ['Soccer'],
+      comments: ['lol', 'cool', 'fa la la']
+    });
+  
+  var m2 = new app.m.Message({
+    message : "What'd you get for the first finance question",
+    author : "Scrubby McYoung",
+    groups : ['Finance 320', 'Finance'],
+    comments: ['lol', 'cool']
+  });
+  
+  var messageCollection = app.ds.messages = new app.c.Messages([m1, m2]);
+  
+  var messageView = new app.v.MessageList();
+  messageView.collection = messageCollection;
+  
+  $('#wrapper').append(messageView.render().el);
+  
+  
+  
+  
+</script>

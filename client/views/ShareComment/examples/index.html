@@ -1,0 +1,15 @@
+<include src="../index.html" />
+
+<div id="wrapper"></div>
+
+<script type="text/javascript" charset="utf-8">
+  
+  var commentCollection = new app.c.Comments();
+    
+  var shareView = new app.v.ShareComment();
+  
+  shareView.collection = commentCollection;
+  
+  $('#wrapper').append(shareView.render().el);
+  
+</script>

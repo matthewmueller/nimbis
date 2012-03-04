@@ -1,0 +1,19 @@
+<include src="../index.html" />
+
+<div id="wrapper"></div>
+
+<script type="text/javascript" charset="utf-8">
+  
+  var messageModel = new app.m.Message({
+    author : "Jim Bean",
+    message : "Sup homie G's",
+    groups : ['finance', 'soccer']
+  });
+
+
+  var messageHeader = new app.v.MessageHeader();
+  messageHeader.model = messageModel;
+  
+  $('#wrapper').append(messageHeader.render().el);
+  
+</script>
