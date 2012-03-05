@@ -2,7 +2,7 @@
   Expose ShareMessage
 */
 
-var ShareMessage = app.v.ShareMessage = Backbone.View.extend();
+var ShareMessage = App.Views.ShareMessage = Backbone.View.extend();
 
 /*
   `Messages` classname
@@ -12,7 +12,7 @@ ShareMessage.prototype.className = 'share-message';
 /*
   `Messages` Template
 */
-ShareMessage.prototype.template = JST['share-message'];
+ShareMessage.prototype.template = App.JST['share-message'];
 
 /*
   Events
@@ -33,9 +33,7 @@ ShareMessage.prototype.initialize = function() {
   Render `ShareMessage`
 */
 ShareMessage.prototype.render = function() {
-  var template = JST['share-message']();
-
-  this.$el.append(template);
+  this.$el.append(this.template());
 
   return this;
 };
@@ -50,12 +48,28 @@ ShareMessage.prototype.share = function(e) {
   var $el = this.$el,
       $message = $el.find('.message'),
       $groups = $el.find('.share-with'),
-      author = app.ds.user.get('name') || '';
+      author = App.DS.user.get('name') || '';
   
+  var groups = $groups.val().split(','),
+      groupsCollection = [];
+
+  // Temporary until auto-complete
+  _.each(groups, function(name) {
+    name = $.trim(name);
+    var group = App.DS.groups.find(function(group) {
+      return (group.get('name') === name);
+    });
+
+    if(group)
+      groupsCollection.push(group);
+  });
+  // console.log(groupsCollection);
+  groups = new App.Collections.Groups(groupsCollection);
+
   // Add message to the Messages collection
   this.collection.add({
     message : $message.val(),
-    groups  : $groups.val().split(','),
+    groups  : groups,
     author : author
   });
   

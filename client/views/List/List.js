@@ -21,17 +21,30 @@ List.prototype.render = function() {
   var self = this,
       items = [];
 
-  if(!this.collection) return this;    
-  
+  if(!this.collection) return this;
+
   // Render each comment
   this.collection.each(function(item) {
-    // Attach the cid
-    item.attributes.cid = item.cid;
+    var attributes = item.toJSON();
 
-    var html = self.itemTemplate(item.toJSON());
+    // Attach the cid
+    attributes.cid = item.cid;
+
+    _.each(attributes, function(val, attr) {
+      // If attribute is a collection/model, get its JSON
+      if(val.toJSON) {
+        attributes[attr] = val.toJSON();
+      }
+        
+    });
+
+    var html = self.itemTemplate(attributes);
     items.push(html);
+
+    // TODO: Optimize. Currently re-renders the entire list.
+    item.on('change', self.render, self);
   });
-  
+
   // Render the container template
   var html = this.template({
     items : items.join('')

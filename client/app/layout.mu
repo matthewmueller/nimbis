@@ -38,11 +38,11 @@
     <!-- Server: Populate our application with data -->
 
     <!-- Test: Populate our appication with data-->
-    <script type="text/javascript" data-env="production">
+    <script type="text/javascript" data-env="development">
     (function() {
-      // var user = 
-      console.log('lol');
-    })();
+      App.DS.user = new App.Models.User(App.JSON.users[1]);
+      App.DS.groups = new App.Collections.Groups(App.JSON.groups);
+    }());
     </script>
 
   </head>

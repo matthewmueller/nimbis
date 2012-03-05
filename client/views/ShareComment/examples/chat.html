@@ -2,11 +2,10 @@
 <include src="../index.html" />
 
 <!-- Load CommentList -->
-<include src="/CommentList/index.html" />
+<include src="/views/CommentList/index.html" />
 
 <div id="wrapper">
   <div id="comments"></div>
-  <br />
   <div id="comment-box"></div>
 </div>
 
@@ -14,21 +13,27 @@
   /*
     Test comments
   */
-  var c1 = new app.m.Comment({
+  var c1 = new App.Models.Comment({
     author : "Matt",
+    date : "2:50p",
     comment : "this is cool"
   });
-  var c2 = new app.m.Comment({
-    author : "Jon",
+  var c2 = new App.Models.Comment({
+    author : "Jonathan",
+    date : "2:59p",
     comment : "I know, right?" 
   });
+  var c3 = new App.Models.Comment({
+    author : "Dumbass",
+    comment : "hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool " 
+  });
   
-  var commentCollection = new app.c.Comments([c1, c2]);
+  var commentCollection = new App.Collections.Comments([c1, c2, c3]);
     
-  var shareView = new app.v.ShareComment();
+  var shareView = new App.Views.ShareComment();
   shareView.collection = commentCollection;
   
-  var commentsView = new app.v.CommentList();
+  var commentsView = new App.Views.CommentList();
   commentsView.collection = commentCollection;
   
   $('#comments').append(commentsView.render().el);

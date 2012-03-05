@@ -2,7 +2,7 @@
   Expose `ShareComment`
 */
 
-var ShareComment = app.v.ShareComment = Backbone.View.extend();
+var ShareComment = App.Views.ShareComment = Backbone.View.extend();
 
 /*
   `Comments` classname
@@ -12,7 +12,7 @@ ShareComment.prototype.className = 'share-comment';
 /*
   `Comments` Template
 */
-ShareComment.prototype.template = JST['share-comment'];
+ShareComment.prototype.template = App.JST['share-comment'];
 
 /*
   Events
@@ -47,7 +47,7 @@ ShareComment.prototype.comment = function(e) {
     
   var $el = this.$el,
       $comment = $el.find('.comment'),
-      author = app.ds.user.get('name') || '';
+      author = App.DS.user.get('name') || '';
   
   // Add comment to the Comments collection
   this.collection.add({

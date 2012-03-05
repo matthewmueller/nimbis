@@ -2,7 +2,7 @@
   Expose `MessageHeader`
 */
 
-var MessageHeader = app.v.MessageHeader = Backbone.View.extend();
+var MessageHeader = App.Views.MessageHeader = Backbone.View.extend();
 
 /*
   `MessageHeader` classname
@@ -12,7 +12,7 @@ MessageHeader.prototype.className = 'message-header clearfix';
 /*
   `MessageHeader` Template
 */
-MessageHeader.prototype.template = JST['message-header'];
+MessageHeader.prototype.template = App.JST['message-header'];
 
 /*
   Events
@@ -36,11 +36,18 @@ MessageHeader.prototype.render = function() {
       template = this.template({
         author : message.author,
         message : message.message,
-        groups : message.groups,
+        groups : message.groups.toJSON(),
         date : message.date
       });
 
-  this.$el.append(template);
+  this.$el.html(template);
+
+  // Will probably need to be refactored.. works for now though
+  this.model.get('groups').each(function(group) {
+    group.on('change', this.render, this);
+  }, this);
+
+  this.model.on('change', this.render, this);
 
   return this;
 };

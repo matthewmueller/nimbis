@@ -1,5 +1,8 @@
 <li class="comment-container" data-cid="{{cid}}">
-  <span class="author">{{author}}</span> : 
-  <span class="comment">{{comment}}</span>
-  <span class="date">{{date}}</span>
+  <img class="icon" src="" />
+  <div class="container clearfix">
+    <span class="author">{{author}}</span>
+    <span class="date">{{date}}</span>
+    <p class="comment">{{comment}}</p>
+  </div>
 </li>

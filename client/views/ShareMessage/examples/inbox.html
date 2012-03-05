@@ -2,7 +2,7 @@
 <include src="../index.html" />
 
 <!-- Load the MessageList view -->
-<include src="/MessageList/index.html" />
+<include src="/views/MessageList/index.html" />
 
 <div id="wrapper">
   <div id="share"></div>
@@ -14,25 +14,13 @@
   /*
     Test messages
   */
-  var m1 = new app.m.Message({
-      message : "Where's soccer practice tonight?",
-      author : "Ronaldo",
-      groups : ['Soccer'],
-      comments: ['lol', 'cool', 'fa la la']
-    });
-  
-  var m2 = new app.m.Message({
-    message : "What'd you get for the first finance question",
-    author : "Scrubby McYoung",
-    groups : ['Finance 320', 'Finance'],
-    comments: ['lol', 'cool']
-  });
-  
-  var messageCollection = new app.c.Messages([m1, m2]);
+  var message = App.JSON.messages[1];
+  message.groups = new App.Collections.Groups(App.JSON.groups[1]);
+  var messageCollection = new App.Collections.Messages(message);
     
-  var shareView = new app.v.ShareMessage();
+  var shareView = new App.Views.ShareMessage();
   
-  var messageView = new app.v.MessageList();
+  var messageView = new App.Views.MessageList();
   messageView.collection = messageCollection;
   
   shareView.collection = messageCollection;

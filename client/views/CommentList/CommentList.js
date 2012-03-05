@@ -2,7 +2,7 @@
   Expose CommentList, which extends List
 */
 
-var CommentList = app.v.CommentList = app.v.List.extend();
+var CommentList = App.Views.CommentList = App.Views.List.extend();
 
 /*
   `CommentList` classname
@@ -12,7 +12,7 @@ CommentList.prototype.className = 'comment-list';
 /*
   `CommentList` Template
 */
-CommentList.prototype.itemTemplate = JST['comment-list'];
+CommentList.prototype.itemTemplate = App.JST['comment-list'];
 
 /*
   Initialize `CommentList`

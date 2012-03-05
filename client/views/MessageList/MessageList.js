@@ -2,7 +2,7 @@
   Expose MessageList, which extends List
 */
 
-var MessageList = app.v.MessageList = app.v.List.extend();
+var MessageList = App.Views.MessageList = App.Views.List.extend();
 
 /*
   `MessageList` classname
@@ -10,16 +10,16 @@ var MessageList = app.v.MessageList = app.v.List.extend();
 MessageList.prototype.className = 'message-list';
 
 /*
-  `MessageList` Template
+  `MessageList` message-list Template
 */
-MessageList.prototype.itemTemplate = JST['message-list'];
+MessageList.prototype.itemTemplate = App.JST['message-list'];
 
 /*
   `MessageList` events
 */
 MessageList.prototype.events = {
-  'click .message-container' : 'loadChat'
-}
+  'click .message-container' : 'open'
+};
 
 /*
   Initialize `MessageList`
@@ -34,22 +34,70 @@ MessageList.prototype.initialize = function() {
   `MessageList` Bindings
 */
 MessageList.prototype.bind = function() {
+  var self = this;
   // Bind Collection
-  this.collection.on('add', this.render);
+  
+  // TODO: Refactor
+  this.collection.on('add', function(model) {
+    model.comments().on('add', self.render);
+    self.render.apply(self, arguments);
+  });
+  
   this.collection.on('remove', this.render);
 
-  // Refactor out
+  // Bind the comments
+  this.bindComments(this.collection);
+
+  // Bind the groups
+  this.bindGroups();
+
+  // Refactor out with 'once' event
   this.off('rendered', this.bind);
-}
+};
+
+/*
+  Bind added/removed comments to update count
+*/
+MessageList.prototype.bindComments = function(messages) {
+  messages = messages.toArray();
+  if(!messages || !messages.length) return;
+
+  var self = this;
+
+  _.each(messages, function(message) {
+    var comments = message.comments();
+    
+    // Just re-render for now.
+    comments.on('add', self.render);
+    comments.on('remove', self.render);
+  });
+  
+  return this;
+};
+
+/*
+  Bind the groups
+*/
+MessageList.prototype.bindGroups = function() {
+  var self = this;
+  this.collection.each(function(message) {
+    if(!message.get('groups').length) {
+      return;
+    }
+    message.get('groups').each(function(group) {
+      group.on('change', self.render, self);
+    });
+  });
+};
 
 /*
   loadChat
 */
-MessageList.prototype.loadChat = function(e) {
+MessageList.prototype.open = function(e) {
   var cid = e.currentTarget.getAttribute('data-cid'),
       model = this.collection.getByCid(cid);
-  
-  var route = (model.isNew()) ? cid + '/local' : model.get('id');
-  
-  app.router.navigate('messages/' + route, { trigger : true });
+      
+  // Trigger open event
+  App.trigger('message-list:open', model);
+
 };

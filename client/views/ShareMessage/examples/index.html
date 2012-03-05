@@ -6,23 +6,10 @@
   /*
     Test messages
   */
-  var m1 = new app.m.Message({
-      message : "Where's soccer practice tonight?",
-      author : "Ronaldo",
-      groups : ['Soccer'],
-      comments: ['lol', 'cool', 'fa la la']
-    });
   
-  var m2 = new app.m.Message({
-    message : "What'd you get for the first finance question",
-    author : "Scrubby McYoung",
-    groups : ['Finance 320', 'Finance'],
-    comments: ['lol', 'cool']
-  });
-  
-  var messageCollection = new app.c.Messages([m1, m2]);
+  var messageCollection = new App.Collections.Messages();
     
-  var shareView = new app.v.ShareMessage();
+  var shareView = new App.Views.ShareMessage();
   
   shareView.collection = messageCollection;
   

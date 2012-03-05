@@ -3,28 +3,31 @@
 <!-- HTML -->
 <div id="wrapper"></div>
 
+<!-- Test Data -->
+<!-- <script src="//messages.json"></script> -->
+
 <!-- Runner -->
 <script type="text/javascript" charset="utf-8">
   /*
     Test messages
   */
-  var m1 = new app.m.Message({
-      message : "Where's soccer practice tonight?",
-      author : "Ronaldo",
-      groups : ['Soccer'],
-      comments: ['lol', 'cool', 'fa la la']
-    });
+  var data = App.JSON;
+
+  var messages = data.messages,
+      groups   = data.groups,
+      comments = data.comments;
+
+  messages[0].groups = new App.Collections.Groups([groups[0]]);
+  messages[0].comments = new App.Collections.Comments([comments[1]])
+  messages[0].date = 'yesterday';
+
+  messages[1].groups = new App.Collections.Groups([groups[1], groups[2]]);
+  messages[1].comments = new App.Collections.Comments([comments[0], comments[2]])
+  messages[1].date = 'today';
   
-  var m2 = new app.m.Message({
-    message : "What'd you get for the first finance question",
-    author : "Scrubby McYoung",
-    groups : ['Finance 320', 'Finance'],
-    comments: ['lol', 'cool']
-  });
+  var messageCollection = new App.Collections.Messages(messages);
   
-  var messageCollection = new app.c.Messages([m1, m2]);
-  
-  var messageView = new app.v.MessageList();
+  var messageView = new App.Views.MessageList();
   messageView.collection = messageCollection;
   
   $('#wrapper').append(messageView.render().el);

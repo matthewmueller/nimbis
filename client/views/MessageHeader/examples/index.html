@@ -3,15 +3,13 @@
 <div id="wrapper"></div>
 
 <script type="text/javascript" charset="utf-8">
-  
-  var messageModel = new app.m.Message({
-    author : "Jim Bean",
-    message : "Sup homie G's",
-    groups : ['finance', 'soccer']
-  });
+  var message = App.JSON.messages[0];
+      groups  = [App.JSON.groups[0], App.JSON.groups[1]];
 
+  message.groups = new App.Collections.Groups(groups);
+  var messageModel = new App.Models.Message(message);
 
-  var messageHeader = new app.v.MessageHeader();
+  var messageHeader = new App.Views.MessageHeader();
   messageHeader.model = messageModel;
   
   $('#wrapper').append(messageHeader.render().el);
