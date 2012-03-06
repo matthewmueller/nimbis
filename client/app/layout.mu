@@ -42,7 +42,15 @@
     (function() {
       App.DS.user = new App.Models.User(App.JSON.users[1]);
       App.DS.groups = new App.Collections.Groups(App.JSON.groups);
+
     }());
+    </script>
+
+    <script type="text/javascript" data-env="production">
+    (function() {
+      App.DS.user = new App.Models.User({{User}});
+      App.DS.groups = new App.Collections.Groups({{Groups}});
+    }())
     </script>
 
   </head>
