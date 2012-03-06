@@ -19,7 +19,8 @@
     "hogan.js" : "1.x",
     "underscore" : "*",
     "mime" : "1.x", 
-    "mkdir" : "0.x"
+    "mkdir" : "0.x",
+    "nib" : "*"
   },
   "devDependencies": {
     "commander" : "*"
