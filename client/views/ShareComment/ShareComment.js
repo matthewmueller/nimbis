@@ -18,7 +18,7 @@ ShareComment.prototype.template = App.JST['share-comment'];
   Events
 */
 ShareComment.prototype.events = {
-  'keyup .comment' : 'comment'
+  'keydown .comment' : 'comment'
 };
 
 /*
@@ -43,8 +43,9 @@ ShareComment.prototype.render = function() {
   Share comment
 */
 ShareComment.prototype.comment = function(e) {
-  if(e.keyCode !== 13) return;
-    
+  if(e.keyCode !== 13 || (e.shiftKey && e.keyCode === 13))  return; 
+  e.preventDefault();
+
   var $el = this.$el,
       $comment = $el.find('.comment'),
       author = App.DS.user.get('name') || '';
@@ -54,7 +55,7 @@ ShareComment.prototype.comment = function(e) {
     comment : $comment.val().trim(),
     author : author
   });
-  
+
   this.clear();
 };
 

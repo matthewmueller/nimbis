@@ -57,7 +57,7 @@ thimble.start(server);
 /*
   Development-only Routing 
 */
-  server.configure('development', function(){
+server.configure('development', function(){
   server.resource('ui/:view?/:example?', require(controllerPath + '/development').examples);
 });
 
