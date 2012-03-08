@@ -24,6 +24,7 @@
 <include src="/views/GroupList/" />
 <include src="/views/ShareMessage/" />
 <include src="/views/MessageList/" />
+<include src="/views/MessageHeader/" />
 <include src="/views/CommentList/" />
 <include src="/views/ShareComment/" />
 

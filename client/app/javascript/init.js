@@ -18,9 +18,6 @@
   // Load ShareMessage view
   var shareMessage = new App.Views.ShareMessage();
   shareMessage.collection = messages;
-  // TODO: Refactor ShareMessage view to use this.groups instead of
-  // calling App.DS.groups directly
-  // shareMessage.groups = groups;
 
   // Load MessageList view
   var messageList = new App.Views.MessageList();
@@ -31,6 +28,27 @@
     .append(shareMessage.render().el)
     .append(messageList.render().el);
 
+  App.on('message-list:open', function(message) {
 
+    // Load the MessageHeader view
+    var messageHeader = new App.Views.MessageHeader();
+    messageHeader.model = message;
+
+    // Load the CommentList view
+    var commentList = new App.Views.CommentList();
+    commentList.collection = message.get('comments');
+
+    var shareComment = new App.Views.ShareComment();
+    shareComment.collection = message.get('comments');
+
+    var placeholder = $('<div></div>');
+
+    placeholder
+      .append(messageHeader.render().el)
+      .append(commentList.render().el)
+      .append(shareComment.render().el);
+
+    $('#right').html(placeholder);
+  });
 
 }());

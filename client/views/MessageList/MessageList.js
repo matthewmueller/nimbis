@@ -36,20 +36,23 @@ MessageList.prototype.initialize = function() {
 */
 MessageList.prototype.bind = function() {
   var self = this;
-  // Bind Collection
-  
-  // TODO: Refactor
+
+  // Bind Messages
   this.collection.on('add', this.render);
   this.collection.on('remove', this.render);
 
-  // Bind the comments
-  // this.bindComments(this.collection);
+  this.collection.each(function(message) {
+    var comments = message.get('comments'),
+        groups = message.get('groups');
 
-  // // Bind the groups
-  // this.bindGroups();
+    // Bind Comments
+    comments.on('add', this.render);
+    comments.on('remove', this.render);
 
-  // Refactor out with 'once' event
-  this.off('rendered', this.bind);
+    // Bind Groups
+    groups.on('change', this.render);
+  }, this);
+  
 };
 
 /*

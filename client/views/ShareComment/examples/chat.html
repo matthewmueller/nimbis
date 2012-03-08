@@ -13,9 +13,9 @@
   /*
     Test comments
   */
-    var message = App.JSON.messages[0],
-      messageModel = new App.Models.Message(message),
-      comments = messageModel.get('comments');
+  var message = App.JSON.messages[0],
+    messageModel = new App.Models.Message(message),
+    comments = messageModel.get('comments');
       
   var shareView = new App.Views.ShareComment();
   shareView.collection = comments;

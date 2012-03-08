@@ -23,18 +23,8 @@
   /*
     Test messages
   */
-var m1 = App.JSON.messages[0],
-    m2 = App.JSON.messages[1],
-    groups = App.JSON.groups,
-    comments = App.JSON.comments;
-  // console.log(groups[1]);
-  m1.groups = new App.Collections.Groups([groups[0], groups[2]]);
-  m2.groups = new App.Collections.Groups([groups[1], groups[3]]);
-
-  m1.comments = new App.Collections.Comments([comments[1]]);
-  m2.comments = new App.Collections.Comments([comments[0]]);
-  
-  var messageCollection = new App.Collections.Messages([m1, m2]);
+  var messages = App.JSON.messages
+      messageCollection = new App.Collections.Messages(messages);
   
   var shareMessage = new App.Views.ShareMessage();
   shareMessage.collection = messageCollection;
@@ -48,7 +38,6 @@ var m1 = App.JSON.messages[0],
   // PUBLIC API: Load the message
   App.on('message-list:open', function(model) {
     // Get the message's comments collection
-    var comments = model.comments();
     
     // Build the MessageHeader view
     var messageHeader = new App.Views.MessageHeader();
@@ -56,11 +45,11 @@ var m1 = App.JSON.messages[0],
     
     // Build the CommentList view
     var commentList = new App.Views.CommentList();
-    commentList.collection = comments;
+    commentList.collection = model.get('comments');
     
     // Build the ShareComment view
     var shareComment = new App.Views.ShareComment();
-    shareComment.collection = comments;
+    shareComment.collection = model.get('comments');
     
     var $el = $('<div></div>');
 
