@@ -7,8 +7,8 @@
 ### ShareMessage
 
 ### MessageList
-1. Groups collapse to color balls on screen size reduction
-2. Tool tip when you hover over the author's icon
+- Groups collapse to color balls on screen size reduction
+- Tool tip when you hover over the author's icon
 
 ### MessageHeader
 
