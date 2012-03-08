@@ -66,7 +66,6 @@ server.configure('development', function(){
 */
 
 server.resource('/', require(controllerPath + '/app'));
-server.resource('blah', require(controllerPath + '/blah'));
 
 /*
   Listen

@@ -25,7 +25,7 @@
 - emoticons: attracts girl attention
   * Definitely, it's a must have. We need to look for good emoticon libraries
 - a dynamic row of templates: letter, document, etc
-  * Maybe... Let's be more facebook then MySpace. Or Apple than Microsoft. A good message design should be able to cover talking about random shit with friends and writing a professional post. We shouldn't need people to pick their template.
+  * Maybe... Let's be more facebook than MySpace. Or Apple than Microsoft. A good message design should be able to cover talking about random shit with friends and writing a professional post. We shouldn't need people to pick their template.
 - block color change on enter
   * Too complicated. Less options, better defaults. We should be making the decisions, not them. 
 - Paint comment mode: turn the comment box into a canvas
