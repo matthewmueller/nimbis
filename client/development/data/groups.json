@@ -2,21 +2,26 @@
   {
     "id" : 0,
     "name" : "Soccer",
-    "color" : "blue"
+    "color" : "blue",
+    "description" : "This is a group about soccer"
   },
   {
     "id" : 1,
     "name" : "Finance",
-    "color" : "purple"
+    "color" : "purple",
+    "description" : "This is a group about finance"
+
   },
   {
     "id" : 2,
     "name" : "Cars",
-    "color" : "black"
+    "color" : "black",
+    "description" : "This is a group about cars"
   },
   {
     "id" : 3,
     "name" : "Javascript",
-    "color" : "red"
+    "color" : "red",
+    "description" : "This is a group about javascript"
   }
 ]

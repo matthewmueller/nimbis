@@ -5,7 +5,7 @@
 
 		<!-- Stylesheets -->
 		<link rel="stylesheet" href="/vendor/normalize.css">
-		<link rel="stylesheet" href="/app/app.styl">
+		<link rel="stylesheet" href="/app/css/base.styl">
 
     <!-- Third-Party Javascript -->
     <script src="/vendor/jquery.js" type="text/javascript"></script>
@@ -13,7 +13,7 @@
     <script src="/vendor/backbone.js" type="text/javascript"></script>
 
     <!-- Application -->
-    <script src="/app/app.js" type="text/javascript"></script>
+    <script src="/app/javascript/app.js" type="text/javascript"></script>
 
     <!-- Models -->
     <script src="/models/Comment.js" type="text/javascript"></script>
@@ -33,23 +33,29 @@
     <script src="/development/data/users.json" type="text/json"></script>
     <script src="/development/data/groups.json" type="text/json"></script>
     <script src="/development/data/messages.json" type="text/json"></script>
-    <script src="/development/data/comments.json" type="text/json"></script>
 
-    <!-- Server: Populate our application with data -->
+    <!-- 
+        Populate our application with initial data. The data
+        will all come down as a JSON object.
 
-    <!-- Test: Populate our appication with data-->
+        The reason we are doing this step in layout.mu instead of its
+        own file is because we want to pass down JSON data as a mustache
+        object in production.
+
+        See: http://documentcloud.github.com/backbone/#FAQ-bootstrap
+
+        For development/testing, we'll just load mock JSON data.
+     -->
     <script type="text/javascript" data-env="development">
     (function() {
       App.DS.user = new App.Models.User(App.JSON.users[1]);
-      App.DS.groups = new App.Collections.Groups(App.JSON.groups);
-
+      App.DS.messages = new App.Collections.Messages(App.JSON.messages[0]);
     }());
     </script>
 
     <script type="text/javascript" data-env="production">
     (function() {
       App.DS.user = new App.Models.User({{User}});
-      App.DS.groups = new App.Collections.Groups({{Groups}});
     }())
     </script>
 
