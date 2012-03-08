@@ -34,7 +34,7 @@ MessageHeader.prototype.initialize = function() {
 MessageHeader.prototype.render = function() {
   var message  = this.model.toJSON(),
       template = this.template({
-        author : message.author,
+        author : message.author.toJSON(),
         message : message.message,
         groups : message.groups.toJSON(),
         date : message.date

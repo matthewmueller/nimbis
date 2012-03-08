@@ -5,28 +5,20 @@
 
 <!-- Runner -->
 <script type="text/javascript" charset="utf-8">
+  var message = App.JSON.messages[1],
+      messageModel = new App.Models.Message(message),
+      comments = messageModel.get('comments');
   /*
     Test comments
   */
-  var comment1 = new App.Models.Comment({
-    author : "Matt",
-    comment : "this is cool"
-  });
-  var comment2 = new App.Models.Comment({
-    author : "Jon",
-    comment : "I know, right?" 
-  });
-    
-  var commentCollection = new App.Collections.Comments([comment1, comment2]);
-  
   var commentView = new App.Views.CommentList();
-  commentView.collection = commentCollection;
+  commentView.collection = comments;
   
   $('#wrapper').append(commentView.render().el);
   
-  commentCollection.add({
-    author : 'Zen',
-    comment : 'lololol'
-  });
+  // commentCollection.add({
+  //   author : 'Zen',
+  //   comment : 'lololol'
+  // });
   
 </script>

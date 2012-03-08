@@ -5,6 +5,16 @@ var Comment = App.Models.Comment = Backbone.Model.extend();
 */
 Comment.prototype.defaults = {
   comment : "",
-  author  : "",
+  author  : {},
   date    : "now"
+};
+
+/*
+  Initialize the comment
+*/
+Comment.prototype.initialize = function() {
+  var author = this.get('author');
+
+  // Instantiate the author object
+  this.set('author', new App.Models.User(author));
 };

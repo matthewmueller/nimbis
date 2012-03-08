@@ -1,4 +1,4 @@
-<div class="author">{{author}}</div>
+<div class="author">{{author.name}}</div>
 <div class="message">{{message}}</div>
 <div class="date">{{date}}</div>
 

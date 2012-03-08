@@ -1,9 +1,8 @@
 <div class="message-container clearfix" data-cid="{{cid}}">
-  <img class="icon" src="" />
+  <img class="icon" src="{{author.icon}}" />
 
   <div class="message">{{message}}</div>
   
-  <!-- <div class="author">{{author}}</div> -->
   <div class="more clearfix">
 
     <div class="groups">

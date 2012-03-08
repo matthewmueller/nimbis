@@ -48,12 +48,12 @@ ShareComment.prototype.comment = function(e) {
 
   var $el = this.$el,
       $comment = $el.find('.comment'),
-      author = App.DS.user.get('name') || '';
-  
+      me = App.DS.user.toJSON();
+
   // Add comment to the Comments collection
   this.collection.add({
     comment : $comment.val().trim(),
-    author : author
+    author : me
   });
 
   this.clear();

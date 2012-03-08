@@ -61,15 +61,19 @@ ShareMessage.prototype.share = function(e) {
     });
 
     if(group)
-      groupsCollection.push(group);
+      groupsCollection.push(group.get('id'));
   });
   // console.log(groupsCollection);
-  groups = new App.Collections.Groups(groupsCollection);
+  // groups = new App.Collections.Groups(groupsCollection);
+  if(!groupsCollection.length) {
+    console.log("No groups found:", $groups.val());
+    return;
+  }
 
   // Add message to the Messages collection
   this.collection.add({
     message : $message.val(),
-    groups  : groups,
+    groups  : groupsCollection,
     author : author
   });
   

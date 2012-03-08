@@ -31,9 +31,7 @@
 
     <!-- Test data -->
     <script src="/development/data/users.json" type="text/json"></script>
-    <script src="/development/data/groups.json" type="text/json"></script>
     <script src="/development/data/messages.json" type="text/json"></script>
-
     <!-- 
         Populate our application with initial data. The data
         will all come down as a JSON object.
@@ -49,7 +47,8 @@
     <script type="text/javascript" data-env="development">
     (function() {
       App.DS.user = new App.Models.User(App.JSON.users[1]);
-      App.DS.messages = new App.Collections.Messages(App.JSON.messages[0]);
+      App.DS.groups = App.DS.user.get('groups');
+      App.DS.messages = new App.Collections.Messages(App.JSON.messages);
     }());
     </script>
 

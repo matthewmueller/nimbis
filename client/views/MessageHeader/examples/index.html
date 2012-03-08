@@ -3,11 +3,8 @@
 <div id="wrapper"></div>
 
 <script type="text/javascript" charset="utf-8">
-  var message = App.JSON.messages[0];
-      groups  = [App.JSON.groups[0], App.JSON.groups[1]];
-
-  message.groups = new App.Collections.Groups(groups);
-  var messageModel = new App.Models.Message(message);
+  var message = App.JSON.messages[0],
+      messageModel = new App.Models.Message(message);
 
   var messageHeader = new App.Views.MessageHeader();
   messageHeader.model = messageModel;

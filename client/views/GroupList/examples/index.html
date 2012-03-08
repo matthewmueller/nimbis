@@ -3,22 +3,12 @@
 <!-- HTML -->
 <div id="wrapper"></div>
 
+
 <!-- Runner -->
 <script type="text/javascript" charset="utf-8">
-  /*
-    Test comments
-  */
-  var g1 = new App.Models.Group({
-    name : "Finance",
-    color : "red"
-  });
-  
-  var g2 = new App.Models.Group({
-    name : "Soccer",
-    color : "blue"
-  });
-  
-  var groupCollection = new App.Collections.Groups([g1, g2]);
+  var user = App.JSON.users[0];
+
+  var groupCollection = new App.Collections.Groups(user.groups);
   
   var groupView = new App.Views.GroupList();
   groupView.collection = groupCollection;

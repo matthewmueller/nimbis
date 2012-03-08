@@ -27,6 +27,7 @@ MessageList.prototype.events = {
 MessageList.prototype.initialize = function() {
   _.bindAll(this, 'render');
 
+
   this.on('rendered', this.bind);
 };
 
@@ -38,18 +39,14 @@ MessageList.prototype.bind = function() {
   // Bind Collection
   
   // TODO: Refactor
-  this.collection.on('add', function(model) {
-    model.comments().on('add', self.render);
-    self.render.apply(self, arguments);
-  });
-  
+  this.collection.on('add', this.render);
   this.collection.on('remove', this.render);
 
   // Bind the comments
-  this.bindComments(this.collection);
+  // this.bindComments(this.collection);
 
-  // Bind the groups
-  this.bindGroups();
+  // // Bind the groups
+  // this.bindGroups();
 
   // Refactor out with 'once' event
   this.off('rendered', this.bind);

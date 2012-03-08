@@ -13,28 +13,15 @@
   /*
     Test comments
   */
-  var c1 = new App.Models.Comment({
-    author : "Matt",
-    date : "2:50p",
-    comment : "this is cool"
-  });
-  var c2 = new App.Models.Comment({
-    author : "Jonathan",
-    date : "2:59p",
-    comment : "I know, right?" 
-  });
-  var c3 = new App.Models.Comment({
-    author : "Dumbass",
-    comment : "hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool hello i am cool " 
-  });
-  
-  var commentCollection = new App.Collections.Comments([c1, c2, c3]);
-    
+    var message = App.JSON.messages[0],
+      messageModel = new App.Models.Message(message),
+      comments = messageModel.get('comments');
+      
   var shareView = new App.Views.ShareComment();
-  shareView.collection = commentCollection;
+  shareView.collection = comments;
   
   var commentsView = new App.Views.CommentList();
-  commentsView.collection = commentCollection;
+  commentsView.collection = comments;
   
   $('#comments').append(commentsView.render().el);
   $('#comment-box').append(shareView.render().el);
