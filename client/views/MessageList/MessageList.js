@@ -27,7 +27,6 @@ MessageList.prototype.events = {
 MessageList.prototype.initialize = function() {
   _.bindAll(this, 'render');
 
-
   this.on('rendered', this.bind);
 };
 
@@ -51,6 +50,10 @@ MessageList.prototype.bind = function() {
   this.off('rendered', this.bind);
 };
 
+/*
+  Message binding, allows comment count to be updated as well
+  as changes in the group color
+*/
 MessageList.prototype.bindMessage = function(message) {
   var comments = message.get('comments'),
       groups = message.get('groups');
@@ -65,42 +68,10 @@ MessageList.prototype.bindMessage = function(message) {
   return this;
 };
 
+/*
+  When a message is removed, we want to unbind it's event handlers
+*/
 MessageList.prototype.unbindMessage = function() {};
-
-/*
-  Bind added/removed comments to update count
-*/
-MessageList.prototype.bindComments = function(messages) {
-  messages = messages.toArray();
-  if(!messages || !messages.length) return;
-
-  var self = this;
-
-  _.each(messages, function(message) {
-    var comments = message.comments();
-    
-    // Just re-render for now.
-    comments.on('add', self.render);
-    comments.on('remove', self.render);
-  });
-  
-  return this;
-};
-
-/*
-  Bind the groups
-*/
-MessageList.prototype.bindGroups = function() {
-  var self = this;
-  this.collection.each(function(message) {
-    if(!message.get('groups').length) {
-      return;
-    }
-    message.get('groups').each(function(group) {
-      group.on('change', self.render, self);
-    });
-  });
-};
 
 /*
   loadChat
