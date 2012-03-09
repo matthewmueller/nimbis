@@ -42,3 +42,5 @@
   () where are we storing the events?
 
 - address parser to nice, readable format
+
+- bookmark a comment section. on action event to go to bookmarked element, auto scroll to that element
