@@ -47,12 +47,17 @@ ShareComment.prototype.comment = function(e) {
   e.preventDefault();
 
   var $el = this.$el,
-      $comment = $el.find('.comment'),
+      $comment = $el.find('.comment').val().trim(),
       me = App.DS.user.toJSON();
+
+  if ($comment === '') {
+	this.clear();
+	return;
+  }
 
   // Add comment to the Comments collection
   this.collection.add({
-    comment : $comment.val().trim(),
+    comment : $comment,
     author : me
   });
 
