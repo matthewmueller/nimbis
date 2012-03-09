@@ -1,6 +1,11 @@
 var Message = App.Models.Message = Backbone.Model.extend();
 
 /*
+  Model Name
+*/
+Message.prototype.name = 'Message';
+
+/*
   Set the defaults
 */
 Message.prototype.defaults = {

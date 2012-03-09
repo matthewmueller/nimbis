@@ -11,7 +11,7 @@
   var sync = {};
 
   sync.create = function(model) {
-    console.log(model.toJSON());
+    console.log(model.name);
   };
 
   // Export socketSync

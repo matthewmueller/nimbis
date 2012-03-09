@@ -4,6 +4,11 @@
 var User = App.Models.User = Backbone.Model.extend();
 
 /*
+  Model Name
+*/
+User.prototype.name = 'User';
+
+/*
   Augment get functionality to work with functions
 */
 User.prototype.get = function(attr) {
