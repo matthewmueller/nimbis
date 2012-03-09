@@ -3,10 +3,25 @@
 */
 
 /*
-  message:add - triggers when a message is added
+  message:add - triggers when a message is create
 */
-exports['message:add'] = function(message) {
+var templates = {};
 
-  
+templates['message'] = {
+  message : '',
+  author : {
+    id : null,
+    firstName : '',
+    lastName : '',
+    icon : ''
+  },
+  groups : [],
+  comments : []
+};
+
+exports['message:create'] = function(message) {
+  console.log(message.groups);
+  console.log(this);
+  console.log(this.clients);
 };
 
