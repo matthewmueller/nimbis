@@ -17,7 +17,7 @@
           "lastName" : "Quinn",
           "icon" : ""
         },
-        "date" : "A moment ago"
+        "date" : "1h"
       },
       {
         "comment" : "I know right?",
@@ -27,7 +27,7 @@
           "lastName" : "Mueller",
           "icon" : ""
         },
-        "date" : "A moment ago"
+        "date" : "now"
       }
     ]
   },
