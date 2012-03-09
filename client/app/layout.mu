@@ -12,6 +12,7 @@
     <script src="/vendor/jquery.js" type="text/javascript"></script>
     <script src="/vendor/underscore.js" type="text/javascript"></script>
     <script src="/vendor/backbone.js" type="text/javascript"></script>
+    <script src="/vendor/jquery.cookie.js" type="text/javascript"></script>
 
     <!-- Support Files -->
     <script src = "/support/backbone.toJSON.recursive.js" type="text/javascript"></script>    
