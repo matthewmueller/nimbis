@@ -1,11 +1,11 @@
 <html>
-	<head>
-		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-		<title>{{title}}</title>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>{{title}}</title>
 
-		<!-- Stylesheets -->
-		<link rel="stylesheet" href="/vendor/normalize.css">
-		<link rel="stylesheet" href="/app/css/base.styl">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/vendor/normalize.css">
+    <link rel="stylesheet" href="/app/css/base.styl">
 
     <!-- Third-Party Javascript -->
     <script src="/vendor/jquery.js" type="text/javascript"></script>
