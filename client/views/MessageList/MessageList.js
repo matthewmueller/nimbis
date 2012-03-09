@@ -38,22 +38,34 @@ MessageList.prototype.bind = function() {
   var self = this;
 
   // Bind Messages
-  this.collection.on('add', this.render);
-  this.collection.on('remove', this.render);
+  this.collection.on('add', function(message) {
+    self.render();
+    self.bindMessage(message);
+  });
+  this.collection.on('remove', function(message) {
+    self.render();
+    self.unbindMessage(message);
+  });
 
-  this.collection.each(function(message) {
-    var comments = message.get('comments'),
-        groups = message.get('groups');
-
-    // Bind Comments
-    comments.on('add', this.render);
-    comments.on('remove', this.render);
-
-    // Bind Groups
-    groups.on('change', this.render);
-  }, this);
-  
+  this.collection.each(this.bindMessage, this);
+  this.off('rendered', this.bind);
 };
+
+MessageList.prototype.bindMessage = function(message) {
+  var comments = message.get('comments'),
+      groups = message.get('groups');
+
+  // Bind Comments
+  comments.on('add', this.render);
+  comments.on('remove', this.render);
+
+  // Bind Groups
+  groups.on('change', this.render);
+
+  return this;
+};
+
+MessageList.prototype.unbindMessage = function() {};
 
 /*
   Bind added/removed comments to update count
