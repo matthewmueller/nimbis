@@ -30,14 +30,6 @@ List.prototype.render = function() {
     // Attach the cid
     attributes.cid = item.cid;
 
-    _.each(attributes, function(val, attr) {
-      // If attribute is a collection/model, get its JSON
-      if(val.toJSON) {
-        attributes[attr] = val.toJSON();
-      }
-        
-    });
-
     var html = self.itemTemplate(attributes);
     items.push(html);
 

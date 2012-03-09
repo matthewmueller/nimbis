@@ -48,7 +48,7 @@ ShareMessage.prototype.share = function(e) {
   var $el = this.$el,
       $message = $el.find('.message'),
       $groups = $el.find('.share-with'),
-      author = App.DS.user.get('name') || '';
+      author = App.DS.user.toJSON();
   
   var groups = $groups.val().split(','),
       groupsCollection = [];
@@ -63,8 +63,8 @@ ShareMessage.prototype.share = function(e) {
     if(group)
       groupsCollection.push(group.get('id'));
   });
-  // console.log(groupsCollection);
-  // groups = new App.Collections.Groups(groupsCollection);
+
+  // We don't have any groups, so don't create a message
   if(!groupsCollection.length) {
     console.log("No groups found:", $groups.val());
     return;

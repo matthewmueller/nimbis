@@ -8,9 +8,14 @@
     <link rel="stylesheet" href="/app/css/base.styl">
 
     <!-- Third-Party Javascript -->
+    <script src="/socket.io/socket.io.js"type="text/javascript"></script>
     <script src="/vendor/jquery.js" type="text/javascript"></script>
     <script src="/vendor/underscore.js" type="text/javascript"></script>
     <script src="/vendor/backbone.js" type="text/javascript"></script>
+
+    <!-- Support Files -->
+    <script src = "/support/backbone.toJSON.recursive.js" type="text/javascript"></script>    
+    <script src = "/support/backbone.sync.socket.js" type="text/javascript"></script>
 
     <!-- Application -->
     <script src="/app/javascript/app.js" type="text/javascript"></script>

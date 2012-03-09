@@ -10,6 +10,7 @@
   - DS: Short for Data Store. Contains instances of data (models/collections)
   - JSON: Contains json data, used for testing, handled by thimble
   - JST: Contains client-side templates, handled by thimble
+  - IO: Socket.io connection
   
 */
 (function() {
@@ -24,6 +25,9 @@
     JSON : {},
     JST : {}
   };
+
+  // Connect socket.io
+  App.IO = io.connect('http://localhost');
 
   // Attach the event system onto the App object
   App = _.extend(App, Backbone.Events);

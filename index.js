@@ -3,6 +3,8 @@
 */
 var express = require('express'),
     thimble = require('thimble'),
+    socketIO = require('socket.io'),
+    _ = require('underscore'),
     resource = require('express-resource');
 
 /*
@@ -65,6 +67,17 @@ server.configure('development', function(){
   Socket.io
 */
 
+// Start socket.io
+var io = socketIO.listen(server),
+    socketController = require(controllerPath + '/socket');
+
+io.sockets.on('connection', function(socket) {
+  _.each(socketController, function(fn, event) {
+    socket.on(event, function(data) {
+      return fn.call(socket, data, socket);
+    });
+  });
+});
 
 /*
   Routing

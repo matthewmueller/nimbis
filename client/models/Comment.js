@@ -10,6 +10,11 @@ Comment.prototype.defaults = {
 };
 
 /*
+  Use a recursive `toJSON`
+*/
+Comment.prototype.toJSON = Comment.prototype.recursiveToJSON;
+
+/*
   Initialize the comment
 */
 Comment.prototype.initialize = function() {

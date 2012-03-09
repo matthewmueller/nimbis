@@ -5,7 +5,8 @@
 /*
   message:add - triggers when a message is added
 */
-exports['message:add'] = function() {
+exports['message:add'] = function(message) {
+
   
 };
 

@@ -11,6 +11,19 @@ Message.prototype.defaults = {
   date : "Now"
 };
 
+/*
+  `Message` model will use socket.io as it's transport
+*/
+Message.prototype.sync = Backbone.socketSync;
+
+/*
+  Use the recursive `toJSON`
+*/
+Message.prototype.toJSON = Message.prototype.recursiveToJSON;
+
+/*
+  Initialize the `Message` model
+*/
 Message.prototype.initialize = function() {
   var groups = this.get('groups'),
       author = this.get('author'),

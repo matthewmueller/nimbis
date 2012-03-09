@@ -40,6 +40,10 @@ MessageList.prototype.bind = function() {
   this.collection.on('add', function(message) {
     self.render();
     self.bindMessage(message);
+    message.save();
+    message.on('sync', function(model) {
+      console.log('messagelist saved!');
+    });
   });
   this.collection.on('remove', function(message) {
     self.render();
