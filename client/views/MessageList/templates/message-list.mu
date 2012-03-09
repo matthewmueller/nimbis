@@ -14,7 +14,9 @@
     </div><!-- .groups -->
 
     <div class="date">{{date}}</div>
-    <div class="comments">{{comments.length}}</div>
+    <div class="comments">{{comments.length}}
+    <span style="font-size: 1%">&#9658;</span>
+    </div>
 
   </div><!-- .messageInfo -->
 </div><!--- .message-container -->
