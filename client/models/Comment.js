@@ -1,6 +1,11 @@
 var Comment = App.Models.Comment = Backbone.Model.extend();
 
 /*
+  Model Name
+*/
+Comment.prototype.name = 'Comment';
+
+/*
   Set the defaults
 */
 Comment.prototype.defaults = {
