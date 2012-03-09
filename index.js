@@ -5,7 +5,8 @@ var express = require('express'),
     thimble = require('thimble'),
     socketIO = require('socket.io'),
     _ = require('underscore'),
-    resource = require('express-resource');
+    resource = require('express-resource'),
+    env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 /*
   Application variable
@@ -70,6 +71,12 @@ server.configure('development', function(){
 // Start socket.io
 var io = socketIO.listen(server),
     socketController = require(controllerPath + '/socket');
+
+// socket.io configuration
+io.configure('development', function() {
+  io.set('log level', 2);
+  io.set('transports', ['websocket']);
+});
 
 io.sockets.on('connection', function(socket) {
   _.each(socketController, function(fn, event) {
