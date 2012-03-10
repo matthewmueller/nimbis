@@ -58,13 +58,6 @@ thimble.configure(function(use) {
 thimble.start(server);
 
 /*
-  Development-only Routing 
-*/
-server.configure('development', function(){
-  server.resource('ui/:view?/:example?', require(controllerPath + '/development').examples);
-});
-
-/*
   Socket.io
 */
 
@@ -87,13 +80,37 @@ io.sockets.on('connection', function(socket) {
 });
 
 /*
+  Authentication
+*/
+var authenticate = function(req, res, next) {
+  var query = req.query;
+
+  // If we are in development, allow query to log us in
+  if(query.user && env === 'development') {
+    var users = JSON.parse(require('fs').readFileSync('./client/development/data/users.json', 'utf8'));
+    req.user = (users[query.user]) ? users[query.user] : users[0];
+  } else {
+    console.log('TODO: Connect to database');
+  }
+
+  next();
+};
+
+/*
+  Development-only Routing 
+*/
+server.configure('development', function(){
+  server.resource('ui/:view?/:example?', require(controllerPath + '/development').examples);
+});
+
+/*
   Routing
 */
-
-server.resource('/', require(controllerPath + '/app'));
+server.get('/', authenticate, require(controllerPath + '/app').index);
 
 /*
   Listen
 */
 server.listen(3000);
 console.log("server listening on port %d in %s mode", server.address().port, server.settings.env);
+

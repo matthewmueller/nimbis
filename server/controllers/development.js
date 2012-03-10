@@ -19,8 +19,6 @@ examples.index = function(req, res, next) {
     });
 
   }
-
-
 };
 
 module.exports = exports;

@@ -52,7 +52,7 @@
      -->
     <script type="text/javascript" data-env="development">
     (function() {
-      App.DS.user = new App.Models.User(App.JSON.users[0]);
+      App.DS.user = new App.Models.User({{{user}}});
       App.DS.groups = App.DS.user.get('groups');
       App.DS.messages = new App.Collections.Messages(App.JSON.messages);
     }());
@@ -60,7 +60,7 @@
 
     <script type="text/javascript" data-env="production">
     (function() {
-      App.DS.user = new App.Models.User({{User}});
+      App.DS.user = new App.Models.User({{{user}}});
     }())
     </script>
 
