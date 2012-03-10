@@ -80,7 +80,7 @@ io.sockets.on('connection', function(socket) {
 });
 
 /*
-  Authentication
+  Authentication middleware
 */
 var authenticate = function(req, res, next) {
   var query = req.query;
