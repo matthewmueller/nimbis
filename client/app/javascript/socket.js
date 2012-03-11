@@ -9,10 +9,17 @@
   });
 
   /*
-    message:create - Run when message is recieved
+    message:create - Called when message is added
   */
   io.on('message:create', function(message) {
     App.DS.messages.add(message);
+  });
+
+  /*
+    comment:create - Called when a comment is added
+  */
+  io.on('comment:create', function(comment) {
+
   });
 
 }(App.IO));

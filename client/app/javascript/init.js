@@ -38,7 +38,10 @@
     var commentList = new App.Views.CommentList();
     commentList.collection = message.get('comments');
 
+    console.log(message);
     var shareComment = new App.Views.ShareComment();
+    console.log(message.id);
+    shareComment.messageID  = message.get('id');
     shareComment.collection = message.get('comments');
 
     var placeholder = $('<div></div>');

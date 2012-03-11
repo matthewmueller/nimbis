@@ -26,6 +26,8 @@ ShareComment.prototype.events = {
 */
 ShareComment.prototype.initialize = function() {
   _.bindAll(this, 'comment', 'render');
+
+  console.log(this.messageID);
 };
 
 /*
@@ -47,19 +49,24 @@ ShareComment.prototype.comment = function(e) {
   e.preventDefault();
 
   var $el = this.$el,
-      $comment = $el.find('.comment').val().trim(),
+      commentValue = $el.find('.comment').val().trim(),
       me = App.DS.user.toJSON();
 
-  if ($comment === '') {
+  if (commentValue === '') {
 	this.clear();
 	return;
   }
 
-  // Add comment to the Comments collection
-  this.collection.add({
-    comment : $comment,
-    author : me
+  var commentModel = new App.Models.Comment({
+    comment : commentValue,
+    author  : me
   });
+
+  // Add comment to the Comments collection
+  this.collection.add(commentModel);
+
+  // Save the comment
+  commentModel.save();
 
   this.clear();
 };
