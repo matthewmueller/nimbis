@@ -70,13 +70,18 @@ ShareMessage.prototype.share = function(e) {
     return;
   }
 
-  // Add message to the Messages collection
-  this.collection.add({
+  var messageModel = new App.Models.Message({
     message : $message.val(),
     groups  : groupsCollection,
     author : author
   });
+
+  // Add message to the Messages collection
+  this.collection.add(messageModel);
   
+  messageModel.save();
+
+
   this.clear();
   this.shrink();
 };

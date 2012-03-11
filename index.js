@@ -70,8 +70,8 @@ io.configure('development', function() {
   io.set('log level', 2);
   io.set('transports', ['websocket']);
 });
-
 io.sockets.on('connection', function(socket) {
+
   _.each(socketController, function(fn, event) {
     socket.on(event, function(data) {
       return fn.call(socket, data, socket);

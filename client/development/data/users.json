@@ -1,6 +1,6 @@
 [
   {
-    "id" : 1,
+    "id" : 0,
     "firstName" : "Jonathan",
     "lastName" : "Yung",
     "icon" : "",
@@ -18,7 +18,7 @@
     ]
   },
   {
-    "id" : 2,
+    "id" : 1,
     "firstName" : "Matt",
     "lastName" : "Mueller",
     "icon" : "",
@@ -36,7 +36,7 @@
     ]
   },
   {
-    "id" : 3,
+    "id" : 2,
     "firstName" : "Nubbie",
     "lastName" : "Nub",
     "icon" : "",

@@ -35,6 +35,9 @@
     <!-- Router -->
     <script src="/routers/app.js" type="text/javascript"></script>
 
+    <!-- Socket routing -->
+    <script src="/app/javascript/socket.js" type="text/javascript"></script>
+
     <!-- Test data -->
     <script src="/development/data/users.json" type="text/json"></script>
     <script src="/development/data/messages.json" type="text/json"></script>
@@ -52,9 +55,11 @@
      -->
     <script type="text/javascript" data-env="development">
     (function() {
+      // Initialize data-stores
       App.DS.user = new App.Models.User({{{user}}});
       App.DS.groups = App.DS.user.get('groups');
       App.DS.messages = new App.Collections.Messages(App.JSON.messages);
+      
     }());
     </script>
 
