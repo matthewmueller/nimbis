@@ -9,19 +9,22 @@
       messages = App.DS.messages;
 
   // Load GroupList view
-  var groupList = new App.Views.GroupList();
-  groupList.collection = groups;
+  var groupList = new App.Views.GroupList({
+    collection : groups
+  });
   
   // Add GroupList
   $('#left').append(groupList.render().el);
 
   // Load ShareMessage view
-  var shareMessage = new App.Views.ShareMessage();
-  shareMessage.collection = messages;
+  var shareMessage = new App.Views.ShareMessage({
+    collection : messages
+  });
 
   // Load MessageList view
-  var messageList = new App.Views.MessageList();
-  messageList.collection = messages;
+  var messageList = new App.Views.MessageList({
+    collection : messages
+  });
 
   // Add the ShareMessage and MessageList
   $('#middle')
@@ -31,18 +34,19 @@
   App.on('message-list:open', function(message) {
 
     // Load the MessageHeader view
-    var messageHeader = new App.Views.MessageHeader();
-    messageHeader.model = message;
+    var messageHeader = new App.Views.MessageHeader({
+      model : message
+    });
 
     // Load the CommentList view
-    var commentList = new App.Views.CommentList();
-    commentList.collection = message.get('comments');
+    var commentList = new App.Views.CommentList({
+      collection : message.get('comments')
+    });
 
-    console.log(message);
-    var shareComment = new App.Views.ShareComment();
-    console.log(message.id);
-    shareComment.messageID  = message.get('id');
-    shareComment.collection = message.get('comments');
+    var shareComment = new App.Views.ShareComment({
+      messageID : message.get('id'),
+      collection : message.get('comments')
+    });
 
     var placeholder = $('<div></div>');
 

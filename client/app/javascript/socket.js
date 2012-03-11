@@ -19,7 +19,7 @@
     comment:create - Called when a comment is added
   */
   io.on('comment:create', function(comment) {
-
+    console.log(comment);
   });
 
 }(App.IO));

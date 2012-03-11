@@ -12,6 +12,7 @@
     "comments": [
       {
         "id" : 0,
+        "messageID" : 0,
         "comment" : "Whatta bitch",
         "author" : {
           "id" : 30,
@@ -23,6 +24,7 @@
       },
       {
         "id" : 1,
+        "messageID" : 0,
         "comment" : "I know right?",
         "author" : {
           "id" : 2,
@@ -47,6 +49,7 @@
     "comments": [
       {
         "id" : 2,
+        "messageID" : 1,
         "comment" : "Whatever bro",
         "date" : "10h",
         "author" : {

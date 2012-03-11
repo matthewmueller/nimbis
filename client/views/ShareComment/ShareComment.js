@@ -24,10 +24,11 @@ ShareComment.prototype.events = {
 /*
   Initialize `Comments`
 */
-ShareComment.prototype.initialize = function() {
+ShareComment.prototype.initialize = function(options) {
   _.bindAll(this, 'comment', 'render');
 
-  console.log(this.messageID);
+  // Attach the messageID
+  this.messageID = options.messageID;
 };
 
 /*
@@ -58,6 +59,7 @@ ShareComment.prototype.comment = function(e) {
   }
 
   var commentModel = new App.Models.Comment({
+    messageID : this.messageID,
     comment : commentValue,
     author  : me
   });

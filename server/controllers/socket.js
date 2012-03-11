@@ -4,6 +4,19 @@
 var _ = require('underscore');
 
 /*
+  TEMPORARY: Until we have database
+*/
+var messages = require('fs').readFileSync('./client/development/data/messages.json', 'utf8');
+messageList = JSON.parse(messages);
+messages = {};
+_.each(messageList, function(message) {
+  messages[message.id] = message;
+});
+/*
+  END TEMPORARY
+*/
+
+/*
   user:connect - used to obtain user information when clients connect
 */
 exports['user:connect'] = function(groupIDs) {
@@ -34,6 +47,8 @@ exports['message:create'] = function(message, socket) {
     groups.push(group.id);
   });
 
+  console.log('id', message.id);
+
   // Replace message.group object with array of group IDs
   message.groups = groups;
 
@@ -43,4 +58,8 @@ exports['message:create'] = function(message, socket) {
   });
   
 };
+
+/*
+  comment:create - called when comments are created, will broadcast
+*/
 
