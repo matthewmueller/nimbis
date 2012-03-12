@@ -9,9 +9,9 @@ Comment.prototype.name = 'Comment';
   Set the defaults
 */
 Comment.prototype.defaults = {
-  comment : "",
+  comment : '',
   author  : {},
-  date    : "now"
+  date    : 'now'
 };
 
 /*

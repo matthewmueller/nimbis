@@ -50,7 +50,7 @@ ShareComment.prototype.comment = function(e) {
   e.preventDefault();
 
   var $el = this.$el,
-      commentValue = $el.find('.comment').val().trim(),
+      commentValue = $el.find('.comment').val().trim().toLineBreakTag(),
       me = App.DS.user.toJSON();
 
   if (commentValue === '') {
@@ -78,4 +78,8 @@ ShareComment.prototype.comment = function(e) {
 */
 ShareComment.prototype.clear = function() {
   this.$el.find('textarea, input').val('');
+};
+
+String.prototype.toLineBreakTag = function() {
+	return this.replace(/\n/g,'<br>');
 };
