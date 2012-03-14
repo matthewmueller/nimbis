@@ -20,7 +20,8 @@
     "underscore" : "*",
     "mime" : "1.x", 
     "mkdir" : "0.x",
-    "nib" : "*"
+    "nib" : "*",
+    "redis" : "0.x"
   },
   "devDependencies": {
     "commander" : "*"

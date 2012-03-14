@@ -6,6 +6,7 @@ var express = require('express'),
     socketIO = require('socket.io'),
     _ = require('underscore'),
     resource = require('express-resource'),
+    redis = require('redis'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 /*
@@ -14,7 +15,8 @@ var express = require('express'),
 var app = module.exports = {
   paths : {},
   controllers : {},
-  models : {}
+  models : {},
+  database : false
 };
 
 /*
@@ -77,6 +79,17 @@ io.sockets.on('connection', function(socket) {
       return fn.call(socket, data, socket);
     });
   });
+});
+
+/*
+  Start redis
+*/
+var client = redis.createClient(null, null, {
+  detect_buffers : true
+});
+
+client.on('ready', function() {
+  console.log('Connected to redis!');
 });
 
 /*
