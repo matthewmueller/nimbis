@@ -77,7 +77,7 @@ This is how the data will be formatted when it's sent down initially
       id : String
       name : String
       description : String
-      type : String Public|Private|...
+      type : String public|private|forum|debate...
 
 > Note: This isn't passed down initially, Group object represents 'more information'. Something like, when we edit, add a group. More data will probably go in here.
 
