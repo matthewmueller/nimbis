@@ -1,7 +1,7 @@
 /**
  * Auth.js - Authentication for our application
  */
-exports.authenticate = function(req, res, next) {
+exports = module.exports = function(req, res, next) {
   var query = req.query;
 
   // Temporary user database

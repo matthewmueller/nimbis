@@ -4,16 +4,17 @@
 
 var app = require('./app'),
     controllers = app.controllers,
+    auth = controllers.auth,
     server = app.server;
 
 /*
   General
 */
 app = controllers.app;
-server.get('/', app.index);
+server.get('/', auth, app.index);
 
 /*
   UI (development only)
 */
 var ui = controllers.ui;
-server.get('ui/:view?/:example?', ui.index);
+server.get('/ui/:view?/:example?', ui.index);

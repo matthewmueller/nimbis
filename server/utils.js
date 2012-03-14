@@ -23,6 +23,8 @@ var loadDirectorySync = exports.loadDirectorySync = function(obj, path) {
     // Lazy load object
     obj['__defineGetter__'](name, load);
   });
+  
+  return obj;
 };
 
 /*

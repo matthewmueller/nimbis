@@ -92,6 +92,14 @@ var redis = require('./plugins/redis');
 app.redis = redis.createClient(redis.port, redis.host, redis.options);
 
 /**
+ * Load the routes
+ * 
+ * TODO: Fix.
+ * 
+ */
+require('./routes');
+
+/**
  * Connection events and bindings
  * 
  * This section sets up the listening and bindings.
