@@ -16,22 +16,34 @@
 
 var fs = require('fs'),
     path = require('path'),
+    utils = require('./utils'),
+    load = utils.loadDirectorySync,
     extname = path.extname,
     basename = path.basename,
     normalize = path.normalize,
-    join = path.join,
-    app = {};
+    join = path.join;
+    
+/**
+ * Our server's main object
+ * 
+ * Export the `app` object
+ * 
+ */
+var app = module.exports = {};
 
 /**
- * Global Application Path
+ * Global Application Paths
  */
 var paths = app.paths = {
   server : __dirname,
   root : normalize('../'),
-  client : join(root, 'client'),
-  models : join(server, 'models'),
-  controllers : join(server, 'controllers')
 };
+
+// Set up the rest of the paths
+paths.client = join(paths.root, 'client');
+paths.models = join(paths.server, 'models');
+paths.controllers = join(paths.server, 'controllers');
+
 
 /**
  * Application environment
@@ -39,58 +51,59 @@ var paths = app.paths = {
 var env = app.env = process.env.NODE_ENV || 'development';
 
 /**
- * Express server
- */ 
-var server = app.server = require('express').createServer();
-
-/**
- * Thimble
- */
-var thimble = app.thimble = require('thimble');
-
-/**
- * Socket.io
- */
-app.io = require('socket.io').listen(server);
-
-/**
- * Redis client
- */
-app.redis = require('redis');
-
-/**
  * Lazy-load Controllers
  */
-var controllers = app.controllers = {};
-fs.readdirSync(paths.controllers).forEach(function(filename) {
-  // If it's not a .js or .coffee file, skip
-  if(!(/\.(js|coffee)$/).test(filename)) return;
-
-  var name = basename(filename, extname(filename));
-
-  function load() {
-    return require(join(paths.controllers, name));
-  }
-  
-  // Lazy load plugins
-  controllers.__defineGetter__(name, load);
-});
+var controllers = app.controllers = load({}, paths.controllers);
 
 /**
  * Lazy-load Models
  */
-var models = app.models = {};
-fs.readdirSync(paths.models).forEach(function(filename) {
-  // If it's not a .js or .coffee file, skip
-  if(!(/\.(js|coffee)$/).test(filename)) return;
-      
-  function load() {
-    return require(join(paths.models, filename));
-  }
-  
-  // Lazy load plugins
-  models.__defineGetter__(filename, load);
+var models = app.models = load({}, app.paths.models);
+
+/**
+ * Plugins
+ * 
+ * These will be used to enrich our server. They should 
+ * probably be self-contained.
+ * 
+ */
+
+/**
+ * Express server
+ */
+var server = app.server = require('./plugins/express');
+
+/**
+ * Thimble for development
+ */
+var thimble = app.thimble = require('./plugins/thimble');
+thimble.start(server);
+
+/**
+ * Socket.io for realtime
+ */
+var io = require('./plugins/socket.io');
+app.io = io.listen(server);
+
+/**
+ * Redis client for database
+ */
+var redis = require('./plugins/redis');
+app.redis = redis.createClient(redis.port, redis.host, redis.options);
+
+/**
+ * Connection events and bindings
+ * 
+ * This section sets up the listening and bindings.
+ * 
+ */
+
+// Socket.io - Bind the socket events to controller actions
+app.io.on('connection', function(socket) {
+  _.each(app.controllers, app.io.bind, socket);
 });
 
-// Export the `app` object
-module.exports = app;
+// Redis events
+app.redis.on('ready', redis.ready);
+app.redis.on('error', redis.error);
+

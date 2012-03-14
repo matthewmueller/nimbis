@@ -1,12 +1,10 @@
-var path = require('path'),
-    join = path.join,
-    app = require('../app'),
-    thimble = app.thimble;
+var thimble = require('thimble'),
+    path = require('path'),
+    join = path.join;
 
 /**
  * Set the view root. All assets and views should live within this root
  */
-console.log(join(__dirname, 'client'));
 thimble.set('root', join(__dirname, '../../client'));
 
 /**
@@ -24,5 +22,5 @@ thimble.configure(function(use) {
   }));
 });
 
-// Start thimble
-thimble.start(app.server);
+// Export thimble
+module.exports = thimble;

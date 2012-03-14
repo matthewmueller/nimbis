@@ -1,6 +1,13 @@
-var express = require('express'),
-    app = require('../app'),
-    server = app.server;
+/**
+ * express.js - Create and configure our express server
+ */
+var express = require('express');
+
+/**
+ * Export the server
+ */
+var server = express.createServer();
+exports = module.exports = server;
 
 /**
  * Server configuration for all environments
