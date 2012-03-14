@@ -1,8 +1,9 @@
-var express = require('express');
+var app = require('../app'),
+    express = require('express');
 
-var examples = exports.examples = {};
+exports.index = function(req, res, next) {
+  if(app.env !== 'development') return next();
 
-examples.index = function(req, res, next) {
   var params = req.params,
       view    = params.view,
       example = params.example || 'index';
@@ -20,5 +21,3 @@ examples.index = function(req, res, next) {
 
   }
 };
-
-module.exports = exports;
