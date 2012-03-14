@@ -89,7 +89,11 @@ var client = redis.createClient(null, null, {
 });
 
 client.on('ready', function() {
-  console.log('Connected to redis!');
+  console.log('Redis:', 'Connected to redis!');
+});
+
+client.on('error', function() {
+  console.log('Redis:', 'Unabled to connect to redis');
 });
 
 /*
