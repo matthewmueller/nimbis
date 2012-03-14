@@ -64,6 +64,8 @@ This is how the data will be formatted when it's sent down initially
       groups : [ String groupID, String groupID, ... ]
       comments : [ String commentID, String commentID, ...]
 
+> Note: Normally we would pass down the `group` information because we need it right away. The thing is we need to link it with the User.groups collection anyway in order to listen to updates. Therefore, on load we link the groupIDs passed down in the Message Objects with the groups passed down in the User Object
+
     Comment Object
       id : String
       author : User Object
