@@ -19,15 +19,15 @@ _.each(messageList, function(message) {
 /*
   user:connect - used to obtain user information when clients connect
 */
-exports['user:connect'] = function(groupIDs) {
-  var sender = this.id,
+exports['user:connect'] = function(socket, groupIDs) {
+  var sender = socket.id,
       groupID;
 
   for(var i = 0; i < groupIDs.length; i++) {
     groupID = groupIDs[i];
 
     // Join 'group:id' room
-    this.join('group:' + groupID);
+    socket.join('group:' + groupID);
   }
 
 };
@@ -38,11 +38,12 @@ exports['user:connect'] = function(groupIDs) {
 
   Also will add message to database.
 */
-exports['message:create'] = function(message, socket) {
+exports['message:create'] = function(socket, message) {
   var sender = socket.id,
       groups = [],
       clients = {};
 
+  console.log('lol');
   _.each(message.groups, function(group, i) {
     groups.push(group.id);
   });

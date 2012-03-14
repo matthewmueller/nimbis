@@ -7,19 +7,19 @@
  */  
 var app = require('./server/app'),
     controllers = app.controllers,
+    server = app.server,
     auth = controllers.auth,
-    server = app.server;
+    main = controllers.app,
+    ui = controllers.ui;
 
 /**
  * Set up the routing
  */
 
 // App
-var main = controllers.app;
 server.get('/', auth, main.index);
 
 // UI
-var ui = controllers.ui;
 server.get('/ui/:view?/:example?', ui.index);
 
 

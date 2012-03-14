@@ -118,7 +118,7 @@ io.configure(function() {
 io.on('connection', function(socket) {
   _.each(app.controllers.socket, function(action, event) {
     socket.on(event, function(payload) {
-      return action.call(socket, payload, socket);
+      return action.call(null, socket, payload);
     });
   });
 });
