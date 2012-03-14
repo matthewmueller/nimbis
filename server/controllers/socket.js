@@ -47,7 +47,7 @@ exports['message:create'] = function(message, socket) {
     groups.push(group.id);
   });
 
-  console.log('id', message.id);
+  console.log('message id (from socket.js message:create)', message.id);
 
   // Replace message.group object with array of group IDs
   message.groups = groups;

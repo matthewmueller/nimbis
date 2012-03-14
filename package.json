@@ -12,14 +12,11 @@
   },
   "dependencies": {
     "express" : "2.x",
-    "express-resource" : "*",
     "socket.io" : "0.x",
     "thimble" : "0.x",
     "stylus" : "0.x",
     "hogan.js" : "1.x",
     "underscore" : "*",
-    "mime" : "1.x", 
-    "mkdir" : "0.x",
     "nib" : "*",
     "redis" : "0.x"
   },
