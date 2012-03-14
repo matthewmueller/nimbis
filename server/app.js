@@ -21,7 +21,8 @@ var fs = require('fs'),
     extname = path.extname,
     basename = path.basename,
     normalize = path.normalize,
-    join = path.join;
+    join = path.join,
+    _ = require('underscore');
     
 /**
  * Our server's main object
@@ -107,8 +108,8 @@ require('./routes');
  */
 
 // Socket.io - Bind the socket events to controller actions
-app.io.on('connection', function(socket) {
-  _.each(app.controllers, app.io.bind, socket);
+app.io.sockets.on('connection', function(socket) {
+  _.each(app.controllers.socket, io.bind, socket);
 });
 
 // Redis events

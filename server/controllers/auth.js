@@ -1,3 +1,5 @@
+var app = require('../app');
+
 /**
  * Auth.js - Authentication for our application
  */
@@ -8,7 +10,7 @@ exports = module.exports = function(req, res, next) {
   var users = JSON.parse(require('fs').readFileSync('./client/development/data/users.json', 'utf8'));
 
   // If we are in development, allow query to log us in
-  if(query.user && env === 'development') {
+  if(query.user && app.env === 'development') {
     req.user = (users[query.user]) ? users[query.user] : users[0];
   } else {
     req.user = users[0];

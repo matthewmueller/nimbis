@@ -9,8 +9,8 @@ var listen = exports.listen = function(server) {
   var io = socketIO.listen(server);
 
   // Configuration
-  io.configure(configure);
-  io.configure('development', configure.development);
+  // io.configure(configure);
+  io.configure.call(io, configure.development);
 
   return io;
 };
@@ -26,8 +26,8 @@ var configure = exports.configure = function() {
  * Configure: Development environment
  */
 configure.development = function() {
-  io.set('log level', 2);
-  io.set('transports', ['websocket']);
+  this.set('log level', 2);
+  this.set('transports', ['websocket']);
 };
 
 /**
