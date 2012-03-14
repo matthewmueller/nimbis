@@ -44,3 +44,47 @@
 - address parser to nice, readable format
 
 - bookmark a comment section. on action event to go to bookmarked element, auto scroll to that element
+
+## Data Schema
+
+This is how the data will be formatted when it's sent down initially
+
+    User Object
+      id : String
+      firstName : String
+      lastName : String
+      icon : String
+      groups : [ String color, String name, String id ]
+
+    Message Object
+      id : String
+      author : User Object
+      message : String
+      date : String
+      groups : [ String groupID, String groupID, ... ]
+      comments : [ String commentID, String commentID, ...]
+
+    Comment Object
+      id : String
+      author : User Object
+      date : String
+
+> Note: Comment Objects (and data) will not be loaded on page load, but instead loaded on demand, when a user clicks on the message
+
+    Group Object
+      id : String
+      name : String
+      description : String
+      type : String Public|Private|...
+
+> Note: This isn't passed down initially, Group object represents 'more information'. Something like, when we edit, add a group. More data will probably go in here.
+
+
+
+
+
+
+
+
+
+
