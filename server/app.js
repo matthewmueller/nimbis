@@ -17,18 +17,17 @@
 var fs = require('fs'),
     path = require('path'),
     utils = require('./utils'),
+    express = require('express'),
     load = utils.loadDirectorySync,
     extname = path.extname,
     basename = path.basename,
+    resolve = path.resolve,
     normalize = path.normalize,
     join = path.join,
     _ = require('underscore');
     
 /**
- * Our server's main object
- * 
  * Export the `app` object
- * 
  */
 var app = module.exports = {};
 
@@ -37,14 +36,13 @@ var app = module.exports = {};
  */
 var paths = app.paths = {
   server : __dirname,
-  root : normalize('../'),
+  root : resolve('./'),
 };
 
 // Set up the rest of the paths
 paths.client = join(paths.root, 'client');
 paths.models = join(paths.server, 'models');
 paths.controllers = join(paths.server, 'controllers');
-
 
 /**
  * Application environment
@@ -62,57 +60,86 @@ var controllers = app.controllers = load({}, paths.controllers);
 var models = app.models = load({}, app.paths.models);
 
 /**
- * Plugins
- * 
- * These will be used to enrich our server. They should 
- * probably be self-contained.
- * 
- */
-
-/**
  * Express server
+ * 
+ * Configuration:
+ * - methodOverride
+ * - bodyParser
+ * - favicon
+ * 
  */
-var server = app.server = require('./plugins/express');
+var server = app.server = express.createServer();
+
+// Configuration for all environments
+server.configure(function() {
+  server.use(express.methodOverride());
+  server.use(express.bodyParser());
+  server.use(express.favicon());
+});
 
 /**
  * Thimble for development
+ * 
+ * 
  */
-var thimble = app.thimble = require('./plugins/thimble');
+var thimble = app.thimble = require('thimble');
+
+// Set the root as the client
+thimble.set('root', app.paths.client);
+
+// Set the client-side namespace
+thimble.set('namespace', 'App');
+
+// Configiration for all environments
+thimble.configure(function(use) {
+  use(thimble.flatten());
+  use(thimble.embed({
+    'json' : 'JSON'
+  }));
+});
+
 thimble.start(server);
 
 /**
  * Socket.io for realtime
+ * 
+ * 
+ * 
  */
-var io = require('./plugins/socket.io');
-app.io = io.listen(server);
+var io = app.io = require('socket.io').listen(server);
+
+// Configuration for all environments
+io.configure(function() {
+  this.set('log level', 2);
+  this.set('transports', ['websocket']);
+});
+
+// Bind events on connect
+io.on('connection', function(socket) {
+  _.each(app.controllers.socket, function(action, event) {
+    socket.on(event, function(payload) {
+      return action.call(socket, payload, socket);
+    });
+  });
+});
 
 /**
  * Redis client for database
- */
-var redis = require('./plugins/redis');
-app.redis = redis.createClient(redis.port, redis.host, redis.options);
-
-/**
- * Load the routes
  * 
- * TODO: Fix.
+ * Detect Buffers - If set to true, then replies will be sent to callbacks as node 
+ * Buffer objects if any of the input arguments to the original command were 
+ * Buffer objects.
  * 
  */
-require('./routes');
-
-/**
- * Connection events and bindings
- * 
- * This section sets up the listening and bindings.
- * 
- */
-
-// Socket.io - Bind the socket events to controller actions
-app.io.sockets.on('connection', function(socket) {
-  _.each(app.controllers.socket, io.bind, socket);
+var redis = app.redis = require('redis').createClient(null, null, {
+  detect_buffers : true
 });
 
 // Redis events
-app.redis.on('ready', redis.ready);
-app.redis.on('error', redis.error);
+redis.on('ready', function() {
+  console.log('Redis listening on port: %d', port);
+});
 
+redis.on('error', function() {
+  console.log('Redis: Unable to connect to redis database');
+});

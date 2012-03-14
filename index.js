@@ -6,7 +6,22 @@
  * `NODE_ENV=production node index.js` will run our application in `production`
  */  
 var app = require('./server/app'),
+    controllers = app.controllers,
+    auth = controllers.auth,
     server = app.server;
+
+/**
+ * Set up the routing
+ */
+
+// App
+var main = controllers.app;
+server.get('/', auth, main.index);
+
+// UI
+var ui = controllers.ui;
+server.get('/ui/:view?/:example?', ui.index);
+
 
 /**
  * Start the server

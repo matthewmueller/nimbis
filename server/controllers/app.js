@@ -1,3 +1,7 @@
+/**
+ * app.js - This is our application controller
+ */
+
 /*
   Index controller
 */
