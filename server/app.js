@@ -103,7 +103,7 @@ thimble.start(server);
 /**
  * Socket.io for realtime
  * 
- * 
+ * Websocket events are bound to actions in the sockets controller
  * 
  */
 var io = app.io = require('socket.io').listen(server);
@@ -115,7 +115,7 @@ io.configure(function() {
 });
 
 // Bind events on connect
-io.on('connection', function(socket) {
+io.sockets.on('connection', function(socket) {
   _.each(app.controllers.socket, function(action, event) {
     socket.on(event, function(payload) {
       return action.call(null, socket, payload);
@@ -137,7 +137,7 @@ var redis = app.redis = require('redis').createClient(null, null, {
 
 // Redis events
 redis.on('ready', function() {
-  console.log('Redis listening on port: %d', port);
+  console.log('Redis listening on port: %d', redis.port);
 });
 
 redis.on('error', function() {
