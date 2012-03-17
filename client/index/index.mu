@@ -29,4 +29,4 @@
 <include src="/views/ShareComment/" />
 
 <!-- Initialize our application :-D -->
-<script src="javascript/init.js" type="text/javascript"></script>
+<script src="javascript/index.js" type="text/javascript"></script>

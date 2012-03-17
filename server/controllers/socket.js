@@ -43,7 +43,6 @@ exports['message:create'] = function(socket, message) {
       groups = [],
       clients = {};
 
-  console.log('lol');
   _.each(message.groups, function(group, i) {
     groups.push(group.id);
   });

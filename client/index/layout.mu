@@ -5,7 +5,7 @@
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="/vendor/normalize.css">
-    <link rel="stylesheet" href="/app/css/base.styl">
+    <link rel="stylesheet" href="/index/css/base.styl">
 
     <!-- Third-Party Javascript -->
     <script src="/socket.io/socket.io.js"type="text/javascript"></script>
@@ -19,7 +19,7 @@
     <script src = "/support/backbone.sync.socket.js" type="text/javascript"></script>
 
     <!-- Application -->
-    <script src="/app/javascript/app.js" type="text/javascript"></script>
+    <script src="/index/javascript/app.js" type="text/javascript"></script>
 
     <!-- Models -->
     <script src="/models/Comment.js" type="text/javascript"></script>
@@ -33,10 +33,9 @@
     <script src="/collections/Messages.js" type="text/javascript"></script>
 
     <!-- Router -->
-    <script src="/routers/app.js" type="text/javascript"></script>
+    <script src="/routers/index.js" type="text/javascript"></script>
 
     <!-- Socket routing -->
-    <script src="/app/javascript/socket.js" type="text/javascript"></script>
 
     <!-- Test data -->
     <script src="/development/data/users.json" type="text/json"></script>
@@ -49,6 +48,8 @@
       App.DS.user = new App.Models.User({{{user}}});
       App.DS.groups = App.DS.user.get('groups');
       App.DS.messages = new App.Collections.Messages(App.JSON.messages);
+
+      App.index = new App.Routers.Index();
 
     }());
     </script>
