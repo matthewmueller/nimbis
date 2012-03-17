@@ -14,6 +14,10 @@
  *  
  */
 
+/**
+ * TODO: RENAME - this is confusing.
+ */
+
 var fs = require('fs'),
     path = require('path'),
     utils = require('./utils'),
@@ -72,8 +76,8 @@ var server = app.server = express.createServer();
 
 // Configuration for all environments
 server.configure(function() {
-  server.use(express.methodOverride());
   server.use(express.bodyParser());
+  server.use(express.methodOverride());
   server.use(express.favicon());
 });
 
@@ -135,10 +139,27 @@ var redis = app.redis = require('redis').createClient(null, null, {
   detect_buffers : true
 });
 
+// Helper function
+redis.print = function (err, reply) {
+    if (err) {
+        console.log("Error: " + err);
+    } else {
+        console.log("Reply: " + reply);
+    }
+};
+
 // Redis events
 redis.on('ready', function() {
   console.log('Redis listening on port: %d', redis.port);
+
+  // Select which database we want to use
+  if(env === 'production')
+    redis.select(1);
+  else if (env === 'development')
+    redis.select(0);
+
 });
+
 
 redis.on('error', function() {
   console.log('Redis: Unable to connect to redis database');

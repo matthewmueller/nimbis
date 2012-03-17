@@ -10,6 +10,7 @@ var app = require('./server/app'),
     server = app.server,
     auth = controllers.auth,
     main = controllers.app,
+    signup = controllers.signup,
     ui = controllers.ui;
 
 /**
@@ -22,6 +23,9 @@ server.get('/', auth, main.index);
 // UI
 server.get('/ui/:view?/:example?', ui.index);
 
+// Signup
+server.get('/signup', signup.index);
+server.post('/signup', signup.create);
 
 /**
  * Start the server

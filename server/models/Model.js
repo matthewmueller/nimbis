@@ -7,8 +7,8 @@
  * This layer will be interacting directly with Redis.
  */
 
-var app = require('../../');
-console.log(app);
+var app = require('../app.js');
+
 /**
  * Constructor
  */

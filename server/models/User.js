@@ -18,20 +18,20 @@ User.prototype.create = function() {
 /**
  * Read a user
  */
-User.prototype.read = function() {
+User.prototype.read = function(id) {
 
 };
 
 /**
  * Update a user
  */
-User.prototype.update = function() {
+User.prototype.update = function(id) {
 
 };
 
 /**
  * Delete a user
  */
-User.prototype.delete = function() {
+User.prototype.delete = function(id) {
 
 };
