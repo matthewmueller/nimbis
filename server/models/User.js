@@ -47,6 +47,9 @@ User.prototype.create = function(fn) {
     queue.hset('user:' + user.id, key, value);
   });
 
+  // Index
+  queue.hset('i:email:id', user.email, user.id);
+
   // Save to database
   queue.exec(function(err) {
     return fn(err);

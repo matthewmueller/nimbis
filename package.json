@@ -11,7 +11,7 @@
     "node": "~0.4.11"
   },
   "dependencies": {
-    "express" : "2.x",
+    "express" : "3.x",
     "socket.io" : "0.x",
     "thimble" : "0.x",
     "stylus" : "0.x",
