@@ -15,7 +15,7 @@ exports.index = function(req, res, next) {
   } else {
     
     res.render('views/' + view + '/examples/' + example, {
-      layout : '/index/layout.mu',
+      layout : '/base/base.mu',
       title : view + ' | ' + example
     });
 

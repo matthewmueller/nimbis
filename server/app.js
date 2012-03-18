@@ -64,6 +64,11 @@ var controllers = app.controllers = load({}, paths.controllers);
 var models = app.models = load({}, app.paths.models);
 
 /**
+ * Use extend from underscore
+ */
+app.extend = _.extend;
+
+/**
  * Express server
  * 
  * Configuration:

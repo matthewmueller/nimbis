@@ -15,7 +15,7 @@
     <script src="/vendor/jquery.cookie.js" type="text/javascript"></script>
 
     <!-- Support Files -->
-    <script src = "/support/backbone.toJSON.recursive.js" type="text/javascript"></script>    
+    <script src = "/support/backbone.toJSON.recursive.js" type="text/javascript"></script>
     <script src = "/support/backbone.sync.socket.js" type="text/javascript"></script>
 
     <!-- Application -->
@@ -32,26 +32,10 @@
     <script src="/collections/Groups.js" type="text/javascript"></script>
     <script src="/collections/Messages.js" type="text/javascript"></script>
 
-    <!-- Router -->
-    <script src="/routers/index.js" type="text/javascript"></script>
-
-    <!-- Socket routing -->
-
     <!-- Test data -->
     <script src="/development/data/users.json" type="text/json"></script>
     <script src="/development/data/messages.json" type="text/json"></script>
     
-    <!-- Populate our application with initial data -->
-    <script type="text/javascript">
-    (function() {
-      // Initialize data-stores
-      App.DS.user = new App.Models.User({{{user}}});
-      App.DS.groups = App.DS.user.get('groups');
-      App.DS.messages = new App.Collections.Messages(App.JSON.messages);
-
-      App.index = new App.Routers.Index();
-
-    }());
     </script>
   </head>
   <body>

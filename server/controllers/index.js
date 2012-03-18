@@ -8,7 +8,7 @@
 
 exports.index = function(req, res) {
   res.render('index/index.mu', {
-    layout : 'index/layout.mu',
+    layout : 'base/base.mu',
     title : "Nimbis | VIP Access",
     user  : JSON.stringify(req.user)
   });

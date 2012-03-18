@@ -80,7 +80,7 @@ MessageList.prototype.unbindMessage = function() {};
 MessageList.prototype.open = function(e) {
   var cid = e.currentTarget.getAttribute('data-cid'),
       model = this.collection.getByCid(cid);
-      
+
   // Trigger open event
   App.trigger('message-list:open', model);
 

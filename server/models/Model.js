@@ -7,15 +7,25 @@
  * This layer will be interacting directly with Redis.
  */
 
-var app = require('../app.js');
+var crypto = require('crypto');
 
 /**
- * Constructor
+ * Generate some salt
  */
-var Model = module.exports = function() {
-
+var salt = exports.salt = function() {
+  return Math.round((new Date().valueOf() * Math.random())).toString();
 };
 
-Model.prototype.save = function(data) {
+/**
+ * Encrypt a string
+ */
+var encrypt = exports.encrypt = function(str) {
+  return crypto.createHmac('sha1', salt()).update(str).digest('hex');
+};
 
+/**
+ * Generate a id
+ */
+var id = exports.id = function(len) {
+  return Math.random().toString(36).substr(2,len);
 };

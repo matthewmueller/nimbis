@@ -13,7 +13,8 @@ var app = require('../app.js'),
 exports.index = function(req, res) {
 
   res.render('signup/signup.mu', {
-    title : "Nimbis | Signup"
+    layout : 'base/base.mu',
+    title : 'Nimbis | Signup'
   });
 
 };
@@ -27,7 +28,9 @@ exports.create =  function(req, res, next) {
     }
   }
 
-  User.create(body, function(err) {
+  var user = new User(body);
+
+  user.create(function(err) {
     if(err) {
       console.log('User Model Error:', 'Unable to signup');
       return res.redirect('back');
