@@ -57,13 +57,6 @@ User.prototype.create = function(fn) {
 };
 
 /**
- * Authenticate a user
- */
-User.prototype.authenticate = function(email, pass, fn) {
-
-};
-
-/**
  * Read a user (pass back public information)
  */
 User.prototype.read = function(id, fn) {
@@ -82,4 +75,50 @@ User.prototype.update = function(id, fn) {
  */
 User.prototype.delete = function(id, fn) {
 
+};
+
+/**
+ * STATIC METHODS:
+ */
+
+/**
+ * Authenticate a user
+ */
+User.authenticate = function(email, pass, fn) {
+  redis.hget('i:email:id', email, function(err, user) {
+    if(err) return fn(err);
+    if(!user) return fn(null);
+
+    var salt = user.salt;
+
+    if(this.encrypt(salt, pass) === user.password) {
+      return fn(null, user);
+    } else {
+      return fn(null);
+    }
+  });
+};
+
+/**
+ * DEVELOPMENT ONLY: devAuthenticate
+ * 
+ * Provide an email and you don't need a password :-O
+ */
+User.devAuthenticate = function(email, fn) {
+  redis.hget('i:email:id', email, function(err, id) {
+    if(err) return fn(err);
+    if(!id) return fn(null);
+
+    redis.hgetall('user:' + id, function(err, user) {
+      if(err) return fn(err);
+      if(!user) return fn(null);
+
+      // Delete private information
+      delete user['password'];
+      delete user['salt'];
+
+      return fn(null, user);
+    });
+
+  });
 };
