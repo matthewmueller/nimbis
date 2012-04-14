@@ -1,4 +1,4 @@
-# mate:
-# 	mate app/ views/ app.js package.json
+subl:
+	subl client/ server/ server.js package.json bin/
 
-.PHONY: mate
+.PHONY: subl
