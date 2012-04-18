@@ -1,6 +1,6 @@
 /**
  * User.js - This is the User Model that will provide and interface to the database
- * 
+ *
  * Models should implement CRUD (create, read, update, delete) methods.
  */
 
@@ -101,7 +101,7 @@ User.authenticate = function(email, pass, fn) {
 
 /**
  * DEVELOPMENT ONLY: devAuthenticate
- * 
+ *
  * Provide an email and you don't need a password :-O
  */
 User.devAuthenticate = function(email, fn) {
@@ -116,7 +116,7 @@ User.devAuthenticate = function(email, fn) {
       // Delete private information
       delete user['password'];
       delete user['salt'];
-
+      
       return fn(null, user);
     });
 

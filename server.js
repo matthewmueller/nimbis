@@ -1,10 +1,10 @@
 /**
  * index.js - Initializes our application. It all starts here.
- * 
+ *
  * Run `node index.js` to start our application in the `development` environment
- * 
+ *
  * `NODE_ENV=production node index.js` will run our application in `production`
- */  
+ */
 
 var app = require('./server/app');
 

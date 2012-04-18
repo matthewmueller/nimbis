@@ -1,6 +1,6 @@
 /**
  * app.js - This file initializes the server's `app` object
- * 
+ *
  * The app object has the following contents:
  *
  *  paths : paths throughout our application
@@ -11,7 +11,7 @@
  *  redis : redis object
  *  controllers : controller classes in our application
  *  models : model classes in our application
- *  
+ *
  */
 
 /**
@@ -70,12 +70,12 @@ app.extend = _.extend;
 
 /**
  * Express server
- * 
+ *
  * Configuration:
  * - methodOverride
  * - bodyParser
  * - favicon
- * 
+ *
  */
 var server = app.server = express.createServer();
 
@@ -88,8 +88,8 @@ server.configure(function() {
 
 /**
  * Thimble for development
- * 
- * 
+ *
+ *
  */
 var thimble = app.thimble = require('thimble');
 
@@ -111,9 +111,9 @@ thimble.start(server);
 
 /**
  * Socket.io for realtime
- * 
+ *
  * Websocket events are bound to actions in the sockets controller
- * 
+ *
  */
 var io = app.io = require('socket.io').listen(server);
 
@@ -134,11 +134,11 @@ io.sockets.on('connection', function(socket) {
 
 /**
  * Redis client for database
- * 
- * Detect Buffers - If set to true, then replies will be sent to callbacks as node 
- * Buffer objects if any of the input arguments to the original command were 
+ *
+ * Detect Buffers - If set to true, then replies will be sent to callbacks as node
+ * Buffer objects if any of the input arguments to the original command were
  * Buffer objects.
- * 
+ *
  */
 var redis = app.redis = require('redis').createClient(null, null, {
   detect_buffers : true
