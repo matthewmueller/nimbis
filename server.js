@@ -17,4 +17,4 @@ require('./server/routes');
  * Start the server
  */
 app.server.listen(3000);
-console.log('Server listening on port: %d', app.server.address().port);
+console.log('Server listening on port: 3000');
