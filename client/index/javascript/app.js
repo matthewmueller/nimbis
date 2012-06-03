@@ -25,7 +25,7 @@
     JSON : {},
     JST : {}
   };
-
+  console.log(io);
   // Connect socket.io
   App.IO = io.connect('http://localhost');
 

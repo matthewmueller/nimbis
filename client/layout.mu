@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/index/css/base.styl">
 
     <!-- Third-Party Javascript -->
-    <script src="/socket.io/socket.io.js"type="text/javascript"></script>
+    <script src="/vendor/socket.io.js" type="text/javascript"></script>
     <script src="/vendor/jquery.js" type="text/javascript"></script>
     <script src="/vendor/underscore.js" type="text/javascript"></script>
     <script src="/vendor/backbone.js" type="text/javascript"></script>
