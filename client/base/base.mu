@@ -23,6 +23,29 @@
     <script src = "/support/backbone.toJSON.recursive.js" type="text/javascript"></script>
     <script src = "/support/backbone.sync.socket.js" type="text/javascript"></script>
     
+    <script type="text/javascript">
+        (function() {
+
+          var App = {
+            Models : {},
+            Collections : {},
+            Views : {},
+            Routers : {},
+            UI : {},
+            DS : {},
+            JSON : {},
+            JST : {}
+          };
+
+          // Connect socket.io
+          // App.IO = io.connect('http://localhost');
+
+          // Attach the event system onto the App object
+          App = _.extend(App, Backbone.Events);
+
+          // Make the application object global
+          window.App = App;
+        })();
     </script>
   </head>
   <body>

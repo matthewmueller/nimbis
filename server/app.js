@@ -40,7 +40,7 @@ var app = module.exports = {};
  */
 var paths = app.paths = {
   server : __dirname,
-  root : resolve('./'),
+  root : resolve('./')
 };
 
 // Set up the rest of the paths
@@ -115,22 +115,22 @@ thimble.start(server);
  * Websocket events are bound to actions in the sockets controller
  *
  */
-var io = app.io = require('socket.io').listen(server);
+// var io = app.io = require('socket.io').listen(server);
 
-// Configuration for all environments
-io.configure(function() {
-  this.set('log level', 2);
-  this.set('transports', ['websocket']);
-});
+// // Configuration for all environments
+// io.configure(function() {
+//   this.set('log level', 2);
+//   this.set('transports', ['websocket']);
+// });
 
-// Bind events on connect
-io.sockets.on('connection', function(socket) {
-  _.each(app.controllers.socket, function(action, event) {
-    socket.on(event, function(payload) {
-      return action.call(null, socket, payload);
-    });
-  });
-});
+// // Bind events on connect
+// io.sockets.on('connection', function(socket) {
+//   _.each(app.controllers.socket, function(action, event) {
+//     socket.on(event, function(payload) {
+//       return action.call(null, socket, payload);
+//     });
+//   });
+// });
 
 /**
  * Redis client for database

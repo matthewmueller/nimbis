@@ -25,9 +25,9 @@
     JSON : {},
     JST : {}
   };
-  console.log(io);
+
   // Connect socket.io
-  App.IO = io.connect('http://localhost');
+  // App.IO = io.connect('http://localhost');
 
   // Attach the event system onto the App object
   App = _.extend(App, Backbone.Events);

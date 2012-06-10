@@ -37,18 +37,18 @@ Router.prototype.initialize = function() {
   var self = this;
 
   // Bind the sockets
-  _.each(this.sockets, function(action, event) {
-    App.IO.on(event, function(data) {
-      return self[action].call(self, App.IO, data);
-    });
-  });
+  // _.each(this.sockets, function(action, event) {
+  //   App.IO.on(event, function(data) {
+  //     return self[action].call(self, App.IO, data);
+  //   });
+  // });
 
-  // Bind the route-less events
-  _.each(this.events, function(action, event) {
-    App.on(event, function(data) {
-      return self[action].call(self, data);
-    });
-  });
+  // // Bind the route-less events
+  // _.each(this.events, function(action, event) {
+  //   App.on(event, function(data) {
+  //     return self[action].call(self, data);
+  //   });
+  // });
 
   /*
     Load the index, we don't want to do this in a route, 
