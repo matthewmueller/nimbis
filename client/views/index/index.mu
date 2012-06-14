@@ -5,7 +5,7 @@
 <!-- Application wrapper -->
 <div id="wrapper">
   <!-- Top navigation -->
-  <div id="top"></div>
+  <div id="top">lolololol</div>
 
   <!-- Main application container -->
   <div id="container">

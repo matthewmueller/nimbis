@@ -9,6 +9,9 @@ var express = require('express'),
     relative = require('relative-assets'),
     app = express();
 
+app.set('client', __dirname + '/client');
+app.set('views', app.get('client') + '/views');
+
 // Basic, synchronous way of supporting layouts in express 3.x
 app.engine('mu', function(path, options, fn) {
   var views = app.get('views'),
@@ -17,7 +20,7 @@ app.engine('mu', function(path, options, fn) {
   function compile() {
     cons.hogan(view, options, function(err, str) {
       if(err) return fn(err);
-      str = relative(str, path, views);
+      str = relative(str, view, app.get('client'));
       return fn(err, str);
     });
   }
@@ -27,6 +30,7 @@ app.engine('mu', function(path, options, fn) {
     view = join(views, '..', options.layout);
     cons.hogan(path, options, function(err, str) {
       if(err) return fn(err);
+      str = relative(str, path, app.get('client'));
       options.body = str;
       compile();
     });
@@ -35,15 +39,13 @@ app.engine('mu', function(path, options, fn) {
   }
 });
 
-app.set('views', __dirname + '/client/views');
-
 // Stylus middleware - no writing
 app.get(/\.styl$/, function(req, res, next) {
-  var views = __dirname + '/client/views';
-  fs.readFile(views + req.url, 'utf8', function(err, str) {
+  var client = app.get('client');
+  fs.readFile(client + req.url, 'utf8', function(err, str) {
     if(err) return next(err);
     stylus(str)
-      .set('filename', views + req.url)
+      .set('filename', client + req.url)
       .render(function(err, str) {
         if(err) return next(err);
         res.setHeader('content-type', 'text/css');
@@ -52,8 +54,8 @@ app.get(/\.styl$/, function(req, res, next) {
   });
 });
 
-app.use(scotch(__dirname + '/client/views'));
-app.use(express['static'](__dirname + '/client/views'));
+app.use(scotch(app.get('views')));
+app.use(express['static'](app.get('client')));
 
 app.get('/', function(req, res) {
   res.render('index/index.mu', {
