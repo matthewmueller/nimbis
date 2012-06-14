@@ -1,6 +1,7 @@
 var express = require('express'),
     scotch = require('scotch'),
     cons = require('consolidate'),
+    stylus = require('stylus'),
     fs = require('fs'),
     path = require('path'),
     dirname = path.dirname,
@@ -36,9 +37,23 @@ app.engine('mu', function(path, options, fn) {
 
 app.set('views', __dirname + '/client/views');
 
+// Stylus middleware - no writing
+app.get(/\.styl$/, function(req, res, next) {
+  var views = __dirname + '/client/views';
+  fs.readFile(views + req.url, 'utf8', function(err, str) {
+    if(err) return next(err);
+    stylus(str)
+      .set('filename', views + req.url)
+      .render(function(err, str) {
+        if(err) return next(err);
+        res.setHeader('content-type', 'text/css');
+        res.send(str);
+      });
+  });
+});
+
 app.use(scotch(__dirname + '/client/views'));
 app.use(express['static'](__dirname + '/client/views'));
-
 
 app.get('/', function(req, res) {
   res.render('index/index.mu', {

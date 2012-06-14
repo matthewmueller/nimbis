@@ -1,3 +1,6 @@
-// Need to register .json support
+(function() {
+  var User = require('../../models/user.js');
 
-module.exports = 'hello from index.js';
+  console.log(User);
+
+})();
