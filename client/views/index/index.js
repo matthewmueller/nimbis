@@ -1,3 +1,3 @@
-require('./index.styl');
+// Need to register .json support
 
-module.exports = 'sup world!';
+module.exports = 'hello from index.js';

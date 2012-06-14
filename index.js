@@ -1,6 +1,5 @@
 var express = require('express'),
     scotch = require('scotch'),
-    cheerio = require('cheerio'),
     cons = require('consolidate'),
     fs = require('fs'),
     path = require('path'),
@@ -12,35 +11,39 @@ var express = require('express'),
 // Basic, synchronous way of supporting layouts in express 3.x
 app.engine('mu', function(path, options, fn) {
   var views = app.get('views'),
-      directory = dirname(path);
+      view = path;
 
-  cons.hogan(path, options, function(err, str) {
-    if(err) return fn(err);
-    if(options.layout) {
-      var layout = join(views, '..', options.layout);
-      layout = fs.readFileSync(layout, 'utf8');
-      str = layout.replace(/\{?\{\{body\}\}\}?/, str);
-    }
-    console.log(directory);
-    console.log(views);
-    str = relative(str, path, views);
+  function compile() {
+    cons.hogan(view, options, function(err, str) {
+      if(err) return fn(err);
+      str = relative(str, path, views);
+      return fn(err, str);
+    });
+  }
 
-    console.log(str);
-
-
-    return fn(err, str);
-  });
+  if(options.layout) {
+    // Assumes layouts and views are at same level
+    view = join(views, '..', options.layout);
+    cons.hogan(path, options, function(err, str) {
+      if(err) return fn(err);
+      options.body = str;
+      compile();
+    });
+  } else {
+    compile();
+  }
 });
 
 app.set('views', __dirname + '/client/views');
 
-app.use(scotch(__dirname + '/client/views', { watch : true }));
+app.use(scotch(__dirname + '/client/views'));
 app.use(express['static'](__dirname + '/client/views'));
 
 
 app.get('/', function(req, res) {
   res.render('index/index.mu', {
-    layout : 'layouts/base.mu'
+    layout : 'layouts/base/base.mu',
+    user : 'matt'
   });
 });
 

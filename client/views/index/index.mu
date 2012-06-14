@@ -1,16 +1,33 @@
-<html>
-<head>
-  <title>INDEX</title>
-  <link rel="stylesheet" href="/scotch.css">
-  <link rel="stylesheet" href="test.css">
-</head>
-<body>
+<!-- Style -->
+<link href="/scotch.css" rel="stylesheet">
 
+<!-- Application wrapper -->
+<div id="wrapper">
+  <!-- Top navigation -->
+  <div id="top"></div>
+
+  <!-- Main application container -->
+  <div id="container">
+    <!-- Left Pane -->
+    <div id="left"></div>
+
+    <!-- Middle Pane -->
+    <div id="middle"></div>
+
+    <!-- Right Pane -->
+    <div id="right"></div>
+
+  </div><!-- #container -->
+</div><!-- #wrapper -->
+
+<!-- Scripts -->
 <script src="/scotch.js" type="text/javascript"></script>
+
+<!-- Init -->
 <script type="text/javascript">
-
-  window.App = require('./index.js');
-
+  var Nimbis = {};
+  window.user = "{{user}}";
+  // window.pages.index = require('./index.js');
+  var index = require('./index.js');
+  console.log(index);
 </script>
-</body>
-</html>
