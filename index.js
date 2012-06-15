@@ -43,7 +43,7 @@ app.engine('mu', function(path, options, fn) {
 // Stylus middleware - no writing
 app.get(/\.styl$/, function(req, res, next) {
   var client = app.get('client');
-  fs.readFile(client + req.url, 'utf8', function(err, str) {
+  fs.readFile(client + req.url.split('?')[0], 'utf8', function(err, str) {
     if(err) return next(err);
     stylus(str)
       .set('filename', client + req.url)
@@ -59,10 +59,16 @@ app.get(/\.styl$/, function(req, res, next) {
 app.use(scotch(app.get('views')));
 app.use(express['static'](app.get('client')));
 
+var user = {
+  firstName : 'Matt',
+  lastName : 'Mueller',
+  groups : ['Finance', 'Soccer']
+};
+
 app.get('/', function(req, res) {
   res.render('index/index.mu', {
     layout : 'layouts/base/base.mu',
-    user : 'matt',
+    user : JSON.stringify(user),
     title : "nimbis"
   });
 });

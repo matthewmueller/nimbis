@@ -1,3 +1,0 @@
-/*
-  This file will be used to wrap all our javascript in closures
-*/

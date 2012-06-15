@@ -1,4 +1,7 @@
+// Load jQuery
+var $ = window.$ = require('jquery-browserify');
 
 var User = require('../../models/user.js');
-var user = new User({ firstName : "Matt", lastName: "Mueller" });
+console.log(window.user);
+var user = new User(window.user);
 console.log(user.toJSON());
