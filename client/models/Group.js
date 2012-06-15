@@ -1,4 +1,9 @@
-var Group = App.Models.Group = Backbone.Model.extend();
+var Backbone = require('backbone');
+
+/*
+  Export Group
+*/
+var Group = module.exports = Backbone.Model.extend();
 
 /*
   Model Name

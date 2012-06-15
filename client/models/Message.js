@@ -1,4 +1,11 @@
-var Message = App.Models.Message = Backbone.Model.extend();
+var Backbone = require('backbone'),
+    User = require('./user.js'),
+    Comments = require('../collections/comments.js');
+
+/*
+  Export Message
+*/
+var Message = module.exports = Backbone.Model.extend();
 
 /*
   Model Name
@@ -24,7 +31,7 @@ Message.prototype.sync = Backbone.socketSync;
 /*
   Use the recursive `toJSON`
 */
-Message.prototype.toJSON = Message.prototype.recursiveToJSON;
+// Message.prototype.toJSON = Message.prototype.recursiveToJSON;
 
 /*
   Initialize the `Message` model
@@ -34,26 +41,11 @@ Message.prototype.initialize = function() {
       author = this.get('author'),
       comments = this.get('comments');
 
-  var groupCollection = [];
 
-  // Loop through the groupIDs to match with User's groups
-  _(groups).each(function(groupID, i) {
-    var group = App.DS.groups.get(groupID);
-    
-    // Might be dangerous
-    if(!group) return;
-    groupCollection.push(group);
-  });
-
-  // TODO: Handle case where we shouldn't be seeing this message.
-  if(!groupCollection.length) {
-    console.log("Error: \"" + this.get('message') + "\" shouldn't be here");
-  }
 
   this.set({
-    'groups' : new App.Collections.Groups(groupCollection),
-    'comments' : new App.Collections.Comments(comments),
-    'author' : new App.Models.User(author)
+    'comments' : new Comments(comments),
+    'author' : new User(author)
   }, { silent : true });
 
   // This one is easier, we just instantiate a new comment collection

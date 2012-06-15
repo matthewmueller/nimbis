@@ -1,0 +1,45 @@
+[
+  {
+    "id" : 0,
+    "firstName" : "Jonathan",
+    "lastName" : "Yung",
+    "icon" : "",
+    "groups" : [
+      {
+        "id" : 2,
+        "name" : "Cars",
+        "color" : "Black"
+      },
+      {
+        "id" : 3,
+        "name" : "Javascript",
+        "color" : "Red"
+      }
+    ]
+  },
+  {
+    "id" : 1,
+    "firstName" : "Matt",
+    "lastName" : "Mueller",
+    "icon" : "",
+    "groups" : [
+      {
+        "id" : 0,
+        "name" : "Soccer",
+        "color" : "green"
+      },
+      {
+        "id" : 3,
+        "name" : "Javascript",
+        "color" : "pink"
+      } 
+    ]
+  },
+  {
+    "id" : 2,
+    "firstName" : "Nubbie",
+    "lastName" : "Nub",
+    "icon" : "",
+    "groups" : []
+  }
+]

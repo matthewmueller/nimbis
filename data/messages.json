@@ -1,0 +1,64 @@
+[ 
+  {
+    "id" : 0,
+    "message" : "What time is the next soccer practice?",
+    "author" : {
+      "id" : 10,
+      "firstName" : "Scrubby",
+      "lastName" : "McYung",
+      "icon" : ""
+    },
+    "groups" : [0, 3],
+    "comments": [
+      {
+        "id" : 0,
+        "messageID" : 0,
+        "comment" : "Whatta bitch",
+        "author" : {
+          "id" : 30,
+          "firstName" : "Andrew",
+          "lastName" : "Quinn",
+          "icon" : ""
+        },
+        "date" : "1h"
+      },
+      {
+        "id" : 1,
+        "messageID" : 0,
+        "comment" : "I know right?",
+        "author" : {
+          "id" : 2,
+          "firstName" : "Matt",
+          "lastName" : "Mueller",
+          "icon" : ""
+        },
+        "date" : "now"
+      }
+    ]
+  },
+  {
+    "id" : 1, 
+    "message" : "Roflcoptoring",
+    "author" : {
+      "id" : 25,
+      "firstName" : "Brandon",
+      "lastName" : "Winikates",
+      "icon" : ""
+    },
+    "groups" : [1, 2, 3],
+    "comments": [
+      {
+        "id" : 2,
+        "messageID" : 1,
+        "comment" : "Whatever bro",
+        "date" : "10h",
+        "author" : {
+          "id" : 1,
+          "firstName" : "Jonathan",
+          "lastName" : "Yung",
+          "icon" : ""
+        }
+      }
+    ]
+  }
+]

@@ -1,4 +1,5 @@
-var Backbone = require('backbone');
+var Backbone = require('backbone'),
+    Groups = require('../collections/groups.js');
 
 /*
   Expose the `User` model
@@ -14,7 +15,7 @@ User.prototype.name = 'User';
   Augment get functionality to work with functions
 */
 User.prototype.get = function(attr) {
-  if (typeof this.attributes[attr] === 'function') {
+  if(typeof this.attributes[attr] === 'function') {
     return this.attributes[attr].call(this);
   } else
     return Backbone.Model.prototype.get.call(this, attr);
@@ -50,6 +51,6 @@ User.prototype.initialize = function() {
   var name = this.get('firstName') + ' ' + this.get('lastName');
   this.set('fullName', name);
 
-  // var groups = new App.Collections.Groups(this.get('groups'));
-  // this.set('groups', groups);
+  var groups = new Groups(this.get('groups'));
+  this.set('groups', groups);
 };

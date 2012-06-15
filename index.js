@@ -56,7 +56,7 @@ app.get(/\.styl$/, function(req, res, next) {
   });
 });
 
-app.use(scotch(app.get('views')));
+app.use(scotch(app.get('views'), { debug : true }));
 app.use(express['static'](app.get('client')));
 
 var user = {
@@ -65,10 +65,14 @@ var user = {
   groups : ['Finance', 'Soccer']
 };
 
+var users = require(__dirname + '/data/users.json'),
+    messages = require(__dirname + '/data/messages.json');
+
 app.get('/', function(req, res) {
   res.render('index/index.mu', {
     layout : 'layouts/base/base.mu',
-    user : JSON.stringify(user),
+    user : JSON.stringify(users[0]),
+    messages : JSON.stringify(messages),
     title : "nimbis"
   });
 });
