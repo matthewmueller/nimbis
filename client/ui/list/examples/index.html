@@ -1,0 +1,28 @@
+<!-- Load Library -->
+<include src = "../index.html" />
+
+<!-- HTML -->
+<div id="wrapper"></div>
+
+<!-- Example -->
+<script type="text/javascript" charset="utf-8">
+  /*
+    Test comments
+  */
+  var comment1 = new App.Models.Comment({
+    author : "Matt",
+    comment : "this is cool"
+  });
+  var comment2 = new App.Models.Comment({
+    author : "Jon",
+    comment : "I know, right?" 
+  });
+  
+  var commentCollection = new App.Collections.Comments([comment1, comment2]);
+
+  var List = new App.Views.List();
+  List.collection = commentCollection;
+  
+  $('#wrapper').append(List.render().el)
+  
+</script>

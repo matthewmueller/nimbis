@@ -1,3 +1,4 @@
+
 // Load jQuery
 var $ = require('jquery-browserify'),
     _ = require('underscore'),
@@ -28,4 +29,5 @@ Index.prototype.initialize = function(user, messages) {
 
 Index.prototype.render = function() {
 
+  var List = require('../../ui/list/list.js');
 };

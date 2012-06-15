@@ -20,7 +20,6 @@
 <!-- Scripts -->
 <script src="/scotch.js" type="text/javascript"></script>
 
-
 <script type="text/javascript">
 require.define('app', function(require, module, exports, __dirname, __filename) {
   var user = {{{user}}},

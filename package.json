@@ -13,13 +13,12 @@
   "dependencies": {
     "express" : "3.x",
     "socket.io" : "0.x",
-    "thimble" : "0.x",
     "scotch" : "*",
-    "stylus" : "0.x",
-    "hogan.js" : "1.x",
+    "stylus" : "*",
+    "hogan.js" : "2.x",
     "underscore" : "*",
     "nib" : "*",
-    "redis" : "0.x"
+    "redis" : "*"
   },
   "devDependencies": {
     "commander" : "*"
