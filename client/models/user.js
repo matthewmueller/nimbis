@@ -31,7 +31,7 @@ User.prototype.defaults = {
 /*
   Use a recursive `toJSON`
 */
-User.prototype.toJSON = User.prototype.recursiveToJSON;
+// User.prototype.toJSON = User.prototype.recursiveToJSON;
 
 /*
   Attribute functions
@@ -50,6 +50,6 @@ User.prototype.initialize = function() {
   var name = this.get('firstName') + ' ' + this.get('lastName');
   this.set('fullName', name);
 
-  var groups = new App.Collections.Groups(this.get('groups'));
-  this.set('groups', groups);
+  // var groups = new App.Collections.Groups(this.get('groups'));
+  // this.set('groups', groups);
 };

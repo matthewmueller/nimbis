@@ -1,4 +1,4 @@
 
 var User = require('../../models/user.js');
-
-console.log(User);
+var user = new User({ firstName : "Matt", lastName: "Mueller" });
+console.log(user.toJSON());
