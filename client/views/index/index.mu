@@ -1,11 +1,11 @@
 <!-- Style -->
+<link href="index.styl" rel="stylesheet">
 <link href="/scotch.css" rel="stylesheet">
-<link rel="stylesheet" href="index.styl">
 
 <!-- Application wrapper -->
 <div id="wrapper">
   <!-- Top navigation -->
-  <div id="top">lolololol</div>
+  <div id="top"></div>
 
   <!-- Main application container -->
   <div id="container">

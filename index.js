@@ -2,6 +2,7 @@ var express = require('express'),
     scotch = require('scotch'),
     cons = require('consolidate'),
     stylus = require('stylus'),
+    nib = require('nib'),
     fs = require('fs'),
     path = require('path'),
     dirname = path.dirname,
@@ -46,6 +47,7 @@ app.get(/\.styl$/, function(req, res, next) {
     if(err) return next(err);
     stylus(str)
       .set('filename', client + req.url)
+      .use(nib())
       .render(function(err, str) {
         if(err) return next(err);
         res.setHeader('content-type', 'text/css');
@@ -60,7 +62,8 @@ app.use(express['static'](app.get('client')));
 app.get('/', function(req, res) {
   res.render('index/index.mu', {
     layout : 'layouts/base/base.mu',
-    user : 'matt'
+    user : 'matt',
+    title : "nimbis"
   });
 });
 
