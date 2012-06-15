@@ -1,6 +1,4 @@
-(function() {
-  var User = require('../../models/user.js');
 
-  console.log(User);
+var User = require('../../models/user.js');
 
-})();
+console.log(User);
