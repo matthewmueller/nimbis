@@ -32,7 +32,10 @@ Index.prototype.initialize = function(user, messages) {
 
 Index.prototype.render = function() {
 
-  var List = require('../../ui/list/list.js');
-  this.listView = new List();
-  console.log(this.listView.render().el);
+  var GroupList = require('../../ui/group-list/group-list.js');
+  this.groupList = new GroupList({
+    collection : require('app').groups
+  });
+
+  $('#left').html(this.groupList.render().el);
 };

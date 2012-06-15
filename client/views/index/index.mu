@@ -21,10 +21,11 @@
 <script src="/scotch.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+// TODO: Refactor this into it's own js file
 require.define('app', function(require, module, exports, __dirname, __filename) {
   var user = {{{user}}},
       messages = {{{messages}}};
-      
+
   // TODO: Really ugly, fix later
   var index = require("/client/views/index/index.js"),
       app = module.exports = new index(user, messages);
