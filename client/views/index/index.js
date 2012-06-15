@@ -31,11 +31,17 @@ Index.prototype.initialize = function(user, messages) {
 };
 
 Index.prototype.render = function() {
+  var GroupList = require('../../ui/group-list/group-list.js'),
+      MessageList = require('../../ui/message-list/message-list.js');
 
-  var GroupList = require('../../ui/group-list/group-list.js');
   this.groupList = new GroupList({
     collection : require('app').groups
   });
 
+  this.messageList = new MessageList({
+    collection : require('app').messages
+  });
+
   $('#left').html(this.groupList.render().el);
+  $('#middle').html(this.messageList.render().el);
 };
