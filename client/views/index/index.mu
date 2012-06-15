@@ -24,7 +24,7 @@
 require.define('app', function(require, module, exports, __dirname, __filename) {
   var user = {{{user}}},
       messages = {{{messages}}};
-
+      
   // TODO: Really ugly, fix later
   var index = require("/client/views/index/index.js"),
       app = module.exports = new index(user, messages);

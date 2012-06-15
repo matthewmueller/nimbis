@@ -4,6 +4,9 @@ var $ = require('jquery-browserify'),
     _ = require('underscore'),
     Backbone = require('backbone');
 
+// Give backbone jQuery
+Backbone.setDomLibrary($);
+
 // Load the models
 var User = require('../../models/user.js'),
     Messages = require('../../collections/messages.js');
@@ -30,4 +33,6 @@ Index.prototype.initialize = function(user, messages) {
 Index.prototype.render = function() {
 
   var List = require('../../ui/list/list.js');
+  this.listView = new List();
+  console.log(this.listView.render().el);
 };
