@@ -9,17 +9,17 @@ var User = module.exports = Backbone.Model.extend();
 /*
   Model Name
 */
-User.prototype.name = 'User';
+User.prototype.name = 'user';
 
 /*
   Augment get functionality to work with functions
 */
-User.prototype.get = function(attr) {
-  if(typeof this.attributes[attr] === 'function') {
-    return this.attributes[attr].call(this);
-  } else
-    return Backbone.Model.prototype.get.call(this, attr);
-};
+// User.prototype.get = function(attr) {
+//   if(typeof this.attributes[attr] === 'function') {
+//     return this.attributes[attr].call(this);
+//   } else
+//     return Backbone.Model.prototype.get.call(this, attr);
+// };
 
 /*
   Set the defaults
@@ -32,7 +32,7 @@ User.prototype.defaults = {
 /*
   Use a recursive `toJSON`
 */
-// User.prototype.toJSON = User.prototype.recursiveToJSON;
+User.prototype.toJSON = require('../support/backbone/toJSON.recursive.js');
 
 /*
   Attribute functions

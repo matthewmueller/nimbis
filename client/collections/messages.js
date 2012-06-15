@@ -8,7 +8,7 @@ var Messages = module.exports = Backbone.Collection.extend();
 /*
   Collection name
 */
-Messages.prototype.name = 'Messages';
+Messages.prototype.name = 'messages';
 
 /*
   Add the `Message` Model

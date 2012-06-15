@@ -8,7 +8,7 @@ var Group = module.exports = Backbone.Model.extend();
 /*
   Model Name
 */
-Group.prototype.name = 'Group';
+Group.prototype.name = 'group';
 
 /*
   Set the defaults

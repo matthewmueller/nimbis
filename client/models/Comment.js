@@ -6,7 +6,7 @@ var Comment = module.exports = Backbone.Model.extend();
 /*
   Model Name
 */
-Comment.prototype.name = 'Comment';
+Comment.prototype.name = 'comment';
 
 /*
   Set the defaults
@@ -20,12 +20,12 @@ Comment.prototype.defaults = {
 /*
   Use a recursive `toJSON`
 */
-Comment.prototype.toJSON = Comment.prototype.recursiveToJSON;
+Comment.prototype.toJSON = require('../support/backbone/toJSON.recursive.js');
 
 /*
   `Comment` model will use socket.io as it's transport
 */
-Comment.prototype.sync = Backbone.socketSync;
+Comment.prototype.sync = require('../support/backbone/sync.socket.js');
 
 /*
   Initialize the comment

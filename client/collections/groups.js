@@ -5,7 +5,7 @@ var Groups = module.exports = Backbone.Collection.extend();
 /*
   Collection name
 */
-Groups.prototype.name = 'Groups';
+Groups.prototype.name = 'groups';
 
 /*
   Add the `Group` Model

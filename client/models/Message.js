@@ -10,7 +10,7 @@ var Message = module.exports = Backbone.Model.extend();
 /*
   Model Name
 */
-Message.prototype.name = 'Message';
+Message.prototype.name = 'message';
 
 /*
   Set the defaults
@@ -26,12 +26,12 @@ Message.prototype.defaults = {
 /*
   `Message` model will use socket.io as it's transport
 */
-Message.prototype.sync = Backbone.socketSync;
+Message.prototype.sync = require('../support/backbone/sync.socket.js');
 
 /*
-  Use the recursive `toJSON`
+  Use a recursive `toJSON`
 */
-// Message.prototype.toJSON = Message.prototype.recursiveToJSON;
+Message.prototype.toJSON = require('../support/backbone/toJSON.recursive.js');
 
 /*
   Initialize the `Message` model

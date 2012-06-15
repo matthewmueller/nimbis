@@ -8,7 +8,7 @@ var Comments = module.exports = Backbone.Collection.extend();
 /*
   Collection name
 */
-Comments.prototype.name = 'Comments';
+Comments.prototype.name = 'comments';
 
 /*
   Add the `Comment` Model
