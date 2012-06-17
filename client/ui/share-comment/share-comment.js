@@ -60,7 +60,7 @@ ShareComment.prototype.comment = function(e) {
 
   var $el = this.$el,
       commentValue = $el.find('.comment').val().trim().toLineBreakTag(),
-      me = require('app').user.toJSON();
+      me = window.app.user.toJSON();
 
   if (commentValue === '') {
 	this.clear();

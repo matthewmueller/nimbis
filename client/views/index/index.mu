@@ -1,6 +1,6 @@
 <!-- Style -->
 <link href="index.styl" rel="stylesheet">
-<link href="/scotch.css" rel="stylesheet">
+<style type="text/css">{{{scotch.css}}}</style>
 
 <div id="wrapper">
   <div id="top"></div><!-- Top navigation -->
@@ -18,19 +18,16 @@
 </script>
 
 <!-- Scripts -->
-<script src="/scotch.js" type="text/javascript"></script>
+<script type="text/javascript">{{{scotch.js}}}</script>
 
 <script type="text/javascript">
-// TODO: Refactor this into it's own js file
-require.define('app', function(require, module, exports, __dirname, __filename) {
-  var user = {{{user}}},
+(function() {
+  var index = require('index.js'),
+      user = {{{user}}},
       messages = {{{messages}}};
 
-  // TODO: Really ugly, fix later
-  var index = require("/client/views/index/index.js"),
-      app = module.exports = new index(user, messages);
-});
+  window.app = new index(user, messages);
+  window.app.render();
+})();
 
-// Render our application
-require('app').render()
 </script>

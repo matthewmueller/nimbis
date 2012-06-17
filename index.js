@@ -14,7 +14,7 @@ app.set('client', __dirname + '/client');
 app.set('views', app.get('client') + '/views');
 
 // Basic, synchronous way of supporting layouts in express 3.x
-app.engine('mu', function(path, options, fn) {
+app.engine('mu', scotch(app.get('client'), {}, function(path, options, fn) {
   var views = app.get('views'),
       view = path;
 
@@ -38,7 +38,7 @@ app.engine('mu', function(path, options, fn) {
   } else {
     compile();
   }
-});
+}));
 
 // Stylus middleware - no writing
 app.get(/\.styl$/, function(req, res, next) {
@@ -56,7 +56,6 @@ app.get(/\.styl$/, function(req, res, next) {
   });
 });
 
-app.use(scotch(app.get('views'), { debug : true }));
 app.use(express['static'](app.get('client')));
 
 var user = {

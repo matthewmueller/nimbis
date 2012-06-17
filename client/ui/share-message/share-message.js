@@ -1,4 +1,5 @@
-var _ = require('underscore'),
+var $ = require('jquery-browserify'),
+    _ = require('underscore'),
     Backbone = require('backbone'),
     Message = require('../../models/message.js');
 
@@ -57,7 +58,7 @@ ShareMessage.prototype.share = function(e) {
   var $el = this.$el,
       $message = $el.find('.message'),
       $groups = $el.find('.share-with'),
-      author = require('app').user.toJSON();
+      author = window.app.user.toJSON();
   
   var groups = $groups.val().split(','),
       groupsCollection = [];
@@ -65,7 +66,7 @@ ShareMessage.prototype.share = function(e) {
   // Temporary until auto-complete
   _.each(groups, function(name) {
     name = $.trim(name);
-    var group = require('app').groups.find(function(group) {
+    var group = window.app.groups.find(function(group) {
       return (group.get('name') === name);
     });
 
