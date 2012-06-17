@@ -1,0 +1,48 @@
+.comment-list
+  border: 1px solid gray
+  background-color: whiteSmoke
+  
+.comment-container
+  color : black
+  list-style : none
+  border-top: 1px solid lightgray
+  border-bottom: 1px solid white
+  padding: 7px 7px
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif
+  font-size: 14px
+  color: #444
+  
+  &:first-child
+    border-top: none
+  
+  &:last-child
+    border-bottom: none
+
+  .icon
+    width: 50px
+    height: 50px
+    float: left
+
+  .container
+    margin-left: 57px
+
+    .author
+      font-weight: 700
+
+    .date
+      float:right
+      color: #B0B0B0
+      opacity: 0
+      font-size: 90%
+      -webkit-transition: opacity .2s;
+
+    .comment
+      margin-top: 7px
+      margin-bottom: 7px
+
+.comment-container:hover
+  .date
+    opacity: 1
+
+#comment-box
+  min-width: 550px

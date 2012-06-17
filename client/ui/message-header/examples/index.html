@@ -1,0 +1,14 @@
+<include src="../index.html" />
+
+<div id="wrapper"></div>
+
+<script type="text/javascript" charset="utf-8">
+  var message = App.JSON.messages[0],
+      messageModel = new App.Models.Message(message);
+
+  var messageHeader = new App.Views.MessageHeader();
+  messageHeader.model = messageModel;
+  
+  $('#wrapper').append(messageHeader.render().el);
+  
+</script>

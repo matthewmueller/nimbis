@@ -1,0 +1,24 @@
+<include src="../index.html" />
+
+<!-- HTML -->
+<div id="wrapper"></div>
+
+<!-- Runner -->
+<script type="text/javascript" charset="utf-8">
+  var message = App.JSON.messages[1],
+      messageModel = new App.Models.Message(message),
+      comments = messageModel.get('comments');
+  /*
+    Test comments
+  */
+  var commentView = new App.Views.CommentList();
+  commentView.collection = comments;
+  
+  $('#wrapper').append(commentView.render().el);
+  
+  // commentCollection.add({
+  //   author : 'Zen',
+  //   comment : 'lololol'
+  // });
+  
+</script>
