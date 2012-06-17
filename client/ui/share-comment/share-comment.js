@@ -1,6 +1,6 @@
 var _ = require('underscore'),
     Backbone = require('backbone'),
-    Comment = require('../../models/comment.js');
+    Comment = require('/models/comment.js');
 
 /*
   Add styling

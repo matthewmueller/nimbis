@@ -1,7 +1,7 @@
 var Backbone = require('backbone'),
     _ = require('underscore'),
-    dispatcher = require('../../support/dispatcher.js'),
-    List = require('../list/list.js');
+    dispatcher = require('/support/dispatcher.js'),
+    List = require('/ui/list/list.js');
 
 /*
   Add Style

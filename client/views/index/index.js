@@ -2,7 +2,7 @@
 // Load jQuery
 var $ = require('jquery-browserify'),
     _ = require('underscore'),
-    dispatcher = require('../../support/dispatcher.js'),
+    dispatcher = require('/support/dispatcher.js'),
     Backbone = require('backbone');
 
 
@@ -10,9 +10,9 @@ var $ = require('jquery-browserify'),
 Backbone.setDomLibrary($);
 
 // Load the models
-var User = require('../../models/user.js'),
-    Messages = require('../../collections/messages.js'),
-    Groups = require('../../collections/groups.js');
+var User = require('/models/user.js'),
+    Messages = require('/collections/messages.js'),
+    Groups = require('/collections/groups.js');
 
 var Index = module.exports = Backbone.Router.extend();
 
@@ -51,9 +51,9 @@ Index.prototype.initialize = function(user, messages) {
 };
 
 Index.prototype.render = function() {
-  var GroupList = require('../../ui/group-list/group-list.js'),
-      MessageList = require('../../ui/message-list/message-list.js'),
-      ShareMessage = require('../../ui/share-message/share-message.js');
+  var GroupList = require('/ui/group-list/group-list.js'),
+      MessageList = require('/ui/message-list/message-list.js'),
+      ShareMessage = require('/ui/share-message/share-message.js');
 
   // Load ShareMessage view
   this.groupList = new GroupList({
@@ -86,9 +86,9 @@ Index.prototype.render = function() {
   `loadChat` route
 */
 Index.prototype.openMessage = function(message) {
-  var MessageHeader = require('../../ui/message-header/message-header.js'),
-      CommentList = require('../../ui/comment-list/comment-list.js'),
-      ShareComment = require('../../ui/share-comment/share-comment.js');
+  var MessageHeader = require('/ui/message-header/message-header.js'),
+      CommentList = require('/ui/comment-list/comment-list.js'),
+      ShareComment = require('/ui/share-comment/share-comment.js');
 
   // If an ID is passed, get the model
   message = _.isString(message) ? this.messages.get(message) : message;

@@ -1,7 +1,7 @@
 var $ = require('jquery-browserify'),
     _ = require('underscore'),
     Backbone = require('backbone'),
-    Message = require('../../models/message.js');
+    Message = require('/models/message.js');
 
 /*
   Add styling
