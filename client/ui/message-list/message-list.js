@@ -1,5 +1,6 @@
 var Backbone = require('backbone'),
     _ = require('underscore'),
+    dispatcher = require('../../support/dispatcher.js'),
     List = require('../list/list.js');
 
 /*
@@ -34,9 +35,8 @@ MessageList.prototype.events = {
 */
 MessageList.prototype.initialize = function() {
   _.bindAll(this, 'render');
-
-  // FIXME: why isn't this working?
-  // this.on('rendered', this.bind);
+  
+  this.on('rendered', this.bind);
 };
 
 /*
@@ -91,6 +91,6 @@ MessageList.prototype.open = function(e) {
       model = this.collection.getByCid(cid);
 
   // Trigger open event
-  App.trigger('message-list:open', model);
+  dispatcher.trigger('message-list:open', model);
 
 };
