@@ -27,7 +27,7 @@ MessageList.prototype.itemTemplate = require('./message-list.mu');
   `MessageList` events
 */
 MessageList.prototype.events = {
-  'click .message-container' : 'open'
+  'click .message' : 'open'
 };
 
 /*

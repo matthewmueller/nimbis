@@ -1,7 +1,7 @@
-<div class="message-container clearfix" data-cid="{{cid}}">
+<div class="message clearfix" data-cid="{{cid}}">
   <img class="icon" src="{{author.icon}}" />
 
-  <div class="message">{{message}}</div>
+  <div class="topic">{{message}}</div>
   
   <div class="more clearfix">
 
@@ -13,9 +13,7 @@
       {{/groups}}
     </div><!-- .groups -->
 
-    <div class="date">{{date}}</div>
     <div class="comments">{{comments.length}}
-    <span style="font-size: 1%">&#9658;</span>
     </div>
 
   </div><!-- .messageInfo -->
