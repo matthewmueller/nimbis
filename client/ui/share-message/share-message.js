@@ -1,7 +1,8 @@
-var $ = require('jquery-browserify'),
+var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
-    Message = require('/models/message.js');
+    Message = require('/models/message.js'),
+    Groups = require('/collections/groups.js');
 
 /*
   Add styling
@@ -71,7 +72,7 @@ ShareMessage.prototype.share = function(e) {
     });
 
     if(group)
-      groupsCollection.push(group.get('id'));
+      groupsCollection.push(group);
   });
 
   // We don't have any groups, so don't create a message
@@ -80,9 +81,11 @@ ShareMessage.prototype.share = function(e) {
     return;
   }
 
+
+
   var messageModel = new Message({
     message : $message.val(),
-    groups  : groupsCollection,
+    groups  : new Groups(groupsCollection),
     author : author
   });
 
