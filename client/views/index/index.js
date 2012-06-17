@@ -40,7 +40,7 @@ Index.prototype.initialize = function(user, messages) {
     message.groups = new Groups(_.compact(message.groups));
   });
 
-  // Should probably be moved into a base router but... for now it's fine
+  // Bind the events - should probably be moved into a base router but... for now it's fine
   _.each(this.events, function(action, event) {
     dispatcher.on(event, function(payload) {
       return self[action].call(self, payload);

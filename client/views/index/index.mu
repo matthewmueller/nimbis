@@ -22,12 +22,16 @@
 
 <script type="text/javascript">
 (function() {
-  var index = require('index.js'),
+  var Backbone = require('backbone'),
+      index = require('index.js'),
       user = {{{user}}},
       messages = {{{messages}}};
 
   window.app = new index(user, messages);
   window.app.render();
+
+  // Start the history
+  Backbone.history.start({pushState: true});
 })();
 
 </script>
