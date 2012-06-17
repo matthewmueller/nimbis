@@ -3,7 +3,9 @@
 <style type="text/css">{{{scotch.css}}}</style>
 
 <div id="wrapper">
-  <div id="top"></div><!-- Top navigation -->
+  <div id="top">
+    <div class="logo">Nimbis</div>
+  </div><!-- Top navigation -->
   <div id="container"><!-- Main application container -->
     <div id="left"></div><!-- Left Pane -->
     <div id="middle"></div><!-- Middle Pane -->
@@ -11,17 +13,12 @@
   </div><!-- #container -->
 </div><!-- #wrapper -->
 
-<!-- Grab the user data from the server -->
-<script type="text/javascript">
-  // window.user = {{{user}}};
-  //window.messages = {{{messages}}};
-</script>
-
 <!-- Scripts -->
 <script type="text/javascript">{{{scotch.js}}}</script>
 
-<script type="text/javascript">
-(function() {
+<!-- Initialize -->
+<script type="text/javascript">(function() {
+    
   var Backbone = require('backbone'),
       index = require('index.js'),
       user = {{{user}}},
@@ -32,6 +29,5 @@
 
   // Start the history
   Backbone.history.start({pushState: true});
-})();
-
-</script>
+  
+})();</script>

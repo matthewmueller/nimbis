@@ -20,7 +20,8 @@ GroupList.prototype.className = 'group-list';
 /*
   Templates
 */
-GroupList.prototype.itemTemplate = require('./group-list.mu');
+GroupList.prototype.itemTemplate = require('./templates/group-item.mu');
+GroupList.prototype.template = require('./templates/group-list.mu');
 
 /*
   Initialize `GroupList`

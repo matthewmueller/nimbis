@@ -1,7 +1,31 @@
+@import 'nib/gradients'
+@import '/support/helpers.styl'
+
 .group-list
-  border: 1px solid gray
-  background-color: whiteSmoke
-  padding: 10px
+
+  .header
+    background-color #e7e7e7
+    background linear-gradient(top, #f3f3f3, #d7d7d7)
+    height 24px
+    border-top 1px solid #b7b7b7
+    border-bottom 1px solid #b7b7b7
+    font-size small
+    text-transform uppercase
+    text-shadow white 0 1px 0
+    color #777
+    padding 0px 5px
+
+    .title
+      float left
+      line-height 25px    
+      
+    .add
+      float right
+      cursor pointer
+      line-height 24px
+
+  ul
+    padding: 5px
 
   .group
     clear: both
@@ -11,9 +35,13 @@
       float: left
       
     .color
-      width: 15px
-      height: 15px
+      margin: 3px
+      width: 8px
+      height: 8px
+      border-radius: 8px
       
     .name
-      margin-left: 10px
-      color: gray
+      font: 13px "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif
+      margin-left: 5px
+      color black
+      overflow: ellipsis
