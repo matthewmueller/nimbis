@@ -67,6 +67,16 @@ var user = {
 var users = require(__dirname + '/data/users.json'),
     messages = require(__dirname + '/data/messages.json');
 
+// Refactor
+app.get('/messages/:id', function(req, res, next) {
+  res.render('index/index.mu', {
+    layout : 'layouts/base/base.mu',
+    user : JSON.stringify(users[0]),
+    messages : JSON.stringify(messages),
+    title : "nimbis"
+  });
+});
+
 app.get('/', function(req, res) {
   res.render('index/index.mu', {
     layout : 'layouts/base/base.mu',

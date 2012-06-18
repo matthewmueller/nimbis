@@ -1,7 +1,3 @@
-<div class="author">{{author.name}}</div>
-<div class="message">{{message}}</div>
-<div class="date">{{date}}</div>
-
 <div class="groups clearfix">
   {{#groups}}
     <span class="group" style="background-color:{{color}}">
@@ -9,3 +5,5 @@
     </span>
   {{/groups}}
 </div><!-- .groups -->
+
+<div class="date">{{date}}</div>
