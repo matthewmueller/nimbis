@@ -1,6 +1,6 @@
-var Backbone = require('backbone'),
+var app = window.app,
+    Backbone = require('backbone'),
     _ = require('underscore'),
-    dispatcher = require('/support/dispatcher.js'),
     Dialog = require('/ui/dialog/dialog.js');
 
 /*
@@ -13,3 +13,45 @@ require('./join-dialog.styl');
  */
 var JoinDialog = module.exports = Dialog.extend();
 
+/*
+ * Events
+ */
+JoinDialog.prototype.events =  {
+  'click .cancel' : 'close'
+};
+
+/*
+  `Dialog` classname
+*/
+JoinDialog.prototype.className = 'join-dialog';
+
+/*
+ * Template
+ */
+JoinDialog.prototype.bodyTemplate = require('./join-dialog-body.mu');
+
+/*
+ * Defaults
+ */
+JoinDialog.prototype.defaults = {
+  header : 'Join new group',
+  buttons : [
+    { className : 'primary done', text : 'Done'},
+    { className : 'secondary cancel', text : 'Cancel'}
+  ]
+};
+
+JoinDialog.prototype.initialize = function() {
+  console.log(this);
+};
+
+
+/*
+ * Done
+ */
+JoinDialog.prototype.done = function() {
+  var group = this.$el.find('input[type=text]').val();
+  console.log('lol');
+  app.groups.add({ name : group });
+  this.close();
+};

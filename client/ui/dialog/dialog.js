@@ -14,14 +14,6 @@ require('./dialog.styl');
 var Dialog = module.exports = Backbone.View.extend();
 
 /*
- * Defaults
- */
-Dialog.prototype.defaults = {
-  header : 'Header',
-  body : 'Lorem'
-};
-
-/*
   `Dialog` classname
 */
 Dialog.prototype.className = 'dialog';
@@ -29,13 +21,22 @@ Dialog.prototype.className = 'dialog';
 /*
   Templates
 */
-Dialog.prototype.template = require('./dialog.mu');
+Dialog.prototype.template = require('./templates/dialog.mu');
+Dialog.prototype.bodyTemplate = require('./templates/dialog-body.mu');
+
+
+/*
+ * Defaults
+ */
+Dialog.prototype.defaults = {
+  header : 'Header'
+};
 
 /*
   Initialize `Dialog`
 */
 Dialog.prototype.initialize = function(attrs) {
-  _.bindAll(this, 'render', 'open', 'close', '_maybeClose');
+  _.bindAll(this, 'render', 'open', 'close', '_maybeClose', '_maybeConfirm');
 
   this.attributes = _.defaults(attrs || {}, this.defaults);
 
@@ -45,16 +46,15 @@ Dialog.prototype.initialize = function(attrs) {
   // Event to close the dialog box
   dispatcher.on('dialog:close', this.close);
 
-  // Listen for escape
-  $(document.body).bind('keydown', this._maybeClose);
 };
 
 /*
   Render `Dialog`
 */
 Dialog.prototype.render = function() {
+  if(!this.attributes.body) this.attributes.body = this.bodyTemplate({});
   var html = this.template(this.attributes);
-  this.$el.html(html);
+  this.$el.addClass('dialog').html(html);
   return this;
 };
 
@@ -62,14 +62,24 @@ Dialog.prototype.render = function() {
   Show Dialog
 */
 Dialog.prototype.open = function() {
+  // Listen for keystrokes
+  $(document.body).bind('keydown', this._maybeClose);
+  $(document.body).bind('keydown', this._maybeConfirm);
+
   this.$el.addClass('show');
+  this.trigger('opened');
 };
 
 /*
   Hide Dialog
 */
 Dialog.prototype.close = function() {
+  // Cleanup
+  $(document.body).unbind('keydown', this._maybeClose);
+  $(document.body).unbind('keydown', this._maybeConfirm);
+
   this.$el.removeClass('show');
+  this.trigger('closed');
 };
 
 /*
@@ -78,6 +88,17 @@ Dialog.prototype.close = function() {
 Dialog.prototype._maybeClose = function(e) {
   if(e.which === 27) return this.close();
 };
+
+/*
+  Maybe confirm
+*/
+Dialog.prototype._maybeConfirm = function(e) {
+  if(e.which === 13) return (this.done) ? this.done() : this.close();
+};
+
+/*
+ * Done stub
+ */
 
 //   options : {
 //     title       : "Untitled Dialog",

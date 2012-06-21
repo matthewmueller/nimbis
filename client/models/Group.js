@@ -15,6 +15,6 @@ Group.prototype.name = 'group';
 */
 Group.prototype.defaults = {
   name : "",
-  color  : "",
+  color  : "purple",
   type    : "public"
 };

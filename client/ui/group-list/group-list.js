@@ -37,8 +37,8 @@ GroupList.prototype.initialize = function() {
 */
 GroupList.prototype.bind = function() {
   // Bind Collection
-  this.collection.on('add', this.render);
-  this.collection.on('remove', this.render);
+  this.collection.on('add', this.render, this);
+  this.collection.on('remove', this.render, this);
 
   this.off('rendered', this.bind);
 };

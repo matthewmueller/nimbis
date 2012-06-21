@@ -82,7 +82,6 @@ ShareMessage.prototype.share = function(e) {
   }
 
 
-
   var messageModel = new Message({
     message : $message.val(),
     groups  : new Groups(groupsCollection),
