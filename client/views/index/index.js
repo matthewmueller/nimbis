@@ -51,9 +51,11 @@ Index.prototype.initialize = function(user, messages) {
 };
 
 Index.prototype.render = function() {
-  var GroupList = require('/ui/group-list/group-list.js'),
+  var dispatcher = require('/support/dispatcher.js'),
+      GroupList = require('/ui/group-list/group-list.js'),
       MessageList = require('/ui/message-list/message-list.js'),
-      ShareMessage = require('/ui/share-message/share-message.js');
+      ShareMessage = require('/ui/share-message/share-message.js'),
+      JoinDialog = require('/ui/join-dialog/join-dialog.js');
 
   // Load ShareMessage view
   this.groupList = new GroupList({
@@ -71,7 +73,7 @@ Index.prototype.render = function() {
   });
 
   // Add GroupList
-  $('#left').html(this.groupList.render().el);
+  $('#left').append(this.groupList.render().el);
 
   // Placeholder
   var placeholder = $('<div></div>')
@@ -80,6 +82,14 @@ Index.prototype.render = function() {
 
   // Add the ShareMessage and MessageList
   $('#middle').html(placeholder);
+
+  // Add the dialog
+  var joinDialog = new JoinDialog();
+  $('#dialog-container').append(joinDialog.render().el);
+
+  $('button.join').on('click', function(e) {
+    dispatcher.trigger('dialog:open');
+  });
 };
 
 /*

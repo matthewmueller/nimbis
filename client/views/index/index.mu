@@ -7,10 +7,13 @@
     <div class="logo">Nimbis</div>
   </div><!-- Top navigation -->
   <div id="container"><!-- Main application container -->
-    <div id="left"></div><!-- Left Pane -->
+    <div id="left">
+      <button class = "join">Join Group</button>
+    </div><!-- Left Pane -->
     <div id="middle"></div><!-- Middle Pane -->
     <div id="right"></div><!-- Right Pane -->
   </div><!-- #container -->
+  <div id="dialog-container"></div><!-- Dialog holder -->
 </div><!-- #wrapper -->
 
 <!-- Scripts -->
