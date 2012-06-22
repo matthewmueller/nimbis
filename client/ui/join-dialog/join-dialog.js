@@ -1,4 +1,5 @@
 var app = window.app,
+    $ = require('jquery'),
     Backbone = require('backbone'),
     _ = require('underscore'),
     Dialog = require('/ui/dialog/dialog.js');
@@ -41,17 +42,19 @@ JoinDialog.prototype.defaults = {
   ]
 };
 
-JoinDialog.prototype.initialize = function() {
-  console.log(this);
-};
-
-
 /*
  * Done
  */
 JoinDialog.prototype.done = function() {
-  var group = this.$el.find('input[type=text]').val();
-  console.log('lol');
-  app.groups.add({ name : group });
+  var data = {},
+      $el;
+
+  this.$el.find('input').each(function() {
+    $el = $(this);
+    data[$el.attr('name')] = $el.val();
+  });
+
+
+  app.groups.add(data);
   this.close();
 };
