@@ -17,7 +17,9 @@ var User = require('/models/user.js'),
 var Index = module.exports = Backbone.Router.extend();
 
 Index.prototype.routes = {
-  'messages/:id' : 'openMessage'
+  'messages/:id' : 'openMessage',
+  'groups/:id/edit' : 'editGroup',
+  'join/' : 'joinGroup'
 };
 
 Index.prototype.events = {
@@ -51,7 +53,7 @@ Index.prototype.initialize = function(user, messages) {
 };
 
 Index.prototype.render = function() {
-  var dispatcher = require('/support/dispatcher.js'),
+  var self = this,
       GroupList = require('/ui/group-list/group-list.js'),
       MessageList = require('/ui/message-list/message-list.js'),
       ShareMessage = require('/ui/share-message/share-message.js'),
@@ -83,12 +85,9 @@ Index.prototype.render = function() {
   // Add the ShareMessage and MessageList
   $('#middle').html(placeholder);
 
-  // Add the dialog
-  var joinDialog = new JoinDialog();
-  $('#dialog-container').append(joinDialog.render().el);
-
+  // Add join
   $('button.join').on('click', function(e) {
-    dispatcher.trigger('dialog:open');
+    self.navigate('join/', { trigger : true , replace: true });
   });
 };
 
@@ -133,3 +132,30 @@ Index.prototype.openMessage = function(message) {
 
   $('#right').html(placeholder);
 };
+
+/*
+ * Join Group
+ */
+Index.prototype.joinGroup = function() {
+  var JoinDialog = require('/ui/join-dialog/join-dialog.js');
+  var joinDialog = new JoinDialog();
+  $('#dialog-container').html(joinDialog.render().el);
+};
+
+/*
+ * Edit group
+ */
+Index.prototype.editGroup = function(id) {
+  var EditDialog = require('/ui/edit-dialog/edit-dialog.js');
+      group = this.groups.get(id);
+
+  var editDialog = new EditDialog({
+    model : group
+  });
+
+  $('#dialog-container').html(editDialog.render().el);
+};
+
+
+
+

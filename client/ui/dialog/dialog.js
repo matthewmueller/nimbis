@@ -1,7 +1,7 @@
-var $ = require('jquery'),
+var app = window.app,
+    $ = require('jquery'),
     Backbone = require('backbone'),
-    _ = require('underscore'),
-    dispatcher = require('/support/dispatcher.js');
+    _ = require('underscore');
 
 /*
   Add style
@@ -36,16 +36,8 @@ Dialog.prototype.defaults = {
   Initialize `Dialog`
 */
 Dialog.prototype.initialize = function(attrs) {
-  _.bindAll(this, 'render', 'open', 'close', '_maybeClose', '_maybeConfirm');
-
+  _.bindAll(this, 'render', 'close', '_maybeClose', '_maybeConfirm');
   this.attributes = _.defaults(attrs || {}, this.defaults);
-
-  // Event to open the dialog
-  dispatcher.on('dialog:open', this.open);
-
-  // Event to close the dialog box
-  dispatcher.on('dialog:close', this.close);
-
 };
 
 /*
@@ -55,19 +47,12 @@ Dialog.prototype.render = function() {
   if(!this.attributes.body) this.attributes.body = this.bodyTemplate({});
   var html = this.template(this.attributes);
   this.$el.addClass('dialog').html(html);
-  return this;
-};
 
-/*
-  Show Dialog
-*/
-Dialog.prototype.open = function() {
   // Listen for keystrokes
   $(document.body).bind('keydown', this._maybeClose);
   $(document.body).bind('keydown', this._maybeConfirm);
 
-  this.$el.addClass('show');
-  this.trigger('opened');
+  return this;
 };
 
 /*
@@ -78,8 +63,9 @@ Dialog.prototype.close = function() {
   $(document.body).unbind('keydown', this._maybeClose);
   $(document.body).unbind('keydown', this._maybeConfirm);
 
-  this.$el.removeClass('show');
-  this.trigger('closed');
+  app.navigate('/', { replace: true });
+
+  this.$el.remove();
 };
 
 /*
