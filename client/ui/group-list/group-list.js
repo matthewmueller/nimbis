@@ -13,6 +13,13 @@ require('./group-list.styl');
 var GroupList = module.exports = List.extend();
 
 /*
+  `GroupList` events
+*/
+GroupList.prototype.events = {
+  'click .edit' : 'edit'
+};
+
+/*
   `GroupList` classname
 */
 GroupList.prototype.className = 'group-list';
