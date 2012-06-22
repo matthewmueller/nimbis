@@ -1,4 +1,5 @@
 var app = window.app,
+    $ = require('jquery'),
     Backbone = require('backbone'),
     _ = require('underscore'),
     Dialog = require('/ui/dialog/dialog.js');
@@ -45,7 +46,14 @@ EditDialog.prototype.defaults = {
  * Done
  */
 EditDialog.prototype.done = function() {
-  var group = this.$el.find('input[type=text]').val();
-  app.groups.add({ name : group });
-  this.closeAndRemove();
+  var data = {},
+      $el;
+
+  this.$el.find('input').each(function() {
+    $el = $(this);
+    data[$el.attr('name')] = $el.val();
+  });
+
+  this.model.set(data);
+  this.close();
 };
