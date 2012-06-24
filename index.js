@@ -95,6 +95,14 @@ app.get('/join', function(req, res, next) {
   });
 });
 
+app.get('/workspace/:workspace?', function(req, res) {
+  res.render('workspace/workspace.mu', {
+    layout : 'layouts/base/base.mu',
+    user : JSON.stringify(users[0]),
+    messages : JSON.stringify(messages),
+    title : "nimbis workspace"
+  });
+});
 
 app.get('/', function(req, res) {
   res.render('index/index.mu', {
@@ -104,6 +112,7 @@ app.get('/', function(req, res) {
     title : "nimbis"
   });
 });
+
 
 app.listen(8080);
 console.log('Server started on port 8080');
