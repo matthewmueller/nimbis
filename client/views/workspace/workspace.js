@@ -1,6 +1,8 @@
 var $ = require('jquery'),
     Backbone = require('backbone');
 
+require('./workspace.styl');
+
 // Give backbone jQuery
 Backbone.setDomLibrary($);
 
@@ -21,8 +23,16 @@ var Instant = require('/ui/instant/instant.js');
 
 
 exports.instant = function() {
-  var instant = new Instant();
-  $('.instant').html(instant.render().el);
+  var Groups = require('/collections/groups.js');
+      instant = new Instant({
+        collection : new Groups([
+          { name : 'javascript', color : 'red' },
+          { name : 'football', color : 'brown' },
+          { name : 'wildlife', color : 'green' }
+        ])
+      });
+
+  $('.workspace-instant').html(instant.render().el);
 
 
 };

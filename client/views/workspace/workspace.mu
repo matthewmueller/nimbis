@@ -2,7 +2,7 @@
 <style type="text/css">{{{scotch.css}}}</style>
 
 <div id="ui">
-  <div class="instant"></div>
+  <div class="workspace-instant"></div>
 </div>
 
 <!-- Scripts -->
@@ -17,9 +17,9 @@
   // $('.instant').html('hi!')
   // var Backbone = require('backbone'),
   //     index = require('index.js'),
-  //     user = {{{user}}},
+      // user = {{{user}}},
   //     messages = {{{messages}}};
-
+// console.log(user);
   // window.app = new index(user, messages);
   // window.app.render();
 

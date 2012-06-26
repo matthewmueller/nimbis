@@ -1,3 +1,36 @@
 .instant
   
-  color : blue
+  /* Don't go here. */
+  ul.token-list
+    margin: 0
+    width: 100%
+    border: 1px solid #bebebe
+    cursor: text
+    padding: 0
+    overflow-x: hidden /* Hides the autocomplete text when it goes out of the box -- not ideal */
+
+  li.token-item-input
+    padding: 0
+    position: relative
+
+  input, textarea
+    padding: 0
+    margin:0
+    font-size: 11px
+    border: none
+    outline: none
+    resize: none
+    background: transparent
+    overflow-y: hidden
+
+
+  .token-input
+    position: relative
+    z-index: 1
+
+  .token-background-input
+    top: 0
+    left: 0
+    margin: 0
+    position: absolute
+    color: #d7d7d7

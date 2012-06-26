@@ -2,12 +2,14 @@ var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
     Message = require('/models/message.js'),
-    Groups = require('/collections/groups.js');
+    Groups = require('/collections/groups.js'),
+    instant = require('/support/instant/instant.js');
 
 /*
   Add styling
 */
 require('./share-message.styl');
+require('/support/instant/instant.css');
 
 /*
   Expose ShareMessage
@@ -46,6 +48,11 @@ ShareMessage.prototype.initialize = function() {
 ShareMessage.prototype.render = function() {
   this.$el.append(this.template());
 
+  var shareWith = this.$el.find('.share-with');
+  instant(shareWith, app.groups.toJSON(), function(data, $item) {
+    $item.css('background', data.color);
+  });
+
   return this;
 };
 
@@ -58,17 +65,18 @@ ShareMessage.prototype.share = function(e) {
   
   var $el = this.$el,
       $message = $el.find('.message'),
-      $groups = $el.find('.share-with'),
-      author = window.app.user.toJSON();
-  
-  var groups = $groups.val().split(','),
+      author = window.app.user.toJSON(),
       groupsCollection = [];
+  
+  var groups = $el.find('.instant-token-item').map(function() {
+    return $(this).text();
+  });
 
   // Temporary until auto-complete
   _.each(groups, function(name) {
     name = $.trim(name);
     var group = window.app.groups.find(function(group) {
-      return (group.get('name') === name);
+      return (group.get('name').toLowerCase() === name.toLowerCase());
     });
 
     if(group)
@@ -77,7 +85,7 @@ ShareMessage.prototype.share = function(e) {
 
   // We don't have any groups, so don't create a message
   if(!groupsCollection.length) {
-    console.log("No groups found:", $groups.val());
+    console.log("No groups found:", groups.val());
     return;
   }
 

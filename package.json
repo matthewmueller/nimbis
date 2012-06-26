@@ -18,7 +18,8 @@
     "hogan.js" : "2.x",
     "underscore" : "*",
     "nib" : "*",
-    "redis" : "*"
+    "redis" : "*",
+    "prefix-trie" : "*"
   },
   "devDependencies": {
     "commander" : "*"
