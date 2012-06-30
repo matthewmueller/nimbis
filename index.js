@@ -58,11 +58,6 @@ app.get(/\.styl$/, function(req, res, next) {
 
 app.use(express['static'](app.get('client')));
 
-var user = {
-  firstName : 'Matt',
-  lastName : 'Mueller',
-  groups : ['Finance', 'Soccer']
-};
 
 var users = require(__dirname + '/data/users.json'),
     messages = require(__dirname + '/data/messages.json');
