@@ -21,6 +21,10 @@ Index.prototype.routes = {
   'join/' : 'joinGroup'
 };
 
+// Index.prototype.socketRoutes = {
+//   ''
+// };
+
 Index.prototype.events = {
   'message-list:open' : 'openMessage'
 };

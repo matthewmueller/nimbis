@@ -35,14 +35,18 @@
   Backbone.history.start({pushState: true});
   
   // Initialize socket.io
-  var socket = window.socket = io.connect('http://localhost', {port : 80});
+  var socket = window.socket = io.connect('http://localhost:80');
   
   socket.on('error', function() {
     console.log('Error: socket.io server not responding.');
   });
 
   socket.on('connect', function() {
-    socket.send({ action : 'authenticate', id : user.id })
+    socket.emit('authenticate', user.id);
+
+    socket.on('ready', function() {
+      console.log('les go!');
+    });
   });
 
 })();</script>
