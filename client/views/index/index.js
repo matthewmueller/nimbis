@@ -5,7 +5,6 @@ var $ = require('jquery'),
     dispatcher = require('/support/dispatcher.js'),
     Backbone = require('backbone');
 
-
 // Give backbone jQuery
 Backbone.setDomLibrary($);
 

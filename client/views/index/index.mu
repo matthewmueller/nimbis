@@ -16,7 +16,8 @@
   <div id="dialog-container"></div><!-- Dialog holder -->
 </div><!-- #wrapper -->
 
-<!-- Scripts -->
+<!-- Scripts --><!-- TODO: Make socket.io compatible with scotch -->
+<script type="text/javascript" src="/vendor/socket.io.js"></script>
 <script type="text/javascript">{{{scotch.js}}}</script>
 
 <!-- Initialize -->
@@ -33,4 +34,15 @@
   // Start the history
   Backbone.history.start({pushState: true});
   
+  // Initialize socket.io
+  var socket = window.socket = io.connect('http://localhost', {port : 80});
+  
+  socket.on('error', function() {
+    console.log('Error: socket.io server not responding.');
+  });
+
+  socket.on('connect', function() {
+    socket.send({ action : 'authenticate', id : user.id })
+  });
+
 })();</script>

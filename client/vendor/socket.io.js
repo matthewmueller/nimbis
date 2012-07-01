@@ -42,7 +42,6 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    */
 
   io.transports = [];
-
   /**
    * Keep track of jsonp callbacks.
    *
@@ -2455,7 +2454,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    *
    * @api private
    */
-
+   
   io.transports.push('websocket');
 
 })(
