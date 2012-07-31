@@ -59,8 +59,8 @@ Index.prototype.initialize = function(user, messages) {
   /////////////////////
   // Setup socket.io //
   /////////////////////
-
-  var socket = this.socket = io.connect('http://localhost:80');
+  var port = document.location.port;
+  var socket = this.socket = io.connect('http://ws.localhost:' + port);
   
   socket.on('error', function() {
     console.log('Error: socket.io server not responding.');
