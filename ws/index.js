@@ -1,9 +1,13 @@
-var connect = require('connect'),
-    parseSignedCookie = connect.utils.parseSignedCookie,
-    parseSignedCookies = connect.utils.parseSignedCookies,
-    port = process.argv[2] || 8080,
-    io = require('socket.io').listen(80),
+var express = require('express'),
+    app = module.exports = express();
+    io = require('socket.io').listen(app),
     routes = require('./routes');
+
+// Listen if we specify a port
+if(process.argv[2]) {
+  app.listen(process.argv[2]);
+  console.log('Server started on port', process.argv[2]);
+}
 
 // Socket Authorization
 io.set('authorization', function(data, accept) {
@@ -32,4 +36,8 @@ io.sockets.on('connection', function(socket) {
   for(var route in routes) {
     socket.on(route, router(routes[route]));
   }
+});
+
+app.get('/', function(req, res) {
+  res.send('welcome to socket.io');
 });

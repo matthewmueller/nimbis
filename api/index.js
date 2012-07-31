@@ -1,11 +1,11 @@
-var app = require('./app'),
+var app = module.exports = require('./app'),
     client = require('./support/client');
 
-/*
- * Listen
- */
-app.listen(8000);
-console.log("Server listening on port 8000");
+// Listen if we specify a port
+if(process.argv[2]) {
+  app.listen(process.argv[2]);
+  console.log('Server started on port', process.argv[2]);
+}
 
 /*
  * Connect to redis

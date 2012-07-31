@@ -2,14 +2,14 @@
   "author": "Matt Mueller <mattmuelle@gmail.com>",
   "name": "nimbis",
   "description": "Nimbis project",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/MatthewMueller/nimbis.git"
   },
   "main": "index.js",
   "dependencies": {
-    "express": "~3.0.0rc1"
+    "express": "3.x"
   },
   "devDependencies": {},
   "optionalDependencies": {},

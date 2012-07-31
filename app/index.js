@@ -8,7 +8,13 @@ var express = require('express'),
     dirname = path.dirname,
     join = path.join,
     relative = require('relative-assets'),
-    app = express();
+    app = module.exports = express();
+
+// Listen if we specify a port
+if(process.argv[2]) {
+  app.listen(process.argv[2]);
+  console.log('Server started on port', process.argv[2]);
+}
 
 app.set('client', __dirname + '/client');
 app.set('views', app.get('client') + '/views');
@@ -114,8 +120,3 @@ app.get('/', function(req, res) {
     title : "nimbis"
   });
 });
-
-
-app.listen(8080);
-console.log('Server started on port 8080');
-

@@ -83,6 +83,10 @@ var authorize = require('./controllers/authorize'),
     message = require('./controllers/message'),
     comment = require('./controllers/comment');
 
+app.get('/', function(req, res) {
+  res.send('welcome to api.nimbis');
+});
+
 // Authorization
 app.post('/authorize', authorize);
 
