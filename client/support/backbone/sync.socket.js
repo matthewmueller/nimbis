@@ -16,8 +16,12 @@ exports.create = function(model, options) {
       data = model.toJSON();
 
   // Send the model data to the server
-  console.log('Sending data through socket', event, data);
-  // App.IO.emit(event, data);
+  if(app.socket) {
+    console.log('Sending data through socket', event, data);
+    app.socket.emit(event, data);
+  } else {
+    throw new Error('app.socket is not present');
+  }
 };
 
 module.exports = function(method, model, options) {

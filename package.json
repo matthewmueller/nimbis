@@ -1,5 +1,5 @@
 {
-  "private" : "true",
+  "private": "true",
   "author": "Matthew Mueller <mattmuelle@gmail.com>",
   "name": "nimbis",
   "version": "0.0.0",
@@ -11,20 +11,21 @@
     "node": "~0.4.11"
   },
   "dependencies": {
-    "express" : "3.x",
-    "socket.io" : "0.x",
-    "scotch" : "*",
-    "stylus" : "*",
-    "hogan.js" : "2.x",
-    "underscore" : "*",
-    "nib" : "*",
-    "redis" : "*",
-    "prefix-trie" : "*"
+    "express": "3.x",
+    "socket.io": "0.x",
+    "scotch": "*",
+    "stylus": "*",
+    "hogan.js": "2.x",
+    "underscore": "*",
+    "nib": "*",
+    "redis": "*",
+    "prefix-trie": "*",
+    "connect-redis": "~1.4.0"
   },
   "devDependencies": {
-    "commander" : "*"
+    "commander": "*"
   },
-  "bin" : {
-    "nimbis" : "./bin/nimbis"
+  "bin": {
+    "nimbis": "./bin/nimbis"
   }
 }

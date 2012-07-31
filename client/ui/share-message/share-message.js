@@ -101,7 +101,6 @@ ShareMessage.prototype.share = function(e) {
   
   messageModel.save();
 
-
   this.clear();
   this.shrink();
 };

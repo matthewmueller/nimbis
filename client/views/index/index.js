@@ -3,6 +3,7 @@
 var $ = require('jquery'),
     _ = require('underscore'),
     dispatcher = require('/support/dispatcher.js'),
+    superagent = require('/vendor/superagent.js'),
     Backbone = require('backbone');
 
 // Give backbone jQuery
@@ -21,9 +22,10 @@ Index.prototype.routes = {
   'join/' : 'joinGroup'
 };
 
-// Index.prototype.socketRoutes = {
-//   ''
-// };
+Index.prototype.socketRoutes = {
+  'message:create' : 'createMessage',
+  'comment:create' : 'createComment'
+};
 
 Index.prototype.events = {
   'message-list:open' : 'openMessage'
@@ -45,6 +47,8 @@ Index.prototype.initialize = function(user, messages) {
     message.groups = new Groups(_.compact(message.groups));
   });
 
+  this.messages = new Messages(messages);
+
   // Bind the events - should probably be moved into a base router but... for now it's fine
   _.each(this.events, function(action, event) {
     dispatcher.on(event, function(payload) {
@@ -52,7 +56,31 @@ Index.prototype.initialize = function(user, messages) {
     });
   });
 
-  this.messages = new Messages(messages);
+  /////////////////////
+  // Setup socket.io //
+  /////////////////////
+
+  var socket = this.socket = io.connect('http://localhost:80');
+  
+  socket.on('error', function() {
+    console.log('Error: socket.io server not responding.');
+  });
+
+  // socket.on('connect', function() {
+  //   socket.emit('authenticate', user.id);
+  //   socket.on('authenticated', function() {
+
+  //     _.each(self.socketRoutes, function(route, fn) {
+  //       socket.on(route, fn);
+  //     });
+
+  //   });
+  // });
+
+  /////////////////////
+  // Add superagent  //
+  /////////////////////
+  this.request = superagent;
 };
 
 Index.prototype.render = function() {
@@ -159,6 +187,9 @@ Index.prototype.editGroup = function(id) {
   $('#dialog-container').html(editDialog.render().el);
 };
 
-
-
-
+/*
+ * Create a message
+ */
+Index.prototype.createMessage = function() {
+  console.log('called!');
+};

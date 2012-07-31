@@ -56,11 +56,18 @@ app.get(/\.styl$/, function(req, res, next) {
   });
 });
 
-app.use(express['static'](app.get('client')));
-
 
 var users = require(__dirname + '/data/users.json'),
     messages = require(__dirname + '/data/messages.json');
+
+
+app.configure(function() {
+  // app.use(express.cookieParser('secretz'));
+  // add req.session cookie support
+  // app.use(express.cookieSession());
+  app.use(express['static'](app.get('client')));
+});
+
 
 // Refactor
 app.get('/messages/:id', function(req, res, next) {
