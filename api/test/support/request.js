@@ -33,7 +33,8 @@ function Request(app) {
 
 Request.prototype.__proto__ = EventEmitter.prototype;
 
-methods.forEach(function(method){
+// FIXME: Replace with 'supertest'
+require('supertest/node_modules/methods').forEach(function(method){
   Request.prototype[method] = function(path){
     return this.request(method, path);
   };
