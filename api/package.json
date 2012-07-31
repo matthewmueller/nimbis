@@ -1,0 +1,28 @@
+{
+  "author": "Matt Mueller <mattmuelle@gmail.com>",
+  "name": "api.nimbis",
+  "private": true,
+  "description": "Nimbis api",
+  "version": "0.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "express": "3.x",
+    "backbone": "*",
+    "passport": "~0.1.11",
+    "redis": "*",
+    "underscore": "*",
+    "validator": "*",
+    "connect-redis" : "*",
+    "passport-local": "*",
+    "passport-http": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "expect.js": "*",
+    "Faker": "*"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": ">= 0.4.11"
+  }
+}
