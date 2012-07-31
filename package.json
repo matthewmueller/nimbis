@@ -1,5 +1,6 @@
 {
   "author": "Matt Mueller <mattmuelle@gmail.com>",
+  "private" : true,
   "name": "nimbis",
   "description": "Nimbis project",
   "version": "0.0.1",
