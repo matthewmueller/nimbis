@@ -5,15 +5,15 @@ var express = require('express'),
     nib = require('nib'),
     fs = require('fs'),
     path = require('path'),
-    dirname = path.dirname,
     join = path.join,
     relative = require('relative-assets'),
     app = module.exports = express();
 
-// Listen if we specify a port
-if(process.argv[2]) {
-  app.listen(process.argv[2]);
-  console.log('Server started on port', process.argv[2]);
+// Listen if we are running this file directly
+if(!module.parent) {
+  var port = process.argv[2] || 8080;
+  app.listen(port);
+  console.log('Server started on port', port);
 }
 
 app.set('client', __dirname + '/client');

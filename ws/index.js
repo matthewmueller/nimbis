@@ -3,10 +3,11 @@ var express = require('express'),
     io = require('socket.io').listen(app),
     routes = require('./routes');
 
-// Listen if we specify a port
-if(process.argv[2]) {
-  app.listen(process.argv[2]);
-  console.log('Server started on port', process.argv[2]);
+// Listen if we are running this file directly
+if(!module.parent) {
+  var port = process.argv[2] || 8080;
+  app.listen(port);
+  console.log('Server started on port', port);
 }
 
 // Socket Authorization
