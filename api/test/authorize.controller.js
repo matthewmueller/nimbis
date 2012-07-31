@@ -1,5 +1,5 @@
 var expect = require('expect.js'),
-    request = require('./support/request'),
+    request = require('supertest'),
     client = require('../support/client'),
     User = require('../models/user'),
     app = require('../app.js');
@@ -31,8 +31,11 @@ describe('Authorize controller', function() {
     request(app)
       .post('/authorize')
       .set('Content-Type', 'application/json')
-      .write(JSON.stringify({ email : 'test@test.com', password : 'test' }))
-      .end(function(res) {
+      .send({ email : 'test@test.com', password : 'test' })
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .end(function(err, res) {
+        if(err) return done(err);
         expect(res.headers['set-cookie']).to.be.ok();
         expect(res.headers['set-cookie']).to.match(/sessionId=[^;]+;/);
         done();

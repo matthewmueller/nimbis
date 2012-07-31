@@ -1,5 +1,5 @@
 var app = require('../../app'),
-    request = require('./request');
+    request = require('supertest');
 
 function sid(res) {
   var val = res.headers['set-cookie'];
@@ -11,8 +11,9 @@ module.exports = function(email, password, fn) {
   request(app)
     .post('/authorize')
     .set('Content-Type', 'application/json')
-    .write(JSON.stringify({ email : email, password : password }))
-    .end(function(res) {
+    .send({ email : email, password : password })
+    .end(function(err, res) {
+      if(err) return fn(err);
       var id = sid(res);
       fn(null, id);
     });

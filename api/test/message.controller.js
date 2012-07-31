@@ -1,6 +1,6 @@
 var expect = require('expect.js'),
     _ = require('underscore'),
-    request = require('./support/request'),
+    request = require('supertest'),
     authorize = require('./support/authorize'),
     client = require('../support/client'),
     User = require('../models/user'),
@@ -67,8 +67,12 @@ describe('Message Controller', function() {
         request(app)
         .get('/messages')
         .set('Cookie', 'sessionId=' + sessionId)
-        .end(function(res) {
-          var body = JSON.parse(res.body),
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function(err, res) {
+          if(err) return done(err);
+
+          var body = res.body,
               msgs = _(body).pluck('message'),
               ids = _(body).pluck('id');
 
@@ -95,9 +99,13 @@ describe('Message Controller', function() {
         .post('/messages')
         .set('Cookie', 'sessionId=' + sessionId)
         .set('Content-Type', 'application/json')
-        .write(JSON.stringify(message))
-        .end(function(res) {
-          var body = JSON.parse(res.body);
+        .send(message)
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .end(function(err, res) {
+          if(err) return done(err);
+          var body = res.body;
+
           expect(body.id).to.be.ok();
           // FIXME:  This should be converted back to a date
           expect(body.created_at).to.be.a('string');

@@ -1,5 +1,5 @@
 var expect = require('expect.js'),
-    request = require('./support/request'),
+    request = require('supertest'),
     authorize = require('./support/authorize'),
     client = require('../support/client'),
     User = require('../models/user'),
@@ -29,16 +29,25 @@ describe('User Controller', function() {
   });
 
   describe('POST /users', function() {
+    var user = {
+      name : 'Matt Mueller',
+      email : 'mattmuelle@gmail.com',
+      password : 'test'
+    };
 
     it('should create a new user', function(done) {
       request(app)
         .post('/users')
-        .set('Content-Type', 'application/x-www-form-urlencoded')
-        .write('name=Matt Mueller&email=mattmuelle@gmail.com&password=test')
-        .end(function(res) {
-          var body = JSON.parse(res.body);
-          expect(body.name).to.be('Matt Mueller');
-          expect(body.email).to.be('mattmuelle@gmail.com');
+        .set('Content-Type', 'application/json')
+        .send(user)
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .end(function(err, res) {
+          if(err) return done(err);
+          var body = res.body;
+
+          expect(body.name).to.be(user.name);
+          expect(body.email).to.be(user.email);
           expect(body.id).to.be.ok();
           expect(body.salt).to.be.ok();
           expect(body.password).to.have.length(40);
@@ -58,13 +67,18 @@ describe('User Controller', function() {
 
       request(app)
         .get('/users/'+id)
-        .end(function(res) {
-          var body = JSON.parse(res.body);
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function(err, res) {
+          if(err) return done(err);
+          var body = res.body;
+
           expect(body.name).to.be('Matt Mueller');
           expect(body.email).to.be('matt@matt.com');
           expect(body.id).to.be.ok();
           expect(body.username).to.not.be.ok();
           expect(body.groups).to.be.an(Array);
+          
           done();
         });
     });
@@ -85,12 +99,17 @@ describe('User Controller', function() {
         .post('/join')
         .set('Content-Type', 'application/json')
         .set('Cookie', 'sessionId=' + sessionId)
-        .write(JSON.stringify(usergroup))
-        .end(function(res) {
-          var body = JSON.parse(res.body);
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .send(usergroup)
+        .end(function(err, res) {
+          if(err) return done(err);
+          var body = res.body;
+
           expect(body.groups[0].id).to.be('123abc');
           expect(body.groups[0].name).to.be('JS');
           expect(body.groups[0].color).to.be('purple');
+          
           done();
         });
 

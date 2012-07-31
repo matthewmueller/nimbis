@@ -17,7 +17,7 @@ exports.create = function(req, res) {
   user.save(function(err, model) {
     if(err) throw err;
 
-    res.send(model);
+    res.send(201, model);
   });
 
 };

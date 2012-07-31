@@ -53,7 +53,7 @@ exports.create = function(req, res) {
 
   Message.create(body, function(err, model) {
     if(err) return res.send(err);
-    res.send(model);
+    res.send(201, model);
   });
 };
 
