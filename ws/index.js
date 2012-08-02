@@ -10,6 +10,10 @@ if(!module.parent) {
   console.log('Server started on port', port);
 }
 
+app.configure(function() {
+  app.use(allowCrossDomain);
+});
+
 // Socket Authorization
 // io.set('authorization', function(data, accept) {
 //   console.log(data.headers);
@@ -42,3 +46,21 @@ io.sockets.on('connection', function(socket) {
 app.get('/', function(req, res) {
   res.send('welcome to socket.io');
 });
+
+// ## CORS middleware
+//
+// see: http://stackoverflow.com/questions/7067966/how-to-allow-cors-in-express-nodejs
+function allowCrossDomain(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.send(200);
+    }
+    else {
+      next();
+    }
+}
