@@ -1,6 +1,6 @@
 var express = require('express'),
     app = module.exports = express();
-    io = require('socket.io').listen(app),
+    io = require('socket.io').listen(9000),
     routes = require('./routes');
 
 // Listen if we are running this file directly

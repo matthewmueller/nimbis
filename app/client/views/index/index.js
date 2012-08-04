@@ -60,22 +60,16 @@ Index.prototype.initialize = function(user, messages) {
   // Setup socket.io //
   /////////////////////
   var port = document.location.port;
-  var socket = this.socket = io.connect('http://ws.localhost:' + port);
+  var socket = this.socket = io.connect('http://ws.localhost:9000');
   
   socket.on('error', function() {
     console.log('Error: socket.io server not responding.');
   });
 
-  // socket.on('connect', function() {
-  //   socket.emit('authenticate', user.id);
-  //   socket.on('authenticated', function() {
+  socket.on('connect', function() {
+    console.log('connected');
 
-  //     _.each(self.socketRoutes, function(route, fn) {
-  //       socket.on(route, fn);
-  //     });
-
-  //   });
-  // });
+  });
 
   /////////////////////
   // Add superagent  //
