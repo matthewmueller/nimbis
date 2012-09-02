@@ -5,7 +5,7 @@ var express = require('express'),
 // Configure the virtual hosts
 app.use(express.vhost('api.localhost', require('./api')));
 app.use(express.vhost('ws.localhost', require('./ws')));
-app.use(express.vhost('localhost', require('./app')));
+app.use(express.vhost('localhost', require('./app/app')));
 
 // Listen
 app.listen(port);

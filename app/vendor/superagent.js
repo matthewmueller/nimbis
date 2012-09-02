@@ -188,7 +188,7 @@ EventEmitter.prototype.emit = function (name) {
    * Noop.
    */
 
-  function noop(){}
+  function noop(){};
 
   /**
    * Determine XHR.
