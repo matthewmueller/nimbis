@@ -88,7 +88,7 @@ Index.prototype.boot = function() {
       JoinDialog = require('/ui/join-dialog/join-dialog.js');
 
   /**
-   * Load the group view
+   * Load the `group-list` view
    */
 
   this.groupList = new GroupList({
@@ -98,7 +98,7 @@ Index.prototype.boot = function() {
   $('#left').append(this.groupList.render().el);
 
   /**
-   * Load the MessageList view
+   * Load the `message-list` view
    */
 
   this.messageList = new MessageList({
