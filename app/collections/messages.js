@@ -13,4 +13,4 @@ Messages.prototype.name = 'messages';
 /*
   Add the `Message` Model
 */
-Messages.prototype.model = require('../models/message.js');
+Messages.prototype.model = require('/models/message.js');

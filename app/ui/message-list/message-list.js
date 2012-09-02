@@ -1,6 +1,6 @@
 var Backbone = require('backbone'),
     _ = require('underscore'),
-    dispatcher = require('/support/dispatcher.js'),
+    bus = require('/support/bus.js'),
     List = require('/ui/list/list.js');
 
 /*
@@ -91,6 +91,6 @@ MessageList.prototype.open = function(e) {
       model = this.collection.getByCid(cid);
 
   // Trigger open event
-  dispatcher.trigger('message-list:open', model);
+  bus.trigger('message-list:open', model);
 
 };

@@ -1,5 +1,5 @@
 var Backbone = require('backbone'),
-    Groups = require('../collections/groups.js');
+    Groups = require('/collections/groups.js');
 
 /*
   Expose the `User` model

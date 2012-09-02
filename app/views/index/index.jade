@@ -2,7 +2,34 @@ extends ../layout/layout
 
 prepend scripts
   script(type='text/javascript')
-    window.User = !{user}
+    window.user = !{user}
+    window.messages = !{messages}
 
 block content
-  h2 hi worldzz!
+  #wrapper
+    #top
+      .logo Nimbis
+    #container
+      #left
+        button.join Join Group
+      #middle
+      #right
+
+    #dialog-container
+
+
+
+//-     <div id="wrapper">
+//-   <div id="top">
+//-     <div class="logo">Nimbis</div>
+//-   </div><!-- Top navigation -->
+//-   <div id="container"><!-- Main application container -->
+//-     <div id="left">
+//-       <button class = "join">Join Group</button>
+//-     </div><!-- Left Pane -->
+//-     <div id="middle"></div><!-- Middle Pane -->
+//-     <div id="right"></div><!-- Right Pane -->
+//-   </div><!-- #container -->
+//-   <div id="dialog-container"></div><!-- Dialog holder -->
+//- </div><!-- #wrapper -->
+

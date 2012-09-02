@@ -1,6 +1,6 @@
 var Backbone = require('backbone'),
     User = require('./user.js'),
-    Comments = require('../collections/comments.js');
+    Comments = require('/collections/comments.js');
 
 /*
   Export Message
