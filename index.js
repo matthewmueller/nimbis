@@ -13,8 +13,8 @@ var server = http.createServer(vhost);
  * Servers
  */
 
-var api = require('./api'),
-    ws = require('./ws'),
+var api = require('./api/api'),
+    ws = require('./ws/ws'),
     app = require('./app/app');
 
 /**

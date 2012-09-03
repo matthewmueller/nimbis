@@ -13,7 +13,9 @@ if(!module.parent) {
   console.log('Server started on port', port);
 }
 
-
+server.set('authorization', function(data, accept) {
+  console.log(data);
+});
 
 // // Socket Authorization
 // // io.set('authorization', function(data, accept) {
