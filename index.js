@@ -1,12 +1,39 @@
 var express = require('express'),
     port = process.argv[2] || 8080,
-    app = express();
+    http = require('http'),
+    vhost = express();
 
-// Configure the virtual hosts
-app.use(express.vhost('api.localhost', require('./api')));
-app.use(express.vhost('ws.localhost', require('./ws')));
-app.use(express.vhost('localhost', require('./app/app')));
+/**
+ * Create our server
+ */
 
-// Listen
-app.listen(port);
+var server = http.createServer(vhost);
+
+/**
+ * Servers
+ */
+
+var api = require('./api'),
+    ws = require('./ws'),
+    app = require('./app/app');
+
+/**
+ * Handle upgrades
+ */
+
+server.on('upgrade', ws.handleUpgrade.bind(ws));
+
+/**
+ * Configure the virtual hosts
+ */
+
+vhost.use(express.vhost('api.localhost', api));
+vhost.use(express.vhost('ws.localhost', ws.handleRequest.bind(ws)));
+vhost.use(express.vhost('localhost', app));
+
+/**
+ * Bind to a port
+ */
+
+server.listen(port);
 console.log('Express app started on port', port);

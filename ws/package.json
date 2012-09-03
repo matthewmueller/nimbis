@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "dependencies": {
-    "socket.io": "~0.9.6",
+    "engine.io": "*",
     "express": "3.x",
     "consolidate": "~0.3.1",
     "connect": "~2.3.5"

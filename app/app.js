@@ -7,7 +7,7 @@ var express = require('express'),
     cons = require('consolidate'),
     path = require('path'),
     join = path.join,
-    app = express();
+    app = module.exports = express();
 
 /**
  * Configure `jay`
@@ -32,6 +32,7 @@ app.configure(function() {
   app.set('view engine', 'jade');
   app.use(express.query());
   app.use(express['static'](join(__dirname, 'build')));
+  app.use(express['static'](join(__dirname, 'vendor')));
 });
 
 app.configure('development', function() {

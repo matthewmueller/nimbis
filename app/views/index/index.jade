@@ -1,6 +1,7 @@
 extends ../layout/layout
 
 prepend scripts
+  script(type='text/javascript', src='engine.io.js')
   script(type='text/javascript')
     window.user = !{user}
     window.messages = !{messages}

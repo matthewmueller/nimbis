@@ -36,6 +36,15 @@ _(messages).each(function(message) {
 app.collection.messages = new Messages(messages);
 
 /**
+ * Set up engine.io
+ */
+
+var io = app.io = new eio.Socket({ host : 'ws.localhost', port: 8080 });
+io.on('open', function() {
+  console.log('zomgzz!!!');
+});
+
+/**
  * Fire it up!
  */
 
