@@ -16,6 +16,7 @@ var express = require('express'),
 jay.root(__dirname)
    .main('boot.js')
    .include('hogan.js', '/vendor/hogan.js')
+   .alias('app', '/support/app.js')
    .alias('jquery', '/vendor/jquery.js')
    .alias('underscore', '/vendor/underscore.js')
    .alias('backbone', '/vendor/backbone.js')

@@ -56,7 +56,7 @@ MessageList.prototype.bind = function() {
     self.unbindMessage(message);
   });
 
-  this.collection.each(this.bindMessage, this);
+  // this.collection.each(this.bindMessage, this);
   this.off('rendered', this.bind);
 };
 
@@ -81,6 +81,7 @@ MessageList.prototype.bindMessage = function(message) {
 /*
   When a message is removed, we want to unbind it's event handlers
 */
+
 MessageList.prototype.unbindMessage = function() {};
 
 /*

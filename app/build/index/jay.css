@@ -623,6 +623,128 @@ table {
 }
 
 
+/* ------------------------------------ */
+/* /ui/share-message/share-message.styl */
+/* ------------------------------------ */
+.share-message {
+  background-color: whiteSmoke;
+  padding: 0 5px;
+}
+.share-message .message {
+  margin: 5px 0;
+}
+.share-message button,
+.share-message textarea,
+.share-message input {
+  border-radius: 5px;
+  line-height: 1.5em;
+}
+.share-message textarea,
+.share-message input {
+  border: 1px solid #888;
+  resize: none;
+  outline: none;
+  width: 100%;
+  background-color: #fff;
+}
+.share-message .more {
+  display: block;
+  padding: 0 100px 5px 0;
+}
+.share-message .share-with {
+  width: 100%;
+  float: left;
+  line-height: 1em;
+}
+.share-message .share {
+  float: right;
+  margin-right: -100px;
+  width: 95px;
+  height: 28px;
+  background-color: #8edd20;
+  border: 1px solid #66a11c;
+  color: #66a11c;
+}
+
+
+/* ---------------------------- */
+/* /support/instant/instant.css */
+/* ---------------------------- */
+/* Don't go here. */
+ul.instant-token-list {
+  margin: 0;
+  width : 100%;
+  float:left;
+  border : 1px solid #bebebe;
+  cursor: text;
+  padding: 0;  
+  background-color: white;
+  overflow-x: hidden; /* Hides the autocomplete text when it goes out of the box -- not ideal */
+}
+
+/* Clearfix */
+/*ul.instant-token-list:before,
+ul.instant-token-list:after {
+  content: "";
+  display: table;
+}
+ul.instant-token-list:after {
+  clear: both;
+}*/
+
+.instant-token-item.selected {
+  background-color: #51b3ff !important;
+}
+
+/* items including input item*/
+.instant-token-list li {
+  margin: 4px 2px;
+  float: left;
+  list-style-type: none;
+}
+
+.instant-token-item {
+  padding: 0 7px;
+  font-family: 'Lucida Grande';
+  font-size: 11px;
+  line-height: 18px;
+  color: white;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.instant-token-item-input {
+  padding: 0;
+  position:relative;
+}
+
+.instant-token-list textarea, .instant-token-list input {
+  padding: 0;
+/*  width: 20px;*/
+  height: 18px;
+  font-size: 11px;
+  border:none;
+  outline:none;
+  resize: none;
+  background: transparent;
+  overflow-y:hidden;
+}
+
+.instant-token-input {
+    margin:0;
+    position: relative;
+    z-index: 1;
+}
+
+.instant-token-background-input {
+  margin:0;
+  position:absolute;
+  top:0;
+  left:0;
+  width: 1000px !important;
+  color: #d7d7d7;
+}
+
 /* -------------------------------- */
 /* /ui/join-dialog/join-dialog.styl */
 /* -------------------------------- */
