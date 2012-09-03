@@ -15,20 +15,21 @@ var server = http.createServer(vhost);
 
 var api = require('./api/api'),
     ws = require('./ws/ws'),
+    es = ws.es,
     app = require('./app/app');
 
 /**
  * Handle upgrades
  */
 
-server.on('upgrade', ws.handleUpgrade.bind(ws));
+server.on('upgrade', es.handleUpgrade.bind(es));
 
 /**
  * Configure the virtual hosts
  */
 
 vhost.use(express.vhost('api.localhost', api));
-vhost.use(express.vhost('ws.localhost', ws.handleRequest.bind(ws)));
+vhost.use(express.vhost('ws.localhost', ws));
 vhost.use(express.vhost('localhost', app));
 
 /**

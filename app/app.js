@@ -42,6 +42,7 @@ app.configure('development', function() {
 /**
  * Routes
  */
+
 var routes = join(__dirname, 'routes'),
     index = require(routes + '/index');
 

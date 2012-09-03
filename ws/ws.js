@@ -1,21 +1,37 @@
-var engine = require('engine.io'),
-    server = module.exports = new engine.Server(),
+var express = require('express'),
+    engine = require('engine.io'),
+    app = module.exports = express(),
+    es = app.es = new engine.Server(),
     routes = require('./routes');
 
-server.on('connection', function(socket) {
-  console.log('yes!!!');
+app.use(express.cookieParser());
+app.use(authenticate);
+app.use(app.router);
+app.use(es.handleRequest.bind(es));
+
+es.on('connection', function(socket) {
+  var headers = socket.transport.request.headers;
+
+  for(var route in routes) {
+    // socket.on(route, routes(routes[route]));
+  }
 });
+
+app.get('/', function(req, res) {
+  res.send('socket server running');
+});
+
+function authenticate(req, res, next) {
+  // res.send(404);
+  next();
+}
 
 // Listen if we are running this file directly
 if(!module.parent) {
   var port = process.argv[2] || 8080;
-  // app.listen(port);
+  app.listen(port);
   console.log('Server started on port', port);
 }
-
-server.set('authorization', function(data, accept) {
-  console.log(data);
-});
 
 // // Socket Authorization
 // // io.set('authorization', function(data, accept) {
@@ -41,9 +57,9 @@ server.set('authorization', function(data, accept) {
 //     };
 //   };
 
-//   for(var route in routes) {
-//     socket.on(route, router(routes[route]));
-//   }
+  // for(var route in routes) {
+  //   socket.on(route, router(routes[route]));
+  // }
 // });
 
 // app.get('/', function(req, res) {
@@ -54,7 +70,7 @@ server.set('authorization', function(data, accept) {
 //
 // see: http://stackoverflow.com/questions/7067966/how-to-allow-cors-in-express-nodejs
 function allowCrossDomain(req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.header('Access-Control-Allow-Origin', 'http://localhost');
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
