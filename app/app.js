@@ -31,6 +31,8 @@ app.configure(function() {
   app.set('views', join(__dirname, 'views'));
   app.set('view engine', 'jade');
   app.use(express.query());
+  app.use(express.bodyParser());
+  app.use(express.cookieParser());
   app.use(express['static'](join(__dirname, 'build')));
   app.use(express['static'](join(__dirname, 'vendor')));
 });
@@ -44,11 +46,15 @@ app.configure('development', function() {
  */
 
 var routes = join(__dirname, 'routes'),
-    index = require(routes + '/index');
+    index = require(routes + '/index'),
+    login = require(routes + '/login');
 
 app.get('/', index.index);
 app.get('/join', index.index);
 app.get('/messages/:id', index.index);
+
+app.get('/login', login.index);
+app.post('/login', login.create);
 
 // Refactor
 // app.get('/messages/:id', function(req, res, next) {

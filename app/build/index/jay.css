@@ -83,6 +83,41 @@
 }
 
 
+/* ------------------------- */
+/* /views/layout/layout.styl */
+/* ------------------------- */
+/*
+  base.styl
+
+  This stylesheet defines the base classes. Application fonts, 
+  layouts, etc.
+
+  Ideally this would be dropped in any page - think of it like
+  twitter's bootstrap. Isn't tied to the twitter application.
+*/
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.clearfix {
+  zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+
 /* --------------------- */
 /* /vendor/normalize.css */
 /* --------------------- */
@@ -460,41 +495,6 @@ textarea {
 table {
     border-collapse: collapse;
     border-spacing: 0;
-}
-
-
-/* ------------------------- */
-/* /views/layout/layout.styl */
-/* ------------------------- */
-/*
-  base.styl
-
-  This stylesheet defines the base classes. Application fonts, 
-  layouts, etc.
-
-  Ideally this would be dropped in any page - think of it like
-  twitter's bootstrap. Isn't tied to the twitter application.
-*/
-* {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-.clearfix {
-  zoom: 1;
-}
-.clearfix:before,
-.clearfix:after {
-  content: "";
-  display: table;
-}
-.clearfix:after {
-  clear: both;
-}
-html,
-body {
-  height: 100%;
-  width: 100%;
 }
 
 
