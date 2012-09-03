@@ -46,34 +46,26 @@ Index.prototype.routes = {
 };
 
 /**
+ * `Index` events
+ */
+
+Index.prototype.events = {
+  'message-list:open' : 'openMessage'
+};
+
+/**
  * Initialize `Index`
  */
 
 Index.prototype.initialize = function() {
+  var self = this;
 
-  // Save the user, groups, & messages
-  // this.user = new User(user || window.user);
-  // this.messages = new Messages(messages || window.messages);
-  // var groups = this.groups = this.user.get('groups');
-
-  // // Link message group IDs to group models
-  // _.each(messages || [], function(message) {
-  //   message.groups = _.map(message.groups, function(group) {
-  //     return groups.get(group);
-  //   });
-
-  //   // Remove any groups that weren't part of user's groups
-  //   message.groups = new Groups(_.compact(message.groups));
-  // });
-
-  // this.messages = new Messages(messages);
-
-  // // Bind the events - should probably be moved into a base router but... for now it's fine
-  // _.each(this.events, function(action, event) {
-  //   bus.on(event, function(payload) {
-  //     return self[action].call(self, payload);
-  //   });
-  // });
+  // Bind the events - should probably be moved into a base router but... for now it's fine
+  _.each(this.events, function(action, event) {
+    bus.on(event, function(payload) {
+      return self[action].call(self, payload);
+    });
+  });
 
 };
 
@@ -82,8 +74,7 @@ Index.prototype.initialize = function() {
  */
 
 Index.prototype.boot = function() {
-  var self = this,
-      GroupList = require('/ui/group-list/group-list.js'),
+  var GroupList = require('/ui/group-list/group-list.js'),
       MessageList = require('/ui/message-list/message-list.js'),
       ShareMessage = require('/ui/share-message/share-message.js'),
       JoinDialog = require('/ui/join-dialog/join-dialog.js');
@@ -92,32 +83,80 @@ Index.prototype.boot = function() {
    * Load the `group-list` view
    */
 
-  this.groupList = new GroupList({
+  app.view.groupList = new GroupList({
     collection : app.collection.groups
   });
 
-  $('#left').append(this.groupList.render().el);
+  $('#left').append(app.view.groupList.render().el);
 
   /**
    * Load the `share-message` view
    */
   
-  this.shareMessage = new ShareMessage({
+  app.view.shareMessage = new ShareMessage({
     collection: app.collection.messages
   });
 
-  $('#middle').append(this.shareMessage.render().el);
+  $('#middle').append(app.view.shareMessage.render().el);
 
   /**
    * Load the `message-list` view
    */
 
-  this.messageList = new MessageList({
+  app.view.messageList = new MessageList({
     collection : app.collection.messages
   });
 
-  $('#middle').append(this.messageList.render().el);
+  $('#middle').append(app.view.messageList.render().el);
 
 
   return this;
+};
+
+/**********/
+/* Routes */
+/**********/
+
+/**
+ * `openMessage` route
+ * @param  {model|message-id} message
+ */
+
+Index.prototype.openMessage = function(message) {
+  var MessageHeader = require('/ui/message-header/message-header.js'),
+      CommentList = require('/ui/comment-list/comment-list.js'),
+      ShareComment = require('/ui/share-comment/share-comment.js');
+
+  // If an ID is passed, get the model
+  message = _.isString(message) ? app.collection.messages.get(message) : message;
+
+  // Update the URL
+  if(!message.isNew())
+    this.navigate('messages/' + message.get('id'));
+  else
+    this.navigate('');
+
+  // Load the MessageHeader view
+  var messageHeader = new MessageHeader({
+    model : message
+  });
+
+  // Load the CommentList view
+  var commentList = new CommentList({
+    collection : message.get('comments')
+  });
+
+  var shareComment = new ShareComment({
+    messageID : message.get('id'),
+    collection : message.get('comments')
+  });
+
+  var placeholder = $('<div></div>');
+
+  placeholder
+    .append(messageHeader.render().el)
+    .append(commentList.render().el)
+    .append(shareComment.render().el);
+
+  $('#right').html(placeholder);
 };

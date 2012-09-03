@@ -1,4 +1,5 @@
-var _ = require('underscore'),
+var app = require('app'),
+    _ = require('underscore'),
     Backbone = require('backbone'),
     Comment = require('/models/comment.js');
 
@@ -60,7 +61,7 @@ ShareComment.prototype.comment = function(e) {
 
   var $el = this.$el,
       commentValue = $el.find('.comment').val().trim().toLineBreakTag(),
-      me = window.app.user.toJSON();
+      me = app.model.user.toJSON();
 
   if (commentValue === '') {
 	this.clear();

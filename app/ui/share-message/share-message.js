@@ -10,7 +10,7 @@ var $ = require('jquery'),
   Add styling
 */
 require('./share-message.styl');
-require('/support/instant/instant.css');
+// require('/support/instant/instant.css');
 
 /*
   Expose ShareMessage
@@ -68,10 +68,13 @@ ShareMessage.prototype.share = function(e) {
       $message = $el.find('.message'),
       author = app.model.user.toJSON(),
       groupsCollection = [];
+
+  // Integrate with instant-token
+  // var groups = $el.find('.instant-token-item').map(function() {
+  //   return $(this).text();
+  // });
   
-  var groups = $el.find('.instant-token-item').map(function() {
-    return $(this).text();
-  });
+  var groups = $el.find('.share-with').val().split(',');
 
   // Temporary until auto-complete
   _.each(groups, function(name) {

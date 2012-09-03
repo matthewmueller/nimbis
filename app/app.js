@@ -44,6 +44,7 @@ var routes = join(__dirname, 'routes'),
     index = require(routes + '/index');
 
 app.get('/', index.index);
+app.get('/messages/:id', index.index);
 
 // Refactor
 // app.get('/messages/:id', function(req, res, next) {

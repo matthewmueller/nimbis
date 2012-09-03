@@ -35,8 +35,6 @@ _(messages).each(function(message) {
 // Create model from messages json blob
 app.collection.messages = new Messages(messages);
 
-
-
 /**
  * Fire it up!
  */

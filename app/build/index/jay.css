@@ -491,6 +491,11 @@ table {
 .clearfix:after {
   clear: both;
 }
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
 
 
 /* ------------------------------ */
@@ -667,87 +672,108 @@ table {
 }
 
 
-/* ---------------------------- */
-/* /support/instant/instant.css */
-/* ---------------------------- */
-/* Don't go here. */
-ul.instant-token-list {
-  margin: 0;
-  width : 100%;
-  float:left;
-  border : 1px solid #bebebe;
-  cursor: text;
-  padding: 0;  
-  background-color: white;
-  overflow-x: hidden; /* Hides the autocomplete text when it goes out of the box -- not ideal */
-}
-
-/* Clearfix */
-/*ul.instant-token-list:before,
-ul.instant-token-list:after {
-  content: "";
-  display: table;
-}
-ul.instant-token-list:after {
-  clear: both;
-}*/
-
-.instant-token-item.selected {
-  background-color: #51b3ff !important;
-}
-
-/* items including input item*/
-.instant-token-list li {
-  margin: 4px 2px;
-  float: left;
-  list-style-type: none;
-}
-
-.instant-token-item {
-  padding: 0 7px;
-  font-family: 'Lucida Grande';
-  font-size: 11px;
-  line-height: 18px;
-  color: white;
-  border-radius: 7px;
-  cursor: pointer;
-}
-
-.instant-token-item-input {
-  padding: 0;
-  position:relative;
-}
-
-.instant-token-list textarea, .instant-token-list input {
-  padding: 0;
-/*  width: 20px;*/
-  height: 18px;
-  font-size: 11px;
-  border:none;
-  outline:none;
-  resize: none;
-  background: transparent;
-  overflow-y:hidden;
-}
-
-.instant-token-input {
-    margin:0;
-    position: relative;
-    z-index: 1;
-}
-
-.instant-token-background-input {
-  margin:0;
-  position:absolute;
-  top:0;
-  left:0;
-  width: 1000px !important;
-  color: #d7d7d7;
-}
-
 /* -------------------------------- */
 /* /ui/join-dialog/join-dialog.styl */
 /* -------------------------------- */
+
+
+/* -------------------------------------- */
+/* /ui/message-header/message-header.styl */
+/* -------------------------------------- */
+.message-header {
+  background-color: #fff;
+  padding: 9px 6px 6px 6px;
+  border-bottom: 1px solid #000;
+}
+.message-header .author {
+  color: #00f;
+}
+.message-header .message {
+  color: #808080;
+}
+.message-header .groups {
+  float: left;
+}
+.message-header .groups .group {
+  color: #fff;
+  font-size: 10px;
+  font-weight: bold;
+  wrap: nowrap;
+  margin: 0px 2px;
+  padding: 3px 10px;
+  text-transform: uppercase;
+  border-radius: 5px;
+}
+.message-header .date {
+  float: right;
+  color: #808080;
+}
+
+
+/* ---------------------------------- */
+/* /ui/comment-list/comment-list.styl */
+/* ---------------------------------- */
+.comment-list .comment-container {
+  color: #000;
+  list-style: none;
+  padding: 7px 7px;
+  color: #444;
+}
+.comment-list .comment-container:first-child {
+  border-top: none;
+}
+.comment-list .comment-container:last-child {
+  border-bottom: none;
+}
+.comment-list .comment-container .icon {
+  width: 32px;
+  height: 32px;
+  background-color: #ebf2f8;
+  float: left;
+}
+.comment-list .comment-container .container {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #fff;
+  margin-left: 43px;
+}
+.comment-list .comment-container .container .author {
+  font-weight: 700;
+}
+.comment-list .comment-container .container .date {
+  float: right;
+  color: #b0b0b0;
+  opacity: 0;
+  font-size: 90%;
+  -webkit-transition: opacity 0.2s;
+}
+.comment-list .comment-container .container .comment {
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+.comment-list .comment-container:hover .date {
+  opacity: 1;
+}
+.comment-list #comment-box {
+  min-width: 550px;
+}
+
+
+/* ------------------------------------ */
+/* /ui/share-comment/share-comment.styl */
+/* ------------------------------------ */
+.share-comment {
+  padding: 5px;
+}
+.share-comment .comment {
+  border-radius: 5px;
+  line-height: 1.5em;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #333;
+  resize: none;
+  outline: none;
+}
 
 
 /* ------------------ */

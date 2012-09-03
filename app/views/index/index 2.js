@@ -116,9 +116,11 @@ Index.prototype.render = function() {
   });
 };
 
-/*
-  `loadChat` route
-*/
+/**
+ * `openMessage` route
+ * @param  {[type]} message [description]
+ * @return {[type]}         [description]
+ */
 Index.prototype.openMessage = function(message) {
   var MessageHeader = require('/ui/message-header/message-header.js'),
       CommentList = require('/ui/comment-list/comment-list.js'),

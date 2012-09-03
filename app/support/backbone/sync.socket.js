@@ -4,7 +4,8 @@
   Based on the LocalStorage implementation:
   http://documentcloud.github.com/backbone/docs/backbone-localstorage.html
 */
-var Backbone = require('backbone');
+var app = require('app'),
+    Backbone = require('backbone');
 
 exports.create = function(model, options) {
   if(!model.name) {
@@ -20,7 +21,7 @@ exports.create = function(model, options) {
     console.log('Sending data through socket', event, data);
     app.socket.emit(event, data);
   } else {
-    throw new Error('app.socket is not present');
+    // throw new Error('app.socket is not present');
   }
 };
 
