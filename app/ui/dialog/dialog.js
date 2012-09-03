@@ -1,4 +1,4 @@
-var app = window.app,
+var bus = require('bus'),
     $ = require('jquery'),
     Backbone = require('backbone'),
     _ = require('underscore');
@@ -63,7 +63,7 @@ Dialog.prototype.close = function() {
   $(document.body).unbind('keydown', this._maybeClose);
   $(document.body).unbind('keydown', this._maybeConfirm);
 
-  app.navigate('/', { replace: true });
+  bus.trigger('dialog:close');
 
   this.$el.remove();
 };

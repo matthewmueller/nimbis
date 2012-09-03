@@ -89,7 +89,7 @@ ShareMessage.prototype.share = function(e) {
 
   // We don't have any groups, so don't create a message
   if(!groupsCollection.length) {
-    console.log("No groups found:", groups.val());
+    console.log("No groups found:", groups);
     return;
   }
 

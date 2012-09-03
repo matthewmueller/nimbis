@@ -1,4 +1,4 @@
-var app = window.app,
+var app = require('app'),
     $ = require('jquery'),
     Backbone = require('backbone'),
     _ = require('underscore'),
@@ -55,6 +55,6 @@ JoinDialog.prototype.done = function() {
   });
 
 
-  app.groups.add(data);
+  app.collection.groups.add(data);
   this.close();
 };

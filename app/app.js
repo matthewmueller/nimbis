@@ -30,6 +30,7 @@ jay.root(__dirname)
 app.configure(function() {
   app.set('views', join(__dirname, 'views'));
   app.set('view engine', 'jade');
+  app.use(express.query());
   app.use(express['static'](join(__dirname, 'build')));
 });
 
@@ -44,6 +45,7 @@ var routes = join(__dirname, 'routes'),
     index = require(routes + '/index');
 
 app.get('/', index.index);
+app.get('/join', index.index);
 app.get('/messages/:id', index.index);
 
 // Refactor

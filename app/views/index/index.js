@@ -50,7 +50,8 @@ Index.prototype.routes = {
  */
 
 Index.prototype.events = {
-  'message-list:open' : 'openMessage'
+  'message-list:open' : 'openMessage',
+  'dialog:close' : 'closeDialog'
 };
 
 /**
@@ -74,7 +75,8 @@ Index.prototype.initialize = function() {
  */
 
 Index.prototype.boot = function() {
-  var GroupList = require('/ui/group-list/group-list.js'),
+  var self = this,
+      GroupList = require('/ui/group-list/group-list.js'),
       MessageList = require('/ui/message-list/message-list.js'),
       ShareMessage = require('/ui/share-message/share-message.js'),
       JoinDialog = require('/ui/join-dialog/join-dialog.js');
@@ -109,6 +111,14 @@ Index.prototype.boot = function() {
 
   $('#middle').append(app.view.messageList.render().el);
 
+
+  /**
+   * Enable the join button
+   */
+  
+  $('button.join').on('click', function(e) {
+    self.navigate('join/', { trigger : true , replace: true });
+  });
 
   return this;
 };
@@ -159,4 +169,24 @@ Index.prototype.openMessage = function(message) {
     .append(shareComment.render().el);
 
   $('#right').html(placeholder);
+};
+
+/**
+ * `closeDialog` route
+ *
+ * Simply reset the navigation
+ *
+ */
+Index.prototype.closeDialog = function() {
+  this.navigate('/');
+};
+
+/**
+ * `joinGroup` route
+ */
+
+Index.prototype.joinGroup = function() {
+  var JoinDialog = require('/ui/join-dialog/join-dialog.js');
+  var joinDialog = new JoinDialog();
+  $('#dialog-container').html(joinDialog.render().el);
 };
