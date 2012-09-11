@@ -11,7 +11,7 @@ app.use(es.handleRequest.bind(es));
 
 es.on('connection', function(socket) {
   var headers = socket.transport.request.headers;
-
+  console.log('headers', headers);
   for(var route in routes) {
     // socket.on(route, routes(routes[route]));
   }

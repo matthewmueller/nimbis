@@ -8,7 +8,7 @@ exports = module.exports = function(req, res, next) {
     
     req.login(user, function(err) {
       if (err) { return next(err); }
-      return res.send(user);
+      return res.send(200);
     });
 
   })(req, res, next);

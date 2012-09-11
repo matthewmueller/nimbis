@@ -42,19 +42,21 @@ app.configure('development', function() {
 });
 
 /**
- * Routes
+ * Controllers
  */
 
-var routes = join(__dirname, 'routes'),
-    index = require(routes + '/index'),
-    login = require(routes + '/login');
+var controllers = join(__dirname, 'controllers'),
+    index = require(controllers + '/index'),
+    authorize = require(controllers + '/authorize');
 
 app.get('/', index.index);
 app.get('/join', index.index);
 app.get('/messages/:id', index.index);
 
-app.get('/login', login.index);
-app.post('/login', login.create);
+// Login/Logout
+app.get('/login', authorize.index);
+app.post('/login', authorize.create);
+app.get('/logout', authorize.destroy);
 
 // Refactor
 // app.get('/messages/:id', function(req, res, next) {
