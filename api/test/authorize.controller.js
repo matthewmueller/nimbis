@@ -32,7 +32,7 @@ describe('Authorize controller', function() {
       .post('/authorize')
       .set('Content-Type', 'application/json')
       .send({ email : 'test@test.com', password : 'test' })
-      .expect('Content-Type', /json/)
+      .expect('Content-Type', 'text/plain')
       .expect(200)
       .end(function(err, res) {
         if(err) return done(err);
