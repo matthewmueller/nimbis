@@ -36,8 +36,13 @@ describe('Authorize controller', function() {
       .expect(200)
       .end(function(err, res) {
         if(err) return done(err);
+
         expect(res.headers['set-cookie']).to.be.ok();
         expect(res.headers['set-cookie']).to.match(/sessionId=[^;]+;/);
+
+        expect(res.body.token).to.be.ok();
+        expect(res.body.token).to.match(/[\w\d]{0,20}/);
+
         done();
       });
 

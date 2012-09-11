@@ -2,7 +2,6 @@
  * Module Dependencies
  */
 var express = require('express'),
-    passport = require('passport'),
     RedisStore = require('connect-redis')(express),
     client = require('./support/client'),
     app = module.exports = express();
@@ -12,26 +11,9 @@ var express = require('express'),
  */
 var env = app.env = process.env.NODE_ENV || 'development';
 
-/*
- * Passport support
+/**
+ * Create a Redis-backed session store
  */
-var strategies = require('./support/passport-strategies');
-
-// Local session support
-passport.use(strategies.local());
-
-// Passport session setup.
-//   To support persistent login sessions, Passport needs to be able to
-//   serialize users into and deserialize users out of the session.  Typically,
-//   this will be as simple as storing the user ID when serializing, and finding
-//   the user by ID when deserializing.
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-  User.find(id, done);
-});
 
 var sessionOptions = {
   key : 'sessionId',
@@ -42,13 +24,12 @@ var sessionOptions = {
 /*
  * Configuration
  */
+
 app.configure(function() {
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.cookieParser('keyboard cat'));
   app.use(express.session(sessionOptions));
-  app.use(passport.initialize());
-  app.use(passport.session());
 });
 
 /*

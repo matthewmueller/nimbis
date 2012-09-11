@@ -1,6 +1,8 @@
 var Backbone = require('Backbone'),
     Base = require('./base'),
-    Index = require('../structures/Hash');
+    Index = require('../structures/Hash'),
+    utils = require('../support/utils'),
+    makeId = utils.makeId;
 
 var User = module.exports = Base.extend();
 
@@ -156,7 +158,7 @@ User.authorize = function(username, pass, fn) {
 
       // Encrypt then check the password
       if(Base.encrypt(attrs.salt, pass) === attrs.password) {
-        return fn(null, model);
+        return fn(null, true);
       } else {
         return fn(null, false);
       }
