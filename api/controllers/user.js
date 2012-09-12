@@ -3,8 +3,18 @@ var User = require('../models/user'),
     _ = require('underscore');
 
 // GET /users
-exports.index = function(req, res) {
-  
+// Will get the current user
+exports.index = function(req, res, next) {  var token = req.token;
+  var userId = req.session.userId;
+
+  if(!userId) return next();
+
+  User.find(userId, function(err, user) {
+    if(err) return next(err);
+    if(!user) return next();
+
+    res.send(user);
+  });
 };
 
 // POST /users

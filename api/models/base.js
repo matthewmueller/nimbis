@@ -37,8 +37,6 @@ Base.prototype.checkTypes = function(types) {
   var model = this;
 
   _.each(types, function(type, attr) {
-    // console.log(attr, type.name);
-    // console.log(model.toJSON());
     attr = model.get(attr);
     if(!(attr instanceof type)) {
       console.log('error');

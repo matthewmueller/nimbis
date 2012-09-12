@@ -1,6 +1,6 @@
 var User = require('../models/user'),
     utils = require('../support/utils'),
-    session = require('../support/session'),
+    client = require('../support/client'),
     makeId = utils.makeId;
 
 // Default authorization
@@ -18,9 +18,9 @@ exports = module.exports = function(req, res, next) {
     var token = makeId(20);
 
     // Store the token in a session
-    session.set('token:' + token, userId);
-
+    req.session.userId = userId;
+    client.get('lol');
     // Respond with the token
-    res.send({ token : token });
+    res.send({ token : req.session.id });
   });
 };

@@ -32,7 +32,7 @@ app.configure(function() {
   app.set('view engine', 'jade');
   app.use(express.query());
   app.use(express.bodyParser());
-  app.use(express.cookieParser());
+  app.use(express.cookieParser('keyboard cat'));
   app.use(express['static'](join(__dirname, 'build')));
   app.use(express['static'](join(__dirname, 'vendor')));
 });
@@ -49,7 +49,7 @@ var controllers = join(__dirname, 'controllers'),
     index = require(controllers + '/index'),
     authorize = require(controllers + '/authorize');
 
-app.get('/', isAuthorized, index.index);
+app.get('/', index.index);
 app.get('/join', index.index);
 app.get('/messages/:id', index.index);
 
@@ -59,7 +59,7 @@ app.post('/login', authorize.create);
 app.get('/logout', authorize.destroy);
 
 function isAuthorized(req, res, next) {
-  console.log(req.session);
+  console.log('body', req.cookies);
 }
 
 // Refactor

@@ -3,13 +3,14 @@ var request = require('superagent');
     messages = require('../data/messages.json');
 
 exports.index = function(req, res) {
-  console.log(req.cookies.user);
+  var token = req.cookies.token;
+  if(!token) return res.redirect('/login');
+
   request
-    .get('api.localhost:8080/users/' + req.cookies.user)
+    .get('api.localhost:8080/users')
+    .set('Cookie', 'token=' + token)
     .end(function(r) {
       if(!r.ok) return res.send(404);
-      console.log(r.body);
-
       res.render('index/index', {
         user : JSON.stringify(r.body),
         messages : JSON.stringify(messages)
