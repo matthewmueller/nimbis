@@ -1,3 +1,6 @@
+// TODO: Refactor beforeEach, etc. - we want to stop flushing
+// the database each time
+
 var expect = require('expect.js'),
     User = require('../models/user'),
     client = require('../support/client'),
@@ -170,7 +173,19 @@ describe('User Model', function() {
     });
   });
 
-  
+  // .authorize(username, password, fn)
+  describe('.authorize(username, password, fn)', function() {
+    it('should return user id when successful', function(done) {
+      user.save(function(err, model) {
+        User.authorize(attrs.email, attrs.password, function(err, id) {
+          if(err) return done(err);
+          expect(id).to.not.be(false);
+          expect(id).to.match(/[\w\d]{0,6}/);
+          done();
+        });
+      });
+    });
+  });
 
   // Flush the database after each test
   after(function(done) {

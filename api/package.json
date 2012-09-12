@@ -8,13 +8,11 @@
   "dependencies": {
     "express": "3.x",
     "backbone": "*",
-    "passport": "~0.1.11",
     "redis": "*",
     "underscore": "*",
     "validator": "*",
     "connect-redis" : "*",
-    "passport-local": "*",
-    "passport-http": "*"
+    "lru-cache" : "*"
   },
   "devDependencies": {
     "mocha": "*",

@@ -158,7 +158,7 @@ User.authorize = function(username, pass, fn) {
 
       // Encrypt then check the password
       if(Base.encrypt(attrs.salt, pass) === attrs.password) {
-        return fn(null, true);
+        return fn(null, id);
       } else {
         return fn(null, false);
       }

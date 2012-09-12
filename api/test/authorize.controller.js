@@ -32,13 +32,10 @@ describe('Authorize controller', function() {
       .post('/authorize')
       .set('Content-Type', 'application/json')
       .send({ email : 'test@test.com', password : 'test' })
-      .expect('Content-Type', 'text/plain')
+      .expect('Content-Type', /json/)
       .expect(200)
       .end(function(err, res) {
         if(err) return done(err);
-
-        expect(res.headers['set-cookie']).to.be.ok();
-        expect(res.headers['set-cookie']).to.match(/sessionId=[^;]+;/);
 
         expect(res.body.token).to.be.ok();
         expect(res.body.token).to.match(/[\w\d]{0,20}/);

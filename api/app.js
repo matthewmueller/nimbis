@@ -1,25 +1,16 @@
 /*
  * Module Dependencies
  */
+
 var express = require('express'),
-    RedisStore = require('connect-redis')(express),
-    client = require('./support/client'),
+    session = require('./support/session'),
     app = module.exports = express();
 
 /*
  * Application environment
  */
+
 var env = app.env = process.env.NODE_ENV || 'development';
-
-/**
- * Create a Redis-backed session store
- */
-
-var sessionOptions = {
-  key : 'sessionId',
-  secret : 'blah',
-  store : new RedisStore({ client : client })
-};
 
 /*
  * Configuration
@@ -29,7 +20,6 @@ app.configure(function() {
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.cookieParser('keyboard cat'));
-  app.use(express.session(sessionOptions));
 });
 
 /*
@@ -50,6 +40,7 @@ var User = require('./models/user');
 /*
  * Check if the user is authenticated
  */
+
 var isAuthorized = function(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
   return res.send(401);
@@ -58,6 +49,7 @@ var isAuthorized = function(req, res, next) {
 /*
  * Controllers
  */
+
 var authorize = require('./controllers/authorize'),
     user = require('./controllers/user'),
     group = require('./controllers/group'),
