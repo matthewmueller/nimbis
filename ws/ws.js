@@ -23,6 +23,7 @@ app.get('/', function(req, res) {
 
 function authenticate(req, res, next) {
   // res.send(404);
+  console.log(req.cookies);
   next();
 }
 
