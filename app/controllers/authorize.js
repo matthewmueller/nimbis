@@ -5,11 +5,12 @@ exports.index = function(req, res, next) {
 };
 
 exports.create = function(req, res, next) {
+  // Authorize through the API
   request
     .post('api.localhost:8080/authorize')
     .send(req.body)
     .end(function(r) {
-      if(!r.ok) return res.send(404);
+      if(!r.ok) return res.send(401);
       res.redirect('/');
     });
 };

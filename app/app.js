@@ -49,7 +49,7 @@ var controllers = join(__dirname, 'controllers'),
     index = require(controllers + '/index'),
     authorize = require(controllers + '/authorize');
 
-app.get('/', index.index);
+app.get('/', isAuthorized, index.index);
 app.get('/join', index.index);
 app.get('/messages/:id', index.index);
 
@@ -57,6 +57,10 @@ app.get('/messages/:id', index.index);
 app.get('/login', authorize.index);
 app.post('/login', authorize.create);
 app.get('/logout', authorize.destroy);
+
+function isAuthorized(req, res, next) {
+  console.log(req.session);
+}
 
 // Refactor
 // app.get('/messages/:id', function(req, res, next) {
