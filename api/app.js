@@ -32,11 +32,7 @@ app.configure(function() {
   app.use(express.bodyParser());
   app.use(express.cookieParser('keyboard cat'));
   app.use(express.query());
-  // app.use(allowAccessToken);
-  app.use(function(req, res, next) {
-    console.log('cookies', req.cookies);
-    next();
-  });
+  app.use(allowAccessToken);
   app.use(express.session({
     store : redisStore,
     secret : 'keyboard cat',
@@ -76,9 +72,10 @@ var isAuthorized = function(req, res, next) {
  * Allow access token
  */
 
-var allowAccessToken = function(req, res, next) {
+function allowAccessToken(req, res, next) {
+  console.log('req.query', req.query);
   next();
-};
+}
 
 /*
  * Controllers

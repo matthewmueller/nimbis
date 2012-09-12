@@ -11,7 +11,10 @@ exports.create = function(req, res, next) {
     .send(req.body)
     .end(function(r) {
       if(!r.ok) return res.send(401);
+
+      // Pass the set-cookie header through
       res.cookie(r.headers['set-cookie']);
+      
       res.redirect('/');
     });
 };

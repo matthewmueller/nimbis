@@ -6,6 +6,7 @@ var express = require('express'),
     jay = require('jay'),
     cons = require('consolidate'),
     path = require('path'),
+    request = require('superagent'),
     join = path.join,
     app = module.exports = express();
 
@@ -49,7 +50,7 @@ var controllers = join(__dirname, 'controllers'),
     index = require(controllers + '/index'),
     authorize = require(controllers + '/authorize');
 
-app.get('/', index.index);
+app.get('/', authorizeUser, index.index);
 app.get('/join', index.index);
 app.get('/messages/:id', index.index);
 
@@ -58,8 +59,18 @@ app.get('/login', authorize.index);
 app.post('/login', authorize.create);
 app.get('/logout', authorize.destroy);
 
-function isAuthorized(req, res, next) {
-  console.log('body', req.cookies);
+function authorizeUser(req, res, next) {
+  var token = req.cookies.token;
+  if(!token) return res.redirect('/login');
+
+  request
+    .get('api.localhost:8080/users')
+    .set('Cookie', 'token=' + token)
+    .end(function(r) {
+      if(!r.ok) return res.redirect('/login');
+      req.user = r.body;
+      next();
+    });
 }
 
 // Refactor
