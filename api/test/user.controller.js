@@ -4,7 +4,7 @@ var expect = require('expect.js'),
     client = require('../support/client'),
     User = require('../models/user'),
     Group = require('../models/group'),
-    app = require('../app.js');
+    api = require('../api.js');
 
 var userAttrs = {
   name : 'Matt Mueller',
@@ -36,7 +36,7 @@ describe('User Controller', function() {
     };
 
     it('should create a new user', function(done) {
-      request(app)
+      request(api)
         .post('/users')
         .set('Content-Type', 'application/json')
         .send(user)
@@ -65,7 +65,7 @@ describe('User Controller', function() {
     it('should get a user by id', function(done) {
       var id = user.get('id');
 
-      request(app)
+      request(api)
         .get('/users/'+id)
         .expect('Content-Type', /json/)
         .expect(200)
@@ -95,7 +95,7 @@ describe('User Controller', function() {
 
     it('should join a group that exists', function(done) {
         
-      request(app)
+      request(api)
         .post('/join')
         .set('Content-Type', 'application/json')
         .set('Cookie', 'sessionId=' + sessionId)

@@ -1,27 +1,62 @@
+/**
+ * Module Dependencies
+ */
+
 var expect = require('expect.js'),
     Group = require('../models/group'),
     client = require('../support/client');
 
-// Default user options
+/**
+ * Group attributes
+ */
+
 var attrs = {
   name : 'Javascript'
 };
 
+/**
+ * Group Model
+ */
+
 describe('Group Model', function() {
   var group;
 
-  // Run before starting the suite
+  /**
+   * Make sure we're connected to redis
+   */
+  
   before(function(done) {
     if(client.connected) return done();
     client.on('ready', done);
   });
 
-  // Run before each
+  /**
+   * Initialize a new `Group`
+   */
+
   beforeEach(function() {
     group = new Group(attrs);
   });
 
-  // #initialize()
+  /**
+   * Destroy the group if it's been saved
+   */
+  
+  afterEach(function(done) {
+    if(!group.isNew()) group.destroy(done);
+    else done();
+  });
+
+  /**
+   * ---------------
+   * Group Prototype
+   * ---------------
+   */
+  
+  /**
+   * `initialize()` a new user
+   */
+  
   describe('#initialize()', function() {
     it('should create an empty new group', function(done) {
       group = new Group(attrs);
@@ -31,7 +66,10 @@ describe('Group Model', function() {
     });
   });
 
-  // #isNew()
+  /**
+   * `isNew()` tests
+   */
+
   it('#isNew()', function(done) {
     expect(group.isNew()).to.be(true);
     group.save(function(err, model) {
@@ -40,7 +78,10 @@ describe('Group Model', function() {
     });
   });
 
-  // #save(fn)
+  /**
+   * `save()` a new user
+   */
+
   describe('#save()', function() {
     it('should save a new group', function(done) {
       group.save(function(err, model) {
@@ -52,7 +93,39 @@ describe('Group Model', function() {
     });
   });
 
-  // #fetch(fn)
+  /**
+   * `destroy()` a user
+   */
+  
+  describe('#destroy(fn)', function() {
+
+    beforeEach(function(done) {
+      group.save(done);
+    });
+
+    it('should remove a group by id', function(done) {
+      var id = group.get('id');
+      Group.find(id, function(err, model) {
+        expect(model.get('id')).to.equal(id);
+
+        group.destroy(function(err) {
+          expect(err).to.be(null);
+
+          Group.find(id, function(err, model) {
+            expect(err).to.be(null);
+            expect(model).to.be(false);
+            done();
+          });
+        });
+      });
+    });
+  
+  });
+
+  /**
+   * `fetch()` the contents of a new group
+   */
+  
   describe('#fetch', function() {
     it('should find a group by id', function(done) {
       // Save an initial model
@@ -68,14 +141,6 @@ describe('Group Model', function() {
         });
       });
 
-    });
-  });
-
-  // Flush the database after each test
-  after(function(done) {
-    client.flushdb(function(err) {
-      if(err) return done(err);
-      done();
     });
   });
 

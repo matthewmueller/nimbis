@@ -7,7 +7,7 @@ var expect = require('expect.js'),
     Groups = require('../collections/groups'),
     Message = require('../models/message'),
     Messages = require('../collections/messages'),
-    app = require('../app.js');
+    api = require('../api.js');
 
 var groups = [
   { id : '123456', name : 'Javascript'},
@@ -64,7 +64,7 @@ describe('Message Controller', function() {
       Messages.create(messages, function(err, models) {
         if(err) return done(err);
 
-        request(app)
+        request(api)
         .get('/messages')
         .set('Cookie', 'sessionId=' + sessionId)
         .expect('Content-Type', /json/)
@@ -95,7 +95,7 @@ describe('Message Controller', function() {
         groups : ['123456', '654321']
       };
 
-      request(app)
+      request(api)
         .post('/messages')
         .set('Cookie', 'sessionId=' + sessionId)
         .set('Content-Type', 'application/json')

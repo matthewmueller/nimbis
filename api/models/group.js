@@ -22,14 +22,16 @@ Group.prototype.types = {
   id : String,
   name : String,
   description : String,
-  type : String
+  type : String,
+  members : Array
 };
 
 /*
  * Default values
  */
 Group.prototype.defaults = {
-  type : 'public'
+  type : 'public',
+  members : []
 };
 
 /*
@@ -41,6 +43,26 @@ Group.prototype.initialize = function() {
   attrs.id = attrs.id || this.makeId(6);
 
   this.set(attrs, { silent : true });
+};
+
+/**
+ * Add a member
+ */
+
+Group.prototype.addMember = function(user) {
+  user = (user.id) ? user.id : user;
+  this.members.push(user);
+  return this;
+};
+
+/**
+ * Remove a member
+ */
+
+Group.prototype.removeMember = function(user) {
+  user = (user.id) ? user.id : user;
+  var index = this.members.indexOf(user);
+  if(~index) this.members.splice(index, 1);
 };
 
 // Static Properties

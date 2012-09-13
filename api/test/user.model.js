@@ -35,7 +35,7 @@ describe('User Model', function() {
   });
 
   /**
-   * Initialize a new user
+   * Initialize a new User
    */
 
   beforeEach(function() {
@@ -73,17 +73,11 @@ describe('User Model', function() {
    * `isNew()` tests
    */
   
-  describe('#isNew()', function() {
-    it('should be initialized as a new user', function(done) {
-      expect(user.isNew()).to.be(true);
+  it('#isNew()', function(done) {
+    expect(user.isNew()).to.be(true);
+    user.save(function(err, model) {
+      expect(model.isNew()).to.be(false);
       done();
-    });
-
-    it('should return false after saved', function(done) {
-      user.save(function(err) {
-        expect(user.isNew()).to.be(false);
-        done();
-      });
     });
   });
 

@@ -1,38 +1,63 @@
+/**
+ * Module dependencies
+ */
+
 var crypto = require('crypto'),
     _ = require('underscore'),
     Backbone = require('Backbone');
 
-/*
+/**
  * Extend Backbone
  */
+
 var Base = module.exports = Backbone.Model.extend();
 
-/*
+/**
+ * Set a name
+ */
+
+Base.prototype.name = 'base';
+
+/**
+ * Create a reference to itself, for the children
+ */
+
+Base.prototype.parent = Base.prototype;
+
+/**
  * Sync with redis
  */
+
 Base.prototype.sync = require('../support/redis.sync');
 
-/*
+/**
  * Public: Generate Salt
  */
+
 Base.prototype.makeSalt = function() {
   return Math.round((new Date().valueOf() * Math.random())).toString();
 };
 
-/*
+/**
  * Generate a id
  */
+
 Base.prototype.makeId = function(len) {
   return Math.random().toString(36).substr(2,len);
 };
+
+/**
+ * Check if the model isNew
+ */
 
 Base.prototype.isNew = function() {
   return !this.attributes.created_at;
 };
 
-/*
+/**
  * Validate Types
  */
+
 Base.prototype.checkTypes = function(types) {
   var model = this;
 
@@ -48,7 +73,19 @@ Base.prototype.checkTypes = function(types) {
   return false;
 };
 
+/**
+ * Save Backbone's original `_validate`
+ */
+
 var _validate = Base.prototype._validate;
+
+/**
+ * Validate some attributes
+ * @param  {object} attrs
+ * @param  {object} options
+ * @return {boolean}
+ */
+
 Base.prototype._validate = function(attrs, options) {
   options = options || {};
 
@@ -64,6 +101,10 @@ Base.prototype._validate = function(attrs, options) {
   return false;
 };
 
+/**
+ * Check if the model isValid
+ * @return {boolean}
+ */
 Base.prototype.isValid = function() {
   return !!this._validate();
 };
@@ -71,6 +112,7 @@ Base.prototype.isValid = function() {
 /*
  * Save a model
  */
+
 Base.prototype.save = function(options, fn) {
   var date = new Date(),
       method = 'update';
@@ -109,6 +151,7 @@ Base.prototype.save = function(options, fn) {
 /*
  * Fetch a particular model
  */
+
 Base.prototype.fetch = function(options, fn) {
   if(_.isFunction(options)) fn = options;
 
@@ -130,6 +173,7 @@ Base.prototype.fetch = function(options, fn) {
 /*
  * Destroy a particular model
  */
+
 Base.prototype.destroy = function(options, fn) {
   if(_.isFunction(options)) fn = options;
 
@@ -146,20 +190,39 @@ Base.prototype.destroy = function(options, fn) {
   });
 };
 
-// Static Properties
-// -----------------
-
-/*
- * Encrypt a string
+/**
+ * -----------------
+ * Static Properties
+ * -----------------
  */
+
+/**
+ * Encrypt a string
+ * @param {string} salt
+ * @param {string} str
+ * @returns {string} encrypted string
+ */
+
 Base.encrypt = function(salt, str) {
   return crypto.createHmac('sha1', salt).update(str).digest('hex');
 };
+
+/**
+ * Create and save a new model
+ * @param  {object}   attrs
+ * @param  {function} fn
+ */
 
 Base.create = function(attrs, fn) {
   var model = new this(attrs);
   model.save(fn);
 };
+
+/**
+ * Find a model
+ * @param  {string}   id
+ * @param  {function} fn
+ */
 
 Base.find = function(id, fn) {
   var model = new this({ id : id });

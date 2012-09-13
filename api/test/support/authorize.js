@@ -1,4 +1,4 @@
-var app = require('../../app'),
+var app = require('../../api'),
     request = require('supertest');
 
 function sid(res) {
