@@ -1,49 +1,96 @@
-// TODO: Refactor beforeEach, etc. - we want to stop flushing
-// the database each time
+/**
+ * Module Dependencies
+ */
 
 var expect = require('expect.js'),
     User = require('../models/user'),
     client = require('../support/client'),
     Index = require('../structures/hash');
 
-// Default user options
+/**
+ * Default user attributes
+ */
+
 var attrs = {
   name : 'Matt Mueller',
   email : 'mattmuelle@gmail.com',
+  username : 'matt',
   password : 'test'
 };
+
+/**
+ * User Model tests
+ */
 
 describe('User Model', function() {
   var user;
 
-  // Run before starting the suite
+  /**
+   * Make sure we have a connection to redis
+   */
+  
   before(function(done) {
     if(client.connected) return done();
     client.on('ready', done);
   });
 
-  // Run before each
+  /**
+   * Initialize a new user
+   */
+
   beforeEach(function() {
     user = new User(attrs);
   });
 
-  // #initialize()
-  describe('#initialize()', function() {
-    it('should create an empty new user', function(done) {
-      return done();
-    });
+  /**
+   * Destroy the user if it's been saved
+   */
+  
+  afterEach(function(done) {
+    if(!user.isNew()) user.destroy(done);
+    else done();
   });
 
-  // #isNew()
-  it('#isNew()', function(done) {
-    expect(user.isNew()).to.be(true);
-    user.save(function(err, model) {
-      expect(model.isNew()).to.be(false);
+  /**
+   * --------------
+   * User Prototype
+   * --------------
+   */
+  
+  /**
+   * `initialize()` a new user
+   */
+
+  describe('#initialize()', function() {
+    it('should create a new empty user', function(done) {
+      expect(user.get('email')).to.equal('mattmuelle@gmail.com');
+      expect(user.get('salt')).to.be.a('string');
       done();
     });
   });
 
-  // #save(fn)
+  /**
+   * `isNew()` tests
+   */
+  
+  describe('#isNew()', function() {
+    it('should be initialized as a new user', function(done) {
+      expect(user.isNew()).to.be(true);
+      done();
+    });
+
+    it('should return false after saved', function(done) {
+      user.save(function(err) {
+        expect(user.isNew()).to.be(false);
+        done();
+      });
+    });
+  });
+
+  /**
+   * `save()` a new user
+   */
+  
   describe('#save()', function() {
     it('should save a new user', function(done) {
       user.save(function(err, model) {
@@ -81,6 +128,10 @@ describe('User Model', function() {
 
   });
 
+  /**
+   * `destroy()` a user
+   */
+  
   describe('#destroy(fn)', function() {
 
     beforeEach(function(done) {
@@ -90,7 +141,6 @@ describe('User Model', function() {
     it('should remove a user by id', function(done) {
       var id = user.get('id');
       User.find(id, function(err, model) {
-        expect(err).to.be(null);
         expect(model.get('id')).to.equal(id);
 
         user.destroy(function(err) {
@@ -102,61 +152,70 @@ describe('User Model', function() {
             done();
           });
         });
-
       });
     });
+  
   });
 
-  // #fetch(fn)
+  /**
+   * `fetch()` the contents of a new user
+   */
+  
   describe('#fetch', function() {
+    beforeEach(function(done) {
+      user.save(done);
+    });
+
     it('should find a user by id', function(done) {
-      // Save an initial model
-      user.save(function(err, model) {
-        user = new User({id : model.id});
-        expect(user.get('email')).to.be(undefined);
+      var model = new User({id : user.id});
+      expect(model.get('email')).to.be(undefined);
 
-        // Fill in the rest
-        user.fetch(function(err, user) {
-          if(err) return done(err);
-          expect(model.get('email')).to.be('mattmuelle@gmail.com');
-          done();
-        });
+      // Fill in the rest
+      model.fetch(function(err, user) {
+        if(err) return done(err);
+        expect(user.get('email')).to.be('mattmuelle@gmail.com');
+        done();
       });
-
     });
   });
 
-  // .exists(id, fn)
+  /**
+   * ------------
+   * User Statics
+   * ------------
+   */
+  
+  /**
+   * check if a user `exists()`
+   */
+
   describe('.exists', function() {
+
+    beforeEach(function(done) {
+      user.save(done);
+    });
+
     it('should check existence of a user by email', function(done) {
-      user.save(function(err, model) {
-        User.exists(model.get('email'), function(err, id) {
-          if(err) return done(err);
-          expect(id).to.be.ok();
-          expect(id).to.be(model.id);
-          done();
-        });
+      User.exists(user.get('email'), function(err, id) {
+        if(err) return done(err);
+        expect(id).to.be.ok();
+        expect(id).to.be(user.id);
+        done();
       });
     });
 
     it('should check existence of a user by username', function(done) {
-      user.set({
-        email : 'lol@lol.com',
-        username : 'matt'
-      });
-      user.save(function(err, model) {
-        User.exists(model.get('username'), function(err, id) {
-          if(err) return done(err);
-          expect(id).to.be.ok();
-          expect(id).to.be(model.id);
-          done();
-        });
+
+      User.exists(user.get('username'), function(err, id) {
+        if(err) return done(err);
+        expect(id).to.be.ok();
+        expect(id).to.be(user.id);
+        done();
       });
     });
 
     it('should fail on a random email', function(done) {
-      user = new User({ email : 'haha@haha.com' });
-      User.exists(user.get('email'), function(err, id) {
+      User.exists('haha@haha.com', function(err, id) {
         if(err) return done(err);
         expect(id).to.be(false);
         done();
@@ -164,16 +223,19 @@ describe('User Model', function() {
     });
 
     it('should fail on a random username', function(done) {
-      user = new User({ username : 'test' });
-      User.exists(user.get('username'), function(err, id) {
+      User.exists('test', function(err, id) {
         if(err) return done(err);
         expect(id).to.be(false);
         done();
       });
     });
+
   });
 
-  // .authorize(username, password, fn)
+  /**
+   * `authorize()` a user
+   */
+
   describe('.authorize(username, password, fn)', function() {
     it('should return user id when successful', function(done) {
       user.save(function(err, model) {
@@ -184,14 +246,6 @@ describe('User Model', function() {
           done();
         });
       });
-    });
-  });
-
-  // Flush the database after each test
-  after(function(done) {
-    client.flushdb(function(err) {
-      if(err) return done(err);
-      done();
     });
   });
 
