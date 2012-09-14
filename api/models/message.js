@@ -29,6 +29,16 @@ Message.prototype.types = {
   author : Object
 };
 
+/**
+ * Defaults
+ */
+
+Message.prototype.defaults = {
+  message : "",
+  groups : [],
+  author : {}
+};
+
 /*
  * Initialize a message model
  */

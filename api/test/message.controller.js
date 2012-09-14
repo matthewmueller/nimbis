@@ -22,7 +22,7 @@ var user = {
 };
 
 describe('Message Controller', function() {
-  var sessionId;
+  var token;
 
   // TODO: Clean up.. this is so ugly
   before(function(done) {
@@ -32,9 +32,9 @@ describe('Message Controller', function() {
       if(err) return done(err);
       User.create(user, function(err, model) {
         if(err) return done(err);
-        authorize(user.email, user.password, function(err, sid) {
+        authorize(user.email, user.password, function(err, t) {
           if(err) return done(err);
-          sessionId = sid;
+          token = t;
           done();
         });
       });
@@ -66,7 +66,7 @@ describe('Message Controller', function() {
 
         request(api)
         .get('/messages')
-        .set('Cookie', 'sessionId=' + sessionId)
+        .query({ token : token })
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
@@ -87,7 +87,27 @@ describe('Message Controller', function() {
     });
   });
 
-  describe('POST /messages', function() {
+  describe.only('POST /messages', function() {
+    var response,
+        groups = require('./data/groups.js'),
+        message = require('./data/messages.js').hi;
+
+    message.groups = [ groups.javascript, groups.football ];
+
+    beforeEach(function(done) {
+      request(api)
+        .post('/messages')
+        .query({ token : token })
+        .set('Content-Type', 'application/json')
+        .send(message)
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .end(function(err, res) {
+          if(err) return done(err);
+          response = res;
+          done();
+        });
+    });
 
     it('should create a new message', function(done) {
       var message = {
@@ -97,7 +117,7 @@ describe('Message Controller', function() {
 
       request(api)
         .post('/messages')
-        .set('Cookie', 'sessionId=' + sessionId)
+        .query({ token : token })
         .set('Content-Type', 'application/json')
         .send(message)
         .expect('Content-Type', /json/)
@@ -116,12 +136,12 @@ describe('Message Controller', function() {
     });
   });
 
-  // Flush the database after the test set
-  after(function(done) {
-    client.flushdb(function(err) {
-      if(err) return done(err);
-      done();
-    });
-  });
+  // // Flush the database after the test set
+  // after(function(done) {
+  //   client.flushdb(function(err) {
+  //     if(err) return done(err);
+  //     done();
+  //   });
+  // });
 
 });

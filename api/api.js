@@ -5,6 +5,7 @@
 var express = require('express'),
     client = require('./support/client'),
     RedisStore = require('connect-redis')(express),
+    User = require('./models/User'),
     app = module.exports = express();
 
 /*
@@ -65,8 +66,6 @@ app.configure(function() {
  *
  */
 
-var User = require('./models/user');
-
 /**
  * -----------
  * Controllers
@@ -97,8 +96,8 @@ app.post('/authorize', authorize);
  * Groups
  */
 
-app.get('/groups', isAuthorized, group.index);
-app.post('/groups', isAuthorized, group.create);
+app.get('/groups', fetchUser, group.index);
+app.post('/groups', fetchUser, group.create);
 app.get('/groups/:id', group.show);
 
 /**
@@ -108,21 +107,21 @@ app.get('/groups/:id', group.show);
 app.get('/users', user.index);
 app.post('/users', user.create);
 app.get('/users/:id', user.show);
-app.post('/join', isAuthorized, user.join);
+app.post('/join', fetchUser, user.join);
 
 /**
  * Messages
  */
 
-app.post('/messages', isAuthorized, message.create);
-app.get('/messages', isAuthorized, message.index);
+app.post('/messages', fetchUser, message.create);
+app.get('/messages', fetchUser, message.index);
 
 /**
  * Comments
  */
 
-app.post('/messages/:message/comments', isAuthorized, comment.create);
-app.get('/messages/:message/comments', isAuthorized, comment.index);
+app.post('/messages/:message/comments', fetchUser, comment.create);
+app.get('/messages/:message/comments', fetchUser, comment.index);
 
 
 /**
@@ -137,10 +136,14 @@ app.get('/messages/:message/comments', isAuthorized, comment.index);
  * Can authenticate either through cookies or a query-string
  */
 
-function isAuthorized(req, res, next) {
-  req.token = req.query.token || req.cookies.token;
-  if(!req.token) return res.send(401);
-  return next();
+function fetchUser(req, res, next) {
+  if(!req.session || !req.session.userId) return res.send(401);
+  User.find(req.session.userId, function(err, user) {
+    if(err) return next(err);
+    else if(!user) return res.send(401);
+    req.user = user;
+    return next();
+  });
 }
 
 /**
@@ -149,8 +152,8 @@ function isAuthorized(req, res, next) {
 
 function allowAccessToken(req, res, next) {
   var token = req.query.token;
-  if(!token || req.cookie.token) return next();
-  req.cookie.token = token;
+  if(!token || req.cookies.token) return next();
+  req.cookies.token = token;
   next();
 }
 

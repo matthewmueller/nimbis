@@ -18,7 +18,7 @@
     "mocha": "*",
     "supertest": "*",
     "expect.js": "*",
-    "Faker": "*"
+    "batch" : "*"
   },
   "optionalDependencies": {},
   "engines": {
