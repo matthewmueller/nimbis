@@ -1,6 +1,8 @@
+var _  = require('underscore');
+
 /**
- * Test users
- */
+  * Test group data
+  */
 
 /**
  * Basic users
@@ -29,3 +31,11 @@ exports.drew = {
   email : 'drew@drew.com',
   password : 'drewy'
 };
+
+/**
+ * Export, allowing the objects to be referenced,
+ * individually or as a group
+ */
+
+module.exports = _.toArray(exports);
+_.extend(module.exports, exports);

@@ -1,3 +1,5 @@
+// TODO: Validate groups have IDs
+
 var _ = require('underscore'),
     Base = require('./base'),
     List = require('../structures/list'),
@@ -17,7 +19,7 @@ Message.prototype.name = 'message';
 /*
  * Required attributes
  */
-Message.prototype.requires = ['author', 'groups', 'message'];
+Message.prototype.requires = ['author', 'message'];
 
 /*
  * Types

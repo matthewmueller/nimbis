@@ -7,36 +7,30 @@ var expect = require('expect.js'),
     Groups = require('../collections/groups'),
     Message = require('../models/message'),
     Messages = require('../collections/messages'),
+    Batch = require('batch'),
     api = require('../api.js');
 
-var groups = [
-  { id : '123456', name : 'Javascript'},
-  { id : '654321', name : 'Soccer'}
-];
+var groups = new Groups(require('./data/groups')),
+    user = require('./data/users').matt,
+    password = user.password;
 
-var user = {
-  name : 'Matt',
-  email : 'mattmuelle@gmail.com',
-  password : 'test',
-  groups : groups
-};
+user = new User(user);
 
 describe('Message Controller', function() {
   var token;
 
   // TODO: Clean up.. this is so ugly
   before(function(done) {
+    var batch = new Batch();
+    batch.push(function(next) { return groups.save(next); });
+    batch.push(function(next) { return user.save(next); });
 
-    // Create the groups then create the user
-    Groups.create(groups, function(err) {
+    batch.end(function(err) {
       if(err) return done(err);
-      User.create(user, function(err, model) {
+      authorize(user.get('email'), password, function(err, t) {
         if(err) return done(err);
-        authorize(user.email, user.password, function(err, t) {
-          if(err) return done(err);
-          token = t;
-          done();
-        });
+        token = t;
+        done();
       });
     });
 
@@ -89,12 +83,15 @@ describe('Message Controller', function() {
 
   describe.only('POST /messages', function() {
     var response,
-        groups = require('./data/groups.js'),
+        groups = new Groups(require('./data/groups.js')),
         message = require('./data/messages.js').hi;
 
-    message.groups = [ groups.javascript, groups.football ];
+    // Right now this should go out to some of the groups
+    message.groups = groups.toJSON().slice(2);
+    message.id = '123456';
 
     beforeEach(function(done) {
+
       request(api)
         .post('/messages')
         .query({ token : token })
@@ -110,29 +107,14 @@ describe('Message Controller', function() {
     });
 
     it('should create a new message', function(done) {
-      var message = {
-        message : 'Hi world!',
-        groups : ['123456', '654321']
-      };
+      var body = response.body;
 
-      request(api)
-        .post('/messages')
-        .query({ token : token })
-        .set('Content-Type', 'application/json')
-        .send(message)
-        .expect('Content-Type', /json/)
-        .expect(201)
-        .end(function(err, res) {
-          if(err) return done(err);
-          var body = res.body;
+      expect(body.id).to.be.ok();
+      // FIXME:  This should be converted back to a date
+      expect(body.created_at).to.be.a('string');
+      expect(body.message).to.be('hi');
 
-          expect(body.id).to.be.ok();
-          // FIXME:  This should be converted back to a date
-          expect(body.created_at).to.be.a('string');
-          expect(body.message).to.be('Hi world!');
-          return done();
-        });
-
+      return done();
     });
   });
 

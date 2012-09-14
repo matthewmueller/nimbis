@@ -1,5 +1,7 @@
+var _  = require('underscore');
+
 /**
- * Test Message data
+ * Test group data
  */
 
 /**
@@ -21,3 +23,11 @@ exports.hola = {
 exports.wahoo = {
   message : 'wahoo'
 };
+
+/**
+ * Export, allowing the objects to be referenced,
+ * individually or as a group
+ */
+
+module.exports = _.toArray(exports);
+_.extend(module.exports, exports);
