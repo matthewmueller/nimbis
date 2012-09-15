@@ -1,5 +1,7 @@
 var Backbone = require('Backbone'),
     Base = require('./base'),
+    Groups = require('../collections/groups'),
+    Messages = require('../collections/messages'),
     Index = require('../structures/Hash'),
     utils = require('../support/utils'),
     makeId = utils.makeId;
@@ -33,22 +35,21 @@ User.prototype.types = {
   username : String,
   email : String,
   password : String,
-  groups : Array,
   salt : String
 };
 
 /*
  * Defaults
  */
-User.prototype.defaults = {
-  groups : []
-};
 
 /*
  * Initialize a user model
  */
 User.prototype.initialize = function() {
   var attrs = this.attributes;
+
+  this.groups = new Groups();
+  this.messages = new Messages();
 
   // Make all usernames lowercase
   if(attrs.username) {
@@ -57,7 +58,7 @@ User.prototype.initialize = function() {
 
   // If username is set, use that, otherwise generate one
   if(!attrs.id) {
-    attrs.id = attrs.username || this.makeId(6);
+    attrs.id = attrs.username || null;
   }
 
   // Encrypt the password if given and we haven't already encrypted it.
@@ -68,7 +69,7 @@ User.prototype.initialize = function() {
     attrs.salt = salt;
   }
 
-  this.set(attrs, { silent : true });
+  Base.prototype.initialize.apply(this, arguments);
 };
 
 /*

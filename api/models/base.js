@@ -19,16 +19,22 @@ var Base = module.exports = Backbone.Model.extend();
 Base.prototype.name = 'base';
 
 /**
- * Create a reference to itself, for the children
- */
-
-Base.prototype.parent = Base.prototype;
-
-/**
  * Sync with redis
  */
 
 Base.prototype.sync = require('../support/redis.sync');
+
+/**
+ * Initialize
+ */
+
+Base.prototype.initialize = function() {
+  var attrs = this.attributes;
+
+  // Create an ID if we don't have one
+  attrs.id = attrs.id || this.makeId(12);
+  this.set(attrs, { silent : true });
+};
 
 /**
  * Public: Generate Salt
@@ -115,7 +121,15 @@ Base.prototype.isValid = function() {
 
 Base.prototype.save = function(options, fn) {
   var date = new Date(),
-      method = 'update';
+      method = 'update',
+      sanitize;
+
+  for(var attr in this.attributes) {
+    sanitize = this[attr + 'Sanitize'];
+    if(sanitize) {
+      this.set(attr, sanitize.call(this, this.attributes[attr]), { silent : true });
+    }
+  }
 
   // Allow options to be callback function
   if(_.isFunction(options)) {

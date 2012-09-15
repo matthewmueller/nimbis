@@ -45,11 +45,24 @@ Message.prototype.defaults = {
  * Initialize a message model
  */
 Message.prototype.initialize = function() {
-  var attrs = this.toJSON();
+  this.attributes = this.sanitize(this.attributes);
+  Base.prototype.initialize.apply(this, arguments);
+};
 
-  attrs.id = attrs.id || this.makeId(6);
+/**
+ * Sanitize the input
+ */
 
-  this.set(attrs, { silent : true });
+Message.prototype.sanitize = function(attrs) {
+  var groups = attrs.groups;
+
+  if(groups) {
+    groups = (Array.isArray(groups)) ? groups : [groups];
+    groups = (typeof groups[0] === 'string') ? groups : _.pluck(groups, 'id');
+    attrs.groups = groups;
+  }
+
+  return attrs;
 };
 
 /*

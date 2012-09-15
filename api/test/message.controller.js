@@ -4,30 +4,32 @@ var expect = require('expect.js'),
     authorize = require('./support/authorize'),
     client = require('../support/client'),
     User = require('../models/user'),
+    Users = require('../collections/users'),
     Groups = require('../collections/groups'),
     Message = require('../models/message'),
     Messages = require('../collections/messages'),
     Batch = require('batch'),
     api = require('../api.js');
 
-var groups = new Groups(require('./data/groups')),
-    user = require('./data/users').matt,
-    password = user.password;
+var groups = require('./data/groups'),
+    users = require('./data/users'),
+    matt = users.at(0),
+    password = 'matty';
 
-user = new User(user);
+groups.at(0).members.add([matt, users.at(1)]);
+groups.at(1).members.add([matt, users.at(2)]);
 
 describe('Message Controller', function() {
   var token;
 
-  // TODO: Clean up.. this is so ugly
   before(function(done) {
     var batch = new Batch();
     batch.push(function(next) { return groups.save(next); });
-    batch.push(function(next) { return user.save(next); });
+    batch.push(function(next) { return users.save(next); });
 
     batch.end(function(err) {
       if(err) return done(err);
-      authorize(user.get('email'), password, function(err, t) {
+      authorize(matt.get('email'), password, function(err, t) {
         if(err) return done(err);
         token = t;
         done();
@@ -83,11 +85,10 @@ describe('Message Controller', function() {
 
   describe.only('POST /messages', function() {
     var response,
-        groups = new Groups(require('./data/groups.js')),
         message = require('./data/messages.js').hi;
 
     // Right now this should go out to some of the groups
-    message.groups = groups.toJSON().slice(2);
+    message.groups = groups.toJSON();
     message.id = '123456';
 
     beforeEach(function(done) {

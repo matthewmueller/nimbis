@@ -27,11 +27,7 @@ Comment.prototype.types = {
  * Initialize a comment model
  */
 Comment.prototype.initialize = function() {
-  var attrs = this.toJSON();
-
-  attrs.id = attrs.id || this.makeId(12);
-
-  this.set(attrs, { silent : true });
+  Base.prototype.initialize.apply(this, arguments);
 };
 
 /*

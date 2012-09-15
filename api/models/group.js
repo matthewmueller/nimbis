@@ -1,4 +1,6 @@
-var Base = require('./base');
+var _ = require('underscore'),
+    Users = require('../collections/users'),
+    Base = require('./base');
 
 /*
  * Extend the Base model
@@ -34,8 +36,7 @@ Group.prototype.types = {
  */
 
 Group.prototype.defaults = {
-  type : 'public',
-  members : []
+  type : 'public'
 };
 
 /*
@@ -43,11 +44,33 @@ Group.prototype.defaults = {
  */
 
 Group.prototype.initialize = function() {
-  var attrs = this.toJSON();
+  this.attributes = this.sanitize(this.attributes);
+  
+  // Set up the members
+  this.members = new Users();
+  this.members.on('add', function() {
+    console.log('lol');
+  });
+  Base.prototype.initialize.apply(this, arguments);
+};
 
-  attrs.id = attrs.id || this.makeId(6);
+Group.prototype.save = function(fn) {
+  this.members.save(function(err) {
+    if(err) return fn(err);
+    Base.prototype.save.apply(this, arguments);
+  });
+};
 
-  this.set(attrs, { silent : true });
+Group.prototype.sanitize = function(attrs) {
+  var members = attrs.members;
+
+  if(members) {
+    members = (Array.isArray(members)) ? members : [members];
+    members = (typeof members[0] === 'string') ? members : _.pluck(members, 'id');
+    attrs.members = members;
+  }
+
+  return attrs;
 };
 
 // Static Properties

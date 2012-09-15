@@ -29,7 +29,6 @@ Base.prototype.fetch = function(options, fn) {
     } else {
       fn(err, collection);
     }
-
   });
 };
 
