@@ -56,32 +56,16 @@ exports.join = function(req, res) {
       user = req.user,
       // Clone is important, otherwise it updates model on push (without set)
       // Because it's an array, (ie. copied by reference not value)
-      groups = _.clone(user.get('groups'));
+      groups = user.get('groups');
 
   var id = _(groups).find(function(group) {
     return (group.id === body.id);
   });
 
   // If already exists, just return
-  if(id) {
-    return res.send(200);
-  }
+  if(id) return res.send(200);
 
-  Group.exists(body.id, function(err, id) {
-    if(err) return res.send(err);
-    else if(!id) return res.send(new Error('Group: ' + body.id + ' doesnt exist!'));
-
-    // Add group to groups
-    groups.push(body);
-
-    // Silent, because we don't want to trigger change event right away
-    // Maybe later we can be more optimistic
-    user.set({ groups : groups }, { silent : true });
-
-    user.save(function(err, model) {
-      if(err) return res.send(err);
-      res.send(model);
-    });
+  Group.find(body.id, function(err, group) {
+    console.log(group);
   });
-
 };

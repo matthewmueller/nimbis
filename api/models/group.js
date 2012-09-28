@@ -63,15 +63,15 @@ Group.prototype.initialize = function() {
  * Save a group
  */
 
-Group.prototype.save = function(fn) {
-  Base.prototype.save.apply(this, arguments);
+// Group.prototype.save = function(fn) {
+//   Base.prototype.save.apply(this, arguments);
 
-  // TODO: Get collections working
-  // this.members.save(function(err) {
-  //   if(err) return fn(err);
-  //   Base.prototype.save.apply(this, arguments);
-  // });
-};
+//   // TODO: Get collections working
+//   // this.members.save(function(err) {
+//   //   if(err) return fn(err);
+//   //   Base.prototype.save.apply(this, arguments);
+//   // });
+// };
 
 /**
  * Add a member
