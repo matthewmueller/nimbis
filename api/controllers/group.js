@@ -15,6 +15,8 @@ exports.index = function(req, res) {
 exports.create = function(req, res) {
   var body = req.body;
 
+  body.creator = req.user;
+
   Group.create(body, function(err, model) {
     if(err) res.send(err);
     res.send(model.toJSON());

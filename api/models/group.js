@@ -47,15 +47,15 @@ Group.prototype.defaults = {
  */
 
 Group.prototype.initialize = function() {
-  // this.attributes = this.sanitize(this.attributes);
+  var attrs = this.attributes,
+      creator = attrs.creator;
 
-  // Set up the members
-  // I DON'T THINK THIS IS HOW IT SHOULD BE DONE, SHOULD
-  // PROBABLY JUST BE LINKED [id1, id2, id3, id4, ...]
-  this.members = new Users();
-  this.members.on('add', function() {
-    console.log('lol');
-  });
+  // Add self to the groups
+  if(creator && creator.id) {
+    this.addMember(creator);
+    attrs.creator = { _id : creator.id };
+  }
+
   Base.prototype.initialize.apply(this, arguments);
 };
 
@@ -71,6 +71,18 @@ Group.prototype.save = function(fn) {
   //   if(err) return fn(err);
   //   Base.prototype.save.apply(this, arguments);
   // });
+};
+
+/**
+ * Add a member
+ */
+
+Group.prototype.addMember = function(user) {
+  this.push('members', {
+    _id : user.id
+  });
+
+  return this;
 };
 
 /**

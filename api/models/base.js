@@ -150,6 +150,21 @@ Base.prototype.create = function(options, fn) {
   });
 };
 
+/**
+ * Extending Setters
+ */
+
+Base.prototype.push = function() {
+  var args = Array.prototype.slice.call(arguments),
+      key = args.shift(),
+      attr = this.get(key);
+
+  if(!Array.isArray(attr)) return this;
+
+  this.set(key, attr.concat(args));
+  return this;
+};
+
   // // Add timestamps
   // if(this.isNew()) {
   //   method = 'create';
