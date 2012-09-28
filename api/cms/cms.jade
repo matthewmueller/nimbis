@@ -48,3 +48,11 @@ body
   hr
 
   h2 messages
+
+  h3 POST /messages
+
+  form(method='post', action='/messages')
+    input(type='text', placeholder='message', name='message')
+    input(type='text', placeholder='group', name='group')
+    input(type='submit', value='Create message')
+    pre.out

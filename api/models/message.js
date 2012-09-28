@@ -4,6 +4,7 @@ var _ = require('underscore'),
     Base = require('./base'),
     List = require('../structures/list'),
     utils = require('../support/utils'),
+    isArray = Array.isArray,
     after = utils.after;
 
 /*
@@ -45,7 +46,20 @@ Message.prototype.defaults = {
  * Initialize a message model
  */
 Message.prototype.initialize = function() {
-  this.attributes = this.sanitize(this.attributes);
+  var attrs = this.attributes,
+      author = attrs.author.toJSON(),
+      groups = attrs.groups;
+
+  // Turn groups into an array
+  attrs.groups = (isArray(groups)) ? groups : [groups];
+
+  // Pull out relevant author information
+  attrs.author = {
+    _id : author._id,
+    name : author.name
+  };
+
+  // this.attributes = this.sanitize(this.attributes);
   Base.prototype.initialize.apply(this, arguments);
 };
 
@@ -57,7 +71,7 @@ Message.prototype.sanitize = function(attrs) {
   var groups = attrs.groups;
 
   if(groups) {
-    groups = (Array.isArray(groups)) ? groups : [groups];
+    groups = (isArray(groups)) ? groups : [groups];
     groups = (typeof groups[0] === 'string') ? groups : _.pluck(groups, 'id');
     attrs.groups = groups;
   }

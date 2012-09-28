@@ -54,13 +54,15 @@
  * Module dependencies
  */
 
-var Backbone = require('Backbone'),
+var _ = require('underscore'),
+    Backbone = require('Backbone'),
     monk = require('../support/monk'),
     Base = require('./base'),
     Groups = require('../collections/groups'),
     Messages = require('../collections/messages'),
     Index = require('../structures/Hash'),
     utils = require('../support/utils'),
+    isArray = Array.isArray,
     makeId = utils.makeId;
 
 /**
@@ -80,7 +82,8 @@ var name = User.prototype.name = 'user';
  */
 
 User.prototype.defaults = {
-  groups : []
+  groups : [],
+  messages : []
 };
 
 /*
@@ -123,6 +126,12 @@ User.prototype.initialize = function() {
   }
 
   Base.prototype.initialize.apply(this, arguments);
+};
+
+User.prototype.hasGroup = function(groupIds) {
+  groupIds = (isArray(groupIds)) ? groupIds : [groupIds];
+  var groups = _.pluck(this.get('groups'), '_id');
+  return (_.intersection(groupIds, groups).length === groupIds.length);
 };
 
 User.prototype.join = function(group) {

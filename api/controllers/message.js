@@ -1,7 +1,6 @@
 var _ = require('underscore'),
     Message = require('../models/message'),
-    Messages = require('../collections/messages'),
-    Users = require('../collections/users'),
+    User = require('../models/user'),
     Groups = require('../collections/groups'),
     Group = require('../models/group'),
     List = require('../structures/List'),
@@ -46,29 +45,42 @@ exports.index = function(req, res) {
 // watch "curl -d \"message=hi+there&groups%5B%5D=123456&groups%5B%5D=654321\"
 exports.create = function(req, res) {
   var body = req.body,
-      user = req.user.toJSON();
+      group = body.group,
+      user = req.user;
+
+  // TODO: new Error in res.send sending 200 OK.
+  if(!group || !user.hasGroup(group))
+    return res.send(new Error('You are not a member of group(s)!'));
 
   // Add the author
-  body.author = {
-    id : user.id,
-    name : user.name
-  };
+  body.author = user;
 
-  var message = new Message(body),
-      groups = message.get('groups');
+  // Create a message
+  Message.create(body, function(err, message) {
+    if(err) return res.send(err);
 
-  Groups.find(groups, function(err, groups) {
-    var members = _.uniq(_.flatten(groups.pluck('members')));
-    Users.find(members, function(err, users) {
-      console.log(users);
+    // Find the groups members the message should be send to
+    Group.find(group, function(err, group) {
+      if(err || !group) return res.send(new Error('Cannot find the group'));
+
+      var members = group.get('members'),
+          finished = after(members.length);
+
+      // Add the message to each of the members of the group
+      _.each(members, function(userId) {
+        User.find(userId, function(err, user) {
+          if(err || !user) return res.send(new Error('Cannot find the user'));
+          // Push the message
+          user.push('messages', message.id).save(function(err) {
+            if(err) return res.send(err);
+            if(finished()) return res.send(201);
+          });
+        });
+      });
+
     });
   });
-
-
-  // Message.create(body, function(err, model) {
-  //   if(err) return res.send(err);
-  //   res.send(201, model);
-  // });
+  
 };
 
 

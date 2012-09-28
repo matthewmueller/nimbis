@@ -129,6 +129,7 @@ Base.prototype.fetch = function(query, fn) {
 
   col[method](query._id || query, function(err, doc) {
     if(err || !doc) return fn(err, false);
+    doc._id = doc._id.toString();
     model.set(doc);
     return fn(null, model);
   });
@@ -144,6 +145,7 @@ Base.prototype.create = function(options, fn) {
 
   col.insert(model.toJSON(), function(err, doc) {
     if(err) return fn(err);
+    doc._id = doc._id.toString();
     model.set(doc);
     fn(null, model);
   });
@@ -158,7 +160,6 @@ Base.prototype.update = function(options, fn) {
       col = monk().get(model.name);
 
   var attrs = model.changedAttributes();
-  console.log(attrs);
   col.findAndModify({ _id : this.id }, { $set : attrs }, fn);
 };
 
