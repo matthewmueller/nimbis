@@ -125,7 +125,15 @@ User.prototype.initialize = function() {
   Base.prototype.initialize.apply(this, arguments);
 };
 
+User.prototype.join = function(group) {
+  this.push('groups', {
+    _id : group.id,
+    name : group.get('name'),
+    color : group.get('color')
+  });
 
+  return this;
+};
 
 // User.prototype.fetch = function(fn) {
 //   var model = this,

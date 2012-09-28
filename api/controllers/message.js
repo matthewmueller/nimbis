@@ -43,6 +43,7 @@ exports.index = function(req, res) {
 };
 
 // POST /messages
+// watch "curl -d \"message=hi+there&groups%5B%5D=123456&groups%5B%5D=654321\"
 exports.create = function(req, res) {
   var body = req.body,
       user = req.user.toJSON();
@@ -52,13 +53,12 @@ exports.create = function(req, res) {
     id : user.id,
     name : user.name
   };
+
   var message = new Message(body),
       groups = message.get('groups');
 
   Groups.find(groups, function(err, groups) {
-    console.log(groups.members);
     var members = _.uniq(_.flatten(groups.pluck('members')));
-    console.log(members);
     Users.find(members, function(err, users) {
       console.log(users);
     });

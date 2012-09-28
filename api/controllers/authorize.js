@@ -10,13 +10,12 @@ exports = module.exports = function(req, res, next) {
       email = body.email,
       password = body.password;
 
+  if(!email || !password) return res.send(401);
+
   // Authorize our user
   User.authorize(email, password, function(err, userId) {
     if(err) return next(err);
     if(!userId) return res.send(401);
-
-    // Generate an access token
-    // var token = makeId(20);
 
     // Store the token in a session
     req.session.userId = userId;

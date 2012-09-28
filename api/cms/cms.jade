@@ -1,0 +1,50 @@
+!!!
+head
+  title API CMS
+  link(rel='stylesheet', href='cms.css')
+  script(type='text/javascript', src='jquery.js')
+  script(type='text/javascript', src='superagent.js')
+  script(type='text/javascript', src='cms.js')
+body
+  //- Authorize
+  h2 authorize
+
+  h3 POST /authorize
+  form(method='post', action='/authorize')
+    input(type='text', placeholder='email', name='email', value='matt@matt.com')
+    input(type='password', placeholder='password', name='password', value='test')
+    input(type='submit', value='Get token')
+    pre.out
+  
+  //- Users
+  h2 users
+
+  h3 GET /users
+  form(method='get', action='/users')
+    input(type='submit', value='Get user')
+    pre.out
+
+  h3 POST /join
+  form(method='post', action='/join')
+    input(type='text', placeholder='Group ID', name='id')
+    input(type='submit', value='Join group')
+    pre.out    
+
+  //- Groups
+  h2 groups
+
+  h3 GET /groups
+  form(method='get', action='/groups')
+    input(type='submit', value='Get groups')
+    pre.out
+
+  h3 POST /groups
+  form(method='post', action='/groups')
+    input(type='text', placeholder='name', name='name')
+    input(type='text', placeholder='type', name='type', value='public')
+    input(type='submit', value='Create group')
+    pre.out
+
+  hr
+
+  h2 messages

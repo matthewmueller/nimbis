@@ -55,8 +55,6 @@ exports.show = function(req, res) {
 exports.join = function(req, res) {
   var body = req.body,
       user = req.user,
-      // Clone is important, otherwise it updates model on push (without set)
-      // Because it's an array, (ie. copied by reference not value)
       groups = user.get('groups');
 
   if(!body.id) return res.send(200);

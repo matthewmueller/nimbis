@@ -7,18 +7,19 @@
   "main": "index.js",
   "dependencies": {
     "express": "3.x",
-    "monk" : "*",
-    "modella" : "*",
+    "monk": "*",
+    "modella": "*",
     "redis": "*",
     "underscore": "*",
     "validator": "*",
-    "connect-redis" : "*"
+    "connect-redis": "*",
+    "jade": "~0.27.5"
   },
   "devDependencies": {
     "mocha": "*",
     "supertest": "*",
     "expect.js": "*",
-    "batch" : "*"
+    "batch": "*"
   },
   "optionalDependencies": {},
   "engines": {

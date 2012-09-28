@@ -3,6 +3,7 @@
  */
 
 var express = require('express'),
+    jade = require('jade'),
     client = require('./support/client'),
     RedisStore = require('connect-redis')(express),
     User = require('./models/User'),
@@ -51,6 +52,7 @@ app.configure(function() {
     secret : 'keyboard cat',
     key : 'token'
   }));
+  app.use(express['static'](__dirname + '/cms'));
 });
 
 /*
@@ -84,6 +86,10 @@ var authorize = require('./controllers/authorize'),
 
 app.get('/', function(req, res) {
   res.send('welcome to api.nimbis');
+});
+
+app.get('/cms', function(req, res) {
+  res.render(__dirname + '/cms/cms.jade');
 });
 
 /**
