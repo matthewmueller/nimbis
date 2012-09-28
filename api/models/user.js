@@ -75,6 +75,14 @@ var User = module.exports = Base.extend();
 
 var name = User.prototype.name = 'user';
 
+/**
+ * Default values
+ */
+
+User.prototype.defaults = {
+  groups : []
+};
+
 /*
  * Access settings
  */
@@ -97,11 +105,9 @@ User.prototype.requires = ['name', 'email', 'password'];
 /*
  * Initialize a user model
  */
+
 User.prototype.initialize = function() {
   var attrs = this.attributes;
-
-  this.groups = new Groups();
-  this.messages = new Messages();
 
   // Make all usernames lowercase
   if(attrs.username) {
@@ -118,6 +124,8 @@ User.prototype.initialize = function() {
 
   Base.prototype.initialize.apply(this, arguments);
 };
+
+
 
 // User.prototype.fetch = function(fn) {
 //   var model = this,

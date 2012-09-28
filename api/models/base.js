@@ -129,8 +129,7 @@ Base.prototype.fetch = function(query, fn) {
 
   col[method](query._id || query, function(err, doc) {
     if(err || !doc) return fn(err, false);
-
-    model.set(doc, { silent : true });
+    model.set(doc);
     return fn(null, model);
   });
 };
@@ -145,9 +144,22 @@ Base.prototype.create = function(options, fn) {
 
   col.insert(model.toJSON(), function(err, doc) {
     if(err) return fn(err);
-    model.set(doc, { silent : true });
+    model.set(doc);
     fn(null, model);
   });
+};
+
+/**
+ * Update a model
+ */
+
+Base.prototype.update = function(options, fn) {
+  var model = this,
+      col = monk().get(model.name);
+
+  var attrs = model.changedAttributes();
+  console.log(attrs);
+  col.findAndModify({ _id : this.id }, { $set : attrs }, fn);
 };
 
 /**
@@ -160,8 +172,7 @@ Base.prototype.push = function() {
       attr = this.get(key);
 
   if(!Array.isArray(attr)) return this;
-
-  this.set(key, attr.concat(args));
+  this.set(key, attr.concat(args), { silent : true });
   return this;
 };
 

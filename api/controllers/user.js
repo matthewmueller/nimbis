@@ -51,6 +51,7 @@ exports.show = function(req, res) {
 };
 
 // POST /join
+// watch "curl -d \"id=5065853844a1150000000004\" localhost:8080/join?token=hJJvjqkqcn50zVL4dBZ2S4XL"
 exports.join = function(req, res) {
   var body = req.body,
       user = req.user,
@@ -58,14 +59,27 @@ exports.join = function(req, res) {
       // Because it's an array, (ie. copied by reference not value)
       groups = user.get('groups');
 
+  if(!body.id) return res.send(200);
   var id = _(groups).find(function(group) {
-    return (group.id === body.id);
+    return (String(group.id) === String(body.id));
   });
 
   // If already exists, just return
   if(id) return res.send(200);
 
+  // Find the group and add the group to the user
   Group.find(body.id, function(err, group) {
-    console.log(group);
+    if(err) return res.send(err);
+
+    user.push('groups', {
+      id : group.id,
+      name : group.get('name'),
+      color : group.get('color')
+    });
+
+    user.save(function(err, model) {
+      if(err) return res.send(err);
+      res.send(200);
+    });
   });
 };
