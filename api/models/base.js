@@ -20,12 +20,6 @@ var Base = module.exports = Backbone.Model.extend();
 Base.prototype.name = 'base';
 
 /**
- * Sync with mongo
- */
-
-Base.prototype.sync = require('../support/mongo.sync');
-
-/**
  * Set up the default ID for Mongo
  */
 
@@ -106,15 +100,7 @@ Base.prototype.isValid = function() {
 
 Base.prototype.save = function(options, fn) {
   var date = new Date(),
-      method = this.isNew() ? 'create' : 'update',
-      sanitize;
-
-  // for(var attr in this.attributes) {
-  //   sanitize = this[attr + 'Sanitize'];
-  //   if(sanitize) {
-  //     this.set(attr, sanitize.call(this, this.attributes[attr]), { silent : true });
-  //   }
-  // }
+      method = this.isNew() ? 'create' : 'update';
 
   // Allow options to be callback function
   if(_.isFunction(options)) {
