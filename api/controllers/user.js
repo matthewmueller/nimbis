@@ -1,35 +1,38 @@
-var monk = require('../support/monk')('localhost/mydb'),
+var db = require('../support/monk')('localhost/mydb'),
+    users = db.get('users'),
     User = require('../models/user'),
     Group = require('../models/group'),
     _ = require('underscore');
 
-// GET /users
+// GET /users?token=...
 // Will get the current user
-exports.index = function(req, res, next) {  var token = req.token;
-  var userId = req.session.userId;
+exports.index = function(req, res, next) {
+  var token = req.token,
+      userId = req.session.userId;
 
   if(!userId) return next();
 
   User.find(userId, function(err, user) {
     if(err) return next(err);
     if(!user) return next();
-
     res.send(user);
   });
 };
 
 // POST /users
-// curl -d "name=matt&email=matt@matt.com&password=test" localhost:8080/users
+// watch "curl -d \"name=matt&email=matt@matt.com&password=test\" localhost:8080/users"
 exports.create = function(req, res) {
-  var body = req.body;
-  console.log('lolzz');
-  var user = new User(body);
-  console.log(user);
-  // user.save(function(err, model) {
-  //   if(err) throw err;
-
-  //   res.send(201, model);
+  var body = req.body,
+      user = new User(body);
+  
+  // users.insert(user.json(), function(err, user) {
+  //   if(err) res.send(err);
+  //   res.send(201, user);
   // });
+  user.save(function(err, model) {
+    if(err) throw err;
+    res.send(201, model);
+  });
 
 };
 

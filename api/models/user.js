@@ -1,22 +1,87 @@
+// /**
+//  * Module dependencies
+//  */
+
+// var modella = require('modella'),
+//     crypto = require('crypto');
+
+// /**
+//  * Export a User model
+//  */
+
+// var User = module.exports = modella.extend();
+
+// /**
+//  * User defaults
+//  */
+
+// User.prototype.defaults = {
+//   salt : Math.round((new Date().valueOf() * Math.random())).toString()
+// };
+
+// /*
+//  * Required values
+//  */
+
+// User.prototype.requires = ['name', 'email', 'password'];
+
+// /*
+//  * Types
+//  */
+
+// User.prototype.types = {
+//   id : String,
+//   name : String,
+//   username : String,
+//   email : String,
+//   password : String,
+//   salt : String
+// };
+
+// /**
+//  * Initialize
+//  */
+
+// User.prototype.initialize = function() {
+//   var attrs = this.attrs;
+
+//   if(attrs.password) {
+//     attrs.password = crypto.createHmac('sha1', attrs.salt).update(attrs.password).digest('hex');
+//   }
+// };
+
 /**
  * Module dependencies
  */
 
-var modella = require('modella'),
-    crypto = require('crypto');
+var Backbone = require('Backbone'),
+    monk = require('../support/monk'),
+    Base = require('./base'),
+    Groups = require('../collections/groups'),
+    Messages = require('../collections/messages'),
+    Index = require('../structures/Hash'),
+    utils = require('../support/utils'),
+    makeId = utils.makeId;
 
 /**
- * Export a User model
+ * Extend the base
  */
 
-var User = module.exports = modella.extend();
+var User = module.exports = Base.extend();
 
-/**
- * User defaults
+/*
+ * Name of the model
  */
 
-User.prototype.defaults = {
-  salt : Math.round((new Date().valueOf() * Math.random())).toString()
+var name = User.prototype.name = 'user';
+
+/*
+ * Access settings
+ */
+
+User.prototype.access = {
+  password : 'private',
+  salt : 'private'
 };
 
 /*
@@ -26,189 +91,114 @@ User.prototype.defaults = {
 User.prototype.requires = ['name', 'email', 'password'];
 
 /*
- * Types
+ * Defaults
  */
 
-User.prototype.types = {
-  id : String,
-  name : String,
-  username : String,
-  email : String,
-  password : String,
-  salt : String
-};
-
-/**
- * Initialize
+/*
+ * Initialize a user model
  */
-
 User.prototype.initialize = function() {
-  var attrs = this.attrs;
+  var attrs = this.attributes;
 
-  if(attrs.password) {
-    attrs.password = crypto.createHmac('sha1', attrs.salt).update(attrs.password).digest('hex');
+  this.groups = new Groups();
+  this.messages = new Messages();
+
+  // Make all usernames lowercase
+  if(attrs.username) {
+    attrs.username = attrs.username.toLowerCase();
   }
+
+  // Encrypt the password if given and we haven't already encrypted it.
+  if(!attrs.salt && attrs.password) {
+    var salt = this.makeSalt();
+
+    attrs.password = Base.encrypt(salt, attrs.password);
+    attrs.salt = salt;
+  }
+
+  Base.prototype.initialize.apply(this, arguments);
 };
 
+// User.prototype.fetch = function(fn) {
+//   var model = this,
+//       col = monk().get(this.name),
+//       email = this.get('email');
 
-// var Backbone = require('Backbone'),
-//     Base = require('./base'),
-//     Groups = require('../collections/groups'),
-//     Messages = require('../collections/messages'),
-//     Index = require('../structures/Hash'),
-//     utils = require('../support/utils'),
-//     makeId = utils.makeId;
+//   if(!email) return fn(null, false);
 
-// var User = module.exports = Base.extend();
-
-// /*
-//  * Name of the model
-//  */
-// User.prototype.name = 'user';
-
-// /*
-//  * Access settings
-//  */
-// User.prototype.access = {
-//   password : 'private',
-//   salt : 'private'
+//   col.findOne({ email : email }, function(err, doc) {
+//     if(err) return fn(err);
+//     model.set(doc, { silent : true });
+//     return fn(null, model);
+//   });
 // };
 
-// /*
-//  * Required values
-//  */
-// User.prototype.requires = ['name', 'email', 'password'];
-
-
-
-// /*
-//  * Defaults
-//  */
-
-// /*
-//  * Initialize a user model
-//  */
-// User.prototype.initialize = function() {
-//   var attrs = this.attributes;
-
-//   this.groups = new Groups();
-//   this.messages = new Messages();
-
-//   // Make all usernames lowercase
-//   if(attrs.username) {
-//     attrs.username = attrs.username.toLowerCase();
-//   }
-
-//   // If username is set, use that, otherwise generate one
-//   if(!attrs.id) {
-//     attrs.id = attrs.username || null;
-//   }
-
-//   // Encrypt the password if given and we haven't already encrypted it.
-//   if(!attrs.salt && attrs.password) {
-//     var salt = this.makeSalt();
-
-//     attrs.password = Base.encrypt(salt, attrs.password);
-//     attrs.salt = salt;
-//   }
-
-//   Base.prototype.initialize.apply(this, arguments);
-// };
-
-// /*
-//  * Save the index after save
-//  *
-//  * fn - callback function
-//  *
-//  */
+/*
+ * Save the index after save
+ *
+ * fn - callback function
+ *
+ */
 // User.prototype.onSave = function(model, fn) {
 //   var index,
 //       wait = 0,
+//       db = monk().get(this.name);
 //       username = model.get('username'),
 //       email = model.get('email');
+//   // function done(err) {
+//   //   if(err) return fn(err);
 
-//   function done(err) {
-//     if(err) return fn(err);
+//   //   else if(--wait <= 0) {
+//   //     return fn(err, model);
+//   //   }
+//   // }
 
-//     else if(--wait <= 0) {
-//       return fn(err, model);
-//     }
-//   }
-
-//   if(username) {
-//     wait++;
-//     index = new Index('index:username:id');
-//     index.set(username, model.id, done);
-//   }
+//   // if(username) {
+//   //   wait++;
+//   //   index = new Index('index:username:id');
+//   //   index.set(username, model.id, done);
+//   // }
 
 //   if(email) {
-//     wait++;
-//     index = new Index('index:email:id');
-//     index.set(email, model.id, done);
+//     db.index('email', { unique: true });
 //   }
 
-// };
-
-// /*
-//  * Authenticate
-//  */
-// // User.prototype.authenticate = function(enteredPassword) {
-// //   var attrs = this.toJSON();
-
-// //   // Encrypt the entered password
-// //   enteredPassword = this.encrypt(attrs.salt, enteredPassword);
-
-// //   // Return true if authenticated, false otherwise
-// //   return (enteredPassword === attrs.password);
-// // };
-
-// // Static Properties
-// // -----------------
-
-// /*
-//  * Checks if an email or username exists
-//  *
-//  * Returns a callback fn(err, user)
-//  *
-//  * If the user doesn't exist, user will be false
-//  */
-// User.exists = function(val, fn) {
-//   var rEmail = /^[+a-zA-Z0-9_.-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z0-9]{2,6}$/,
-//       index = new Index();
-
-//   // Is this an email address or username?
-//   if(rEmail.test(val)) {
-//     index.key = 'index:email:id';
-//   } else {
-//     index.key = 'index:username:id';
-//   }
-
-//   index.get(val, function(err, id) {
-//     if(err) return fn(err);
-//     else if(!id) return fn(null, false);
-
-//     return fn(null, id);
-//   });
+//   // if(email) {
+//   //   wait++;
+//   //   index = new Index('index:email:id');
+//   //   index.set(email, model.id, done);
+//   // }
 
 // };
 
-// User.authorize = function(username, pass, fn) {
-//   User.exists(username, function(err, id) {
-//     if(err || !id) return fn(err, id);
-//     // Find the user by id
-//     User.find(id, function(err, model) {
-//       if(err) return fn(err);
-//       var attrs = model.toJSON();
+/*
+ * Authenticate
+ */
+// User.prototype.authenticate = function(enteredPassword) {
+//   var attrs = this.toJSON();
 
-//       // Encrypt then check the password
-//       if(Base.encrypt(attrs.salt, pass) === attrs.password) {
-//         return fn(null, id);
-//       } else {
-//         return fn(null, false);
-//       }
+//   // Encrypt the entered password
+//   enteredPassword = this.encrypt(attrs.salt, enteredPassword);
 
-//     });
-//   });
+//   // Return true if authenticated, false otherwise
+//   return (enteredPassword === attrs.password);
 // };
+
+// Static Properties
+// -----------------
+
+User.authorize = function(email, password, fn) {
+  User.find({ email : email }, function(err, model) {
+    if(err || !model) return fn(err, model);
+    
+    var attrs = model.toJSON();
+    if(Base.encrypt(attrs.salt, password) === attrs.password) {
+      return fn(null, model.id);
+    } else {
+      return fn(null, false);
+    }
+
+  });
+};
 
 

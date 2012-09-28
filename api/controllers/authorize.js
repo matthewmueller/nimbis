@@ -4,6 +4,7 @@ var User = require('../models/user'),
     makeId = utils.makeId;
 
 // Default authorization
+// watch "curl -d \"email=matt@matt.com&password=test\" localhost:8080/authorize"
 exports = module.exports = function(req, res, next) {
   var body = req.body,
       email = body.email,
@@ -15,11 +16,11 @@ exports = module.exports = function(req, res, next) {
     if(!userId) return res.send(401);
 
     // Generate an access token
-    var token = makeId(20);
+    // var token = makeId(20);
 
     // Store the token in a session
     req.session.userId = userId;
-    client.get('lol');
+
     // Respond with the token
     res.send({ token : req.session.id });
   });

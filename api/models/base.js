@@ -3,6 +3,7 @@
  */
 
 var crypto = require('crypto'),
+    monk = require('../support/monk'),
     _ = require('underscore'),
     Backbone = require('Backbone');
 
@@ -19,22 +20,22 @@ var Base = module.exports = Backbone.Model.extend();
 Base.prototype.name = 'base';
 
 /**
- * Sync with redis
+ * Sync with mongo
  */
 
-Base.prototype.sync = require('../support/redis.sync');
+Base.prototype.sync = require('../support/mongo.sync');
+
+/**
+ * Set up the default ID for Mongo
+ */
+
+Base.prototype.idAttribute = '_id';
 
 /**
  * Initialize
  */
 
-Base.prototype.initialize = function() {
-  var attrs = this.attributes;
-
-  // Create an ID if we don't have one
-  attrs.id = attrs.id || this.makeId(12);
-  this.set(attrs, { silent : true });
-};
+Base.prototype.initialize = function() {};
 
 /**
  * Public: Generate Salt
@@ -42,22 +43,6 @@ Base.prototype.initialize = function() {
 
 Base.prototype.makeSalt = function() {
   return Math.round((new Date().valueOf() * Math.random())).toString();
-};
-
-/**
- * Generate a id
- */
-
-Base.prototype.makeId = function(len) {
-  return Math.random().toString(36).substr(2,len);
-};
-
-/**
- * Check if the model isNew
- */
-
-Base.prototype.isNew = function() {
-  return !this.attributes.created_at;
 };
 
 /**
@@ -121,15 +106,15 @@ Base.prototype.isValid = function() {
 
 Base.prototype.save = function(options, fn) {
   var date = new Date(),
-      method = 'update',
+      method = this.isNew() ? 'create' : 'update',
       sanitize;
 
-  for(var attr in this.attributes) {
-    sanitize = this[attr + 'Sanitize'];
-    if(sanitize) {
-      this.set(attr, sanitize.call(this, this.attributes[attr]), { silent : true });
-    }
-  }
+  // for(var attr in this.attributes) {
+  //   sanitize = this[attr + 'Sanitize'];
+  //   if(sanitize) {
+  //     this.set(attr, sanitize.call(this, this.attributes[attr]), { silent : true });
+  //   }
+  // }
 
   // Allow options to be callback function
   if(_.isFunction(options)) {
@@ -139,50 +124,88 @@ Base.prototype.save = function(options, fn) {
     options = _.clone(options);
   }
 
-  // Add timestamps
-  if(this.isNew()) {
-    method = 'create';
-    this.set('created_at', date, { silent : true });
+  this[method](options, fn);
+};
+
+/**
+ * Fetch a model
+ */
+
+Base.prototype.fetch = function(query, fn) {
+  var model = this,
+      col = monk().get(model.name),
+      method = (query._id) ? 'findById' : 'findOne';
+
+  if(typeof query === 'function') {
+    fn = query;
+    query = { id : model._id };
   }
-  this.set('modified_at', date, { silent : true });
 
+  col[method](query._id || query, function(err, doc) {
+    if(err || !doc) return fn(err, false);
 
-  // Sync the model with the database
-  this.sync(method, options, function(err, model) {
-
-    // Call hooks if available
-    if(err && model.onError) {
-      model.onError.call(model, err, fn);
-    } else if(!err && model.onSave) {
-      model.onSave.call(model, model, fn);
-    } else {
-      fn(err, model);
-    }
-
+    model.set(doc, { silent : true });
+    return fn(null, model);
   });
 };
+
+/**
+ * Create a model
+ */
+
+Base.prototype.create = function(options, fn) {
+  var model = this,
+      col = monk().get(model.name);
+
+  col.insert(model.toJSON(), function(err, doc) {
+    if(err) return fn(err);
+    model.set(doc, { silent : true });
+    fn(null, model);
+  });
+};
+
+  // // Add timestamps
+  // if(this.isNew()) {
+  //   method = 'create';
+  //   this.set('created_at', date, { silent : true });
+  // }
+  // this.set('modified_at', date, { silent : true });
+
+
+  // // Sync the model with the database
+  // this.sync(method, options, function(err, model) {
+  //   if(!err) model.trigger('saved', model);
+
+  //   // Call hooks if available
+  //   if(err && model.onError) {
+  //     model.onError.call(model, err, fn);
+  //   } else if(!err && model.onSave) {
+  //     model.onSave.call(model, model, fn);
+  //   } else {
+  //     fn(err, model);
+  //   }
 
 /*
  * Fetch a particular model
  */
 
-Base.prototype.fetch = function(options, fn) {
-  if(_.isFunction(options)) fn = options;
+// Base.prototype.fetch = function(options, fn) {
+//   if(_.isFunction(options)) fn = options;
 
-  // Sync the model with the database
-  this.sync('read', options, function(err, model) {
+//   // Sync the model with the database
+//   this.sync('read', options, function(err, model) {
 
-    // Call hooks if available
-    if(err && model.onError) {
-      model.onError.call(model, err, fn);
-    } else if(!err && model.onFetch) {
-      model.onFetch.call(model, model, fn);
-    } else {
-      fn(err, model);
-    }
+//     // Call hooks if available
+//     if(err && model.onError) {
+//       model.onError.call(model, err, fn);
+//     } else if(!err && model.onFetch) {
+//       model.onFetch.call(model, model, fn);
+//     } else {
+//       fn(err, model);
+//     }
 
-  });
-};
+//   });
+// };
 
 /*
  * Destroy a particular model
@@ -238,8 +261,9 @@ Base.create = function(attrs, fn) {
  * @param  {function} fn
  */
 
-Base.find = function(id, fn) {
-  var model = new this({ id : id });
-  model.fetch(fn);
+Base.find = function(query, fn) {
+  if(typeof query === 'string') query = { _id : query };
+  var model = new this(query);
+  model.fetch(query, fn);
 };
 
