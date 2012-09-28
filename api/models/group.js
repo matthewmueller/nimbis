@@ -1,4 +1,5 @@
 var _ = require('underscore'),
+    monk = require('../support/monk'),
     Users = require('../collections/users'),
     Base = require('./base');
 
@@ -29,6 +30,7 @@ Group.prototype.types = {
   description : String,
   type : String,
   members : Array
+  // creator : String
 };
 
 /*
@@ -36,7 +38,8 @@ Group.prototype.types = {
  */
 
 Group.prototype.defaults = {
-  type : 'public'
+  type : 'public',
+  members : []
 };
 
 /*
@@ -44,9 +47,11 @@ Group.prototype.defaults = {
  */
 
 Group.prototype.initialize = function() {
-  this.attributes = this.sanitize(this.attributes);
-  
+  // this.attributes = this.sanitize(this.attributes);
+
   // Set up the members
+  // I DON'T THINK THIS IS HOW IT SHOULD BE DONE, SHOULD
+  // PROBABLY JUST BE LINKED [id1, id2, id3, id4, ...]
   this.members = new Users();
   this.members.on('add', function() {
     console.log('lol');
@@ -54,12 +59,25 @@ Group.prototype.initialize = function() {
   Base.prototype.initialize.apply(this, arguments);
 };
 
+/**
+ * Save a group
+ */
+
 Group.prototype.save = function(fn) {
-  this.members.save(function(err) {
-    if(err) return fn(err);
-    Base.prototype.save.apply(this, arguments);
-  });
+  Base.prototype.save.apply(this, arguments);
+
+  // TODO: Get collections working
+  // this.members.save(function(err) {
+  //   if(err) return fn(err);
+  //   Base.prototype.save.apply(this, arguments);
+  // });
 };
+
+/**
+ * Sanitize a group
+ *
+ * HOPING TO REMOVE THIS, WITH A CLEARER, CLEANER STRUCTURE.
+ */
 
 Group.prototype.sanitize = function(attrs) {
   var members = attrs.members;
@@ -76,10 +94,10 @@ Group.prototype.sanitize = function(attrs) {
 // Static Properties
 // -----------------
 
-Group.exists = function(id, fn) {
-  Group.find(id, function(err, group) {
-    // Normalize, kinda wierd for right now..
-    if(group) group = group.get('id');
-    fn(err, group);
-  });
-};
+// Group.exists = function(id, fn) {
+//   Group.find(id, function(err, group) {
+//     // Normalize, kinda wierd for right now..
+//     if(group) group = group.get('id');
+//     fn(err, group);
+//   });
+// };

@@ -5,33 +5,29 @@ var Group = require('../models/group');
 // TODO: Should get all the information about the groups I'm in
 exports.index = function(req, res) {
   var user = req.user,
-      groups = user.get('groups');
+      groups = user.groups;
 
-  res.send(groups);
+  res.send(groups.toJSON());
 };
 
 // POST /groups
-// curl -d "name=Family&type=private&description=Family%20Time" localhost:8080/groups
+// watch "curl -d \"name=Family&type=private&description=Family%20Time\" localhost:8080/groups?token=..."
 exports.create = function(req, res) {
-  var body = req.body,
+  var body = req.body;
 
-  group = new Group(body);
-
-  group.save(function(err, model) {
-    if(err) throw err;
-
-    res.send(model);
+  Group.create(body, function(err, model) {
+    if(err) res.send(err);
+    res.send(model.toJSON());
   });
 };
 
 // GET /groups/:id
+// curl localhost:8080/groups/506575e4ab9669e0fd000001
 exports.show = function(req, res) {
-  var params = req.params,
-      group = new Group({ id : params.id });
-
-  group.fetch(function(err, model) {
-    if(err) throw err;
-
-    res.send(model);
+  var params = req.params;
+  
+  Group.find(params.id, function(err, model) {
+    if(err) return res.send(err);
+    return res.send(model);
   });
 };
