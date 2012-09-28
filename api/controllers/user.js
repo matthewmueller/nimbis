@@ -1,4 +1,5 @@
-var User = require('../models/user'),
+var monk = require('../support/monk')('localhost/mydb'),
+    User = require('../models/user'),
     Group = require('../models/group'),
     _ = require('underscore');
 
@@ -21,14 +22,14 @@ exports.index = function(req, res, next) {  var token = req.token;
 // curl -d "name=matt&email=matt@matt.com&password=test" localhost:8080/users
 exports.create = function(req, res) {
   var body = req.body;
-
+  console.log('lolzz');
   var user = new User(body);
+  console.log(user);
+  // user.save(function(err, model) {
+  //   if(err) throw err;
 
-  user.save(function(err, model) {
-    if(err) throw err;
-
-    res.send(201, model);
-  });
+  //   res.send(201, model);
+  // });
 
 };
 
