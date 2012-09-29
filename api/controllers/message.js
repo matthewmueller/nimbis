@@ -30,9 +30,15 @@ exports.create = function(req, res) {
 
   groups = isArray(groups) ? groups : [groups];
 
+  // Trim the whitespace
+  body.groups = groups = groups.map(function(group) {
+    return group.trim();
+  });
+
   // TODO: new Error in res.send sending 200 OK.
-  if(!groups || !user.hasGroup(groups))
+  if(!groups || !user.hasGroup(groups)) {
     return res.send(500, { error : 'You are not a member of group(s)!' });
+  }
 
   // Add the author
   body.author = user;
@@ -42,32 +48,11 @@ exports.create = function(req, res) {
     if(err) return res.send(err);
 
     groups.forEach(function(id) {
+      // Optimistic (no error handling), might need tweeking
       bus.emit(['group', id, 'message'].join(':'), message);
     });
 
     res.send(message);
-    // // Find the groups members the message should be send to
-    // Group.find(group, function(err, group) {
-    //   if(err || !group) return res.send(new Error('Cannot find the group'));
-
-    //   var members = group.get('members'),
-    //       finished = after(members.length);
-
-
-
-    //   // Add the message to each of the members of the group
-    //   _.each(members, function(userId) {
-    //     User.find(userId, function(err, user) {
-    //       if(err || !user) return res.send(new Error('Cannot find the user'));
-    //       // Push the message
-    //       user.push('messages', message.id, function(err, doc) {
-    //         if(err) return res.send(err);
-    //         return res.send(message);
-    //       });
-    //     });
-    //   });
-
-    // });
   });
   
 };

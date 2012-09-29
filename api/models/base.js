@@ -173,12 +173,16 @@ Base.prototype.update = function(options, fn) {
  * Extending Setters
  */
 
-Base.prototype.push = function(key, value, fn) {
+Base.prototype.push = function(key, value, opts, fn) {
+  if(typeof opts === 'function') fn = opts, opts = {};
+
   var model = this,
       col = monk().get(model.name),
-      update = { $push : {} };
+      op = (opts.unique) ? '$addToSet' : '$push',
+      update = {};
 
-  update['$push'][key] = value;
+  update[op] = {}, update[op][key] = value;
+
   col.findAndModify({ _id : model.id }, update, function(err, doc) {
     if(err) return fn(err);
     // Not sure why this error occurs

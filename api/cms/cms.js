@@ -4,8 +4,8 @@ $(function() {
     var $this = $(this),
         action = $this.attr('action'),
         method = $this.attr('method'),
-        out = $this.find('.out');
-        query = $this.find('input:text, input:password').serialize();
+        out = $this.find('.out'),
+        query = $this.find('input:text, input:password').toJSON();
 
     superagent[method](action)
       .send(query)
@@ -17,6 +17,17 @@ $(function() {
     return false;
   });
 
+  $.fn.toJSON = function() {
+    var out = {};
+    $(this).each(function(el) {
+      var $el = $(this),
+          val = $el.val().split(',');
+
+      out[$el.attr('name')] = (val.length === 1) ? val[0] : val;
+    });
+    
+    return out;
+  };
 
   function syntaxHighlight(json) {
       if (typeof json != 'string') {

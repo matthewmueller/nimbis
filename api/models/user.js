@@ -106,9 +106,20 @@ User.prototype.join = function(group, fn) {
   return this;
 };
 
+/**
+ * Add a message
+ *
+ * TODO: Figure out how to prevent this from firing
+ * addMessage*(number of recipients), for now we're just
+ * grabbing unique ids when requested.
+ *
+ */
+
 User.prototype.addMessage = function(message, fn) {
   fn = fn || function() {};
-  this.push('messages', message.id, fn);
+  var messages = this.get('messages');
+
+  this.push('messages', message.id, { unique : true }, fn);
 };
 
 // User.prototype.fetch = function(fn) {
