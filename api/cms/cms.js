@@ -7,6 +7,7 @@ $(function() {
         out = $this.find('.out'),
         query = $this.find('input:text, input:password').toJSON();
 
+    // Replace param :key with value
     Object.keys(query).forEach(function(key) {
       action = action.replace(':'+key, query[key]);
     });
