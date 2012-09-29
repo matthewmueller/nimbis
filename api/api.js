@@ -104,7 +104,7 @@ app.post('/authorize', authorize);
 
 app.get('/groups', fetchUser, group.index);
 app.post('/groups', fetchUser, group.create);
-app.get('/groups/:id', group.show);
+app.get('/groups/:id', fetchUser, group.show);
 
 /**
  * Users
@@ -121,10 +121,7 @@ app.post('/join', fetchUser, user.join);
 
 app.post('/messages', fetchUser, message.create);
 app.get('/messages', fetchUser, message.index);
-
-// Should probably be private, useful for selecting
-// a single message though
-//app.get('/messages/:id', fetchUser, message.index);
+app.get('/messages/:id', fetchUser, message.show);
 
 /**
  * Comments

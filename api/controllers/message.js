@@ -45,7 +45,7 @@ exports.create = function(req, res) {
 
   // Create a message
   Message.create(body, function(err, message) {
-    if(err) return res.send(err);
+    if(err) return res.send(500, { error : err });
 
     groups.forEach(function(id) {
       // Optimistic (no error handling), might need tweeking
@@ -57,6 +57,17 @@ exports.create = function(req, res) {
   
 };
 
+// GET message/:id
+exports.show = function(req, res) {
+  var id = req.params.id,
+      messages = req.user.get('messages');
 
+  if(!~messages.indexOf(id)) {
+    return res.send(500, { error : 'Cannot find this message' });
+  }
 
-
+  Message.find(id, function(err, message) {
+    if(err) return res.send(500, { error : err });
+    return res.send(message);
+  });
+};

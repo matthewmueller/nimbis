@@ -7,9 +7,13 @@ $(function() {
         out = $this.find('.out'),
         query = $this.find('input:text, input:password').toJSON();
 
-    superagent[method](action)
-      .send(query)
-      .end(function(res) {
+    Object.keys(query).forEach(function(key) {
+      action = action.replace(':'+key, query[key]);
+    });
+
+    var request = superagent[method](action);
+    request = (method === 'POST') ? request.send(query) : request;
+    request.end(function(res) {
         if(!res.ok) out.text(res.text);
         else out.html(syntaxHighlight(res.body));
       });
@@ -49,6 +53,36 @@ $(function() {
           }
           return '<span class="' + cls + '">' + match + '</span>';
       });
+  }
+
+  function pathtoRegexp(path, keys, options) {
+    options = options || {};
+    var sensitive = options.sensitive;
+    var strict = options.strict;
+    keys = keys || [];
+
+    if (path instanceof RegExp) return path;
+    if (path instanceof Array) path = '(' + path.join('|') + ')';
+
+    path = path
+      .concat(strict ? '' : '/?')
+      .replace(/\/\(/g, '(?:/')
+      .replace(/\+/g, '__plus__')
+      .replace(/(\/)?(\.)?:(\w+)(?:(\(.*?\)))?(\?)?/g, function(_, slash, format, key, capture, optional){
+        keys.push({ name: key, optional: !! optional });
+        slash = slash || '';
+        return ''
+          + (optional ? '' : slash)
+          + '(?:'
+          + (optional ? slash : '')
+          + (format || '') + (capture || (format && '([^/.]+?)' || '([^/]+?)')) + ')'
+          + (optional || '');
+      })
+      .replace(/([\/.])/g, '\\$1')
+      .replace(/__plus__/g, '(.+)')
+      .replace(/\*/g, '(.*)');
+
+    return new RegExp('^' + path + '$', sensitive ? '' : 'i');
   }
 
 });

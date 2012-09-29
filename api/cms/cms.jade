@@ -62,6 +62,12 @@ body
     input(type='submit', value='Get messages')
     pre.out
 
+  h3 GET /messages/:id
+  form(method='get', action='/messages/:id')
+    input(type='text', placeholder='id', name='id')
+    input(type='submit', value='Get message')
+    pre.out
+
   h3 POST /messages
 
   form(method='post', action='/messages')
