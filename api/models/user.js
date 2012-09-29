@@ -1,60 +1,9 @@
-// /**
-//  * Module dependencies
-//  */
-
-// var modella = require('modella'),
-//     crypto = require('crypto');
-
-// /**
-//  * Export a User model
-//  */
-
-// var User = module.exports = modella.extend();
-
-// /**
-//  * User defaults
-//  */
-
-// User.prototype.defaults = {
-//   salt : Math.round((new Date().valueOf() * Math.random())).toString()
-// };
-
-// /*
-//  * Required values
-//  */
-
-// User.prototype.requires = ['name', 'email', 'password'];
-
-// /*
-//  * Types
-//  */
-
-// User.prototype.types = {
-//   id : String,
-//   name : String,
-//   username : String,
-//   email : String,
-//   password : String,
-//   salt : String
-// };
-
-// /**
-//  * Initialize
-//  */
-
-// User.prototype.initialize = function() {
-//   var attrs = this.attrs;
-
-//   if(attrs.password) {
-//     attrs.password = crypto.createHmac('sha1', attrs.salt).update(attrs.password).digest('hex');
-//   }
-// };
-
 /**
  * Module dependencies
  */
 
 var _ = require('underscore'),
+    bus = require('../support/bus'),
     Backbone = require('Backbone'),
     monk = require('../support/monk'),
     Base = require('./base'),
@@ -75,7 +24,7 @@ var User = module.exports = Base.extend();
  * Name of the model
  */
 
-var name = User.prototype.name = 'user';
+User.prototype.name = 'user';
 
 /**
  * Default values
@@ -128,20 +77,38 @@ User.prototype.initialize = function() {
   Base.prototype.initialize.apply(this, arguments);
 };
 
+/**
+ * Has a group(s)
+ */
+
 User.prototype.hasGroup = function(groupIds) {
   groupIds = (isArray(groupIds)) ? groupIds : [groupIds];
   var groups = _.pluck(this.get('groups'), '_id');
   return (_.intersection(groupIds, groups).length === groupIds.length);
 };
 
-User.prototype.join = function(group) {
+/**
+ * Join a group
+ */
+
+User.prototype.join = function(group, fn) {
+  var event = ['group', group.id, 'message'].join(':');
+  bus.on(this, event, 'addMessage', function(err, doc) {
+    if(err) console.error(err);
+  });
+
   this.push('groups', {
     _id : group.id,
     name : group.get('name'),
     color : group.get('color')
-  });
+  }, fn);
 
   return this;
+};
+
+User.prototype.addMessage = function(message, fn) {
+  fn = fn || function() {};
+  this.push('messages', message.id, fn);
 };
 
 // User.prototype.fetch = function(fn) {

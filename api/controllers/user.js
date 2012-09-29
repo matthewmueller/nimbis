@@ -67,17 +67,16 @@ exports.join = function(req, res) {
 
   // Find the group and add the group to the user
   Group.find(body.id, function(err, group) {
-    if(err) return res.send(err);
+    if(err) return res.send(500, { error : err });
+    else if(!group) return res.send(500, { error : 'Cannot find group' });
 
     user.push('groups', {
       id : group.id,
       name : group.get('name'),
       color : group.get('color')
-    });
-
-    user.save(function(err, model) {
+    }, function(err, doc) {
       if(err) return res.send(err);
-      res.send(200);
+      return res.send(200);
     });
   });
 };

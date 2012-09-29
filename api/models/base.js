@@ -5,6 +5,7 @@
 var crypto = require('crypto'),
     monk = require('../support/monk'),
     _ = require('underscore'),
+    isArray = Array.isArray,
     Backbone = require('Backbone');
 
 /**
@@ -160,21 +161,35 @@ Base.prototype.update = function(options, fn) {
       col = monk().get(model.name);
 
   var attrs = model.changedAttributes();
-  col.findAndModify({ _id : this.id }, { $set : attrs }, fn);
+
+  col.findAndModify({ _id : this.id }, { $set : attrs }, function(err, doc) {
+    doc._id = doc._id.toString();
+    model.set(doc);
+    fn(null, model);
+  });
 };
 
 /**
  * Extending Setters
  */
 
-Base.prototype.push = function() {
-  var args = Array.prototype.slice.call(arguments),
-      key = args.shift(),
-      attr = this.get(key);
+Base.prototype.push = function(key, value, fn) {
+  var model = this,
+      col = monk().get(model.name),
+      update = { $push : {} };
 
-  if(!Array.isArray(attr)) return this;
-  this.set(key, attr.concat(args), { silent : true });
-  return this;
+  update['$push'][key] = value;
+  col.findAndModify({ _id : model.id }, update, function(err, doc) {
+    if(err) return fn(err);
+    // Not sure why this error occurs
+    else if(!doc) return fn(new Error('Base.prototype: No document returned!'));
+    
+    doc._id = doc._id.toString();
+    model.set(doc);
+    fn(null, model);
+  });
+
+  return model;
 };
 
   // // Add timestamps
@@ -275,8 +290,29 @@ Base.create = function(attrs, fn) {
  */
 
 Base.find = function(query, fn) {
-  if(typeof query === 'string') query = { _id : query };
+  if(isArray(query)) return Base.findAll.call(this, query, fn);
+  else if(typeof query === 'string') query = { _id : query };
   var model = new this(query);
   model.fetch(query, fn);
 };
 
+/**
+ * Find all the models
+ */
+
+Base.findAll = function(queries, fn) {
+  var self = this,
+      pending = queries.length,
+      out = [],
+      model;
+
+  queries.forEach(function(query, i) {
+    if(typeof query === 'string') query = { _id : query };
+    model = new self(query);
+    model.fetch(query, function(err, m) {
+      if(err) return fn(err);
+      out[i] = m;
+      if(!--pending) return fn(null, out);
+    });
+  });
+};

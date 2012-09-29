@@ -52,8 +52,9 @@ Group.prototype.initialize = function() {
 
   // Add self to the groups
   if(creator && creator.id) {
-    this.addMember(creator);
-    attrs.creator = { _id : creator.id };
+    creator = { _id : creator.id };
+    attrs.members.push(creator);
+    attrs.creator = creator;
   }
 
   Base.prototype.initialize.apply(this, arguments);
@@ -77,10 +78,10 @@ Group.prototype.initialize = function() {
  * Add a member
  */
 
-Group.prototype.addMember = function(user) {
+Group.prototype.addMember = function(user, fn) {
   this.push('members', {
     _id : user.id
-  });
+  }, fn);
 
   return this;
 };

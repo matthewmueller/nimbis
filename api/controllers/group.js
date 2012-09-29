@@ -21,9 +21,9 @@ exports.create = function(req, res) {
   Group.create(body, function(err, model) {
     if(err) return res.send(err);
 
-    user.join(model).save(function(err) {
+    user.join(model, function(err, doc) {
       if(err) return res.send(err);
-      return res.send(model.toJSON());
+      return res.send(model);
     });
   });
 };

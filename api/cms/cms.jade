@@ -19,6 +19,14 @@ body
   //- Users
   h2 users
 
+  h3 POST /users
+  form(method='post', action='/users')
+    input(type='text', placeholder='name', name='name', value='matt')
+    input(type='text', placeholder='email', name='email', value='matt@matt.com')
+    input(type='password', placeholder='password', name='password', value='test')
+    input(type='submit', value='Create User')
+    pre.out
+
   h3 GET /users
   form(method='get', action='/users')
     input(type='submit', value='Get user')
@@ -49,10 +57,15 @@ body
 
   h2 messages
 
+  h3 GET /messages
+  form(method='get', action='/messages')
+    input(type='submit', value='Get messages')
+    pre.out
+
   h3 POST /messages
 
   form(method='post', action='/messages')
     input(type='text', placeholder='message', name='message')
-    input(type='text', placeholder='group', name='group')
+    input(type='text', placeholder='groups', name='groups')
     input(type='submit', value='Create message')
     pre.out
