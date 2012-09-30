@@ -50,7 +50,7 @@ var controllers = join(__dirname, 'controllers'),
     index = require(controllers + '/index'),
     authorize = require(controllers + '/authorize');
 
-app.get('/', authorizeUser, index.index);
+app.get('/', fetchUser, fetchMessages, index.index);
 app.get('/join', index.index);
 app.get('/messages/:id', index.index);
 
@@ -59,7 +59,7 @@ app.get('/login', authorize.index);
 app.post('/login', authorize.create);
 app.get('/logout', authorize.destroy);
 
-function authorizeUser(req, res, next) {
+function fetchUser(req, res, next) {
   var token = req.cookies.token;
   if(!token) return res.redirect('/login');
 
@@ -70,6 +70,23 @@ function authorizeUser(req, res, next) {
       if(!r.ok) return res.redirect('/login');
       req.user = r.body;
       next();
+    });
+}
+
+function fetchMessages(req, res, next) {
+  var token = req.cookies.token,
+      user = req.user,
+      messages = req.messages = [];
+
+  if(!user) return next();
+
+  request
+    .get('api.localhost:8080/messages')
+    .set('Cookie', 'token=' + token)
+    .end(function(r) {
+      if(!r.ok) return next();
+      req.messages = r.body;
+      return next();
     });
 }
 

@@ -1,8 +1,9 @@
-var messages = require('../data/messages.json');
-
 exports.index = function(req, res) {
-  var user = req.user;
+  var user = req.user,
+      messages = req.messages;
+      
   if(!user) return res.redirect('/login');
+
 
   res.render('index/index', {
     user : JSON.stringify(user),

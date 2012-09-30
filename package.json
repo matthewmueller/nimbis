@@ -1,6 +1,6 @@
 {
   "author": "Matt Mueller <mattmuelle@gmail.com>",
-  "private" : true,
+  "private": true,
   "name": "nimbis",
   "description": "Nimbis project",
   "version": "0.0.1",
@@ -10,7 +10,8 @@
   },
   "main": "index.js",
   "dependencies": {
-    "express": "3.x"
+    "express": "3.x",
+    "jade": "~0.27.5"
   },
   "devDependencies": {},
   "optionalDependencies": {},

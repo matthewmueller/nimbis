@@ -6,7 +6,7 @@ var app = require('app'),
     $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
-    cookie = require('/vendor/cookie'),
+    // cookie = require('/vendor/cookie'),
     Index = require('./index.js'),
     User = require('/models/user'),
     Messages = require('/collections/messages'),
@@ -39,12 +39,14 @@ app.collection.messages = new Messages(messages);
 /**
  * Set up engine.io
  */
-var token = cookie('token');
-console.log(token);
+// var token = cookie('token');
+// console.log('token', token);
+
 var io = app.io = new eio.Socket({
   host : 'ws.localhost',
   port: 8080
 });
+
 io.on('open', function() {
   console.log('Connected to engine.io!');
 });

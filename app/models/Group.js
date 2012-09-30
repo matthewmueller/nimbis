@@ -13,6 +13,7 @@ Group.prototype.name = 'group';
 /*
   Set the defaults
 */
+
 Group.prototype.defaults = {
   name : "",
   color  : "purple",

@@ -1,5 +1,6 @@
 var app = require('app'),
     $ = require('jquery'),
+    superagent = require('superagent'),
     Backbone = require('backbone'),
     _ = require('underscore'),
     Dialog = require('/ui/dialog/dialog.js');
@@ -18,7 +19,8 @@ var JoinDialog = module.exports = Dialog.extend();
  * Events
  */
 JoinDialog.prototype.events =  {
-  'click .cancel' : 'close'
+  'click .cancel' : 'close',
+  'click .done' : 'done'
 };
 
 /*
@@ -37,7 +39,7 @@ JoinDialog.prototype.bodyTemplate = require('./join-dialog-body.mu');
 JoinDialog.prototype.defaults = {
   header : 'Join new group',
   buttons : [
-    { className : 'primary done', text : 'Done'},
+    { className : 'primary done', text : 'Save'},
     { className : 'secondary cancel', text : 'Cancel'}
   ]
 };
@@ -46,14 +48,24 @@ JoinDialog.prototype.defaults = {
  * Done
  */
 JoinDialog.prototype.done = function() {
-  var data = {},
+  var json = {},
       $el;
 
+  // Temporary
   this.$el.find('input').each(function() {
     $el = $(this);
-    data[$el.attr('name')] = $el.val();
+    json[$el.attr('name')] = $el.val();
   });
 
+  if(!json.id) return this.close();
+  
+  superagent
+    .post('api.localhost')
+    .send(json)
+    .end(function(r) {
+      if(!r.ok) return console.error(r.text);
+      console.log(r.body);
+    });
 
   app.collection.groups.add(data);
   this.close();
