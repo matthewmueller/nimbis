@@ -44,16 +44,41 @@ var redisStore = new RedisStore({
 app.configure(function() {
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
-  app.use(express.cookieParser('keyboard cat'));
+  app.use(express.cookieParser());
   app.use(express.query());
   app.use(allowAccessToken);
+  app.use(allowCORS);
   app.use(express.session({
     store : redisStore,
     secret : 'keyboard cat',
+    // cookie : { domain : 'localhost' },
     key : 'token'
   }));
   app.use(express['static'](__dirname + '/cms'));
 });
+
+/**
+ * Allow CORS
+ */
+
+function allowCORS(req, res, next){
+  res.set('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.set('Access-Control-Allow-Methods', 'GET, POST');
+  res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
+  res.set('Access-Control-Allow-Credentials', true);
+
+  if(req.method === 'OPTIONS') {
+    return res.send(200);
+  } else {
+    return next();
+  }
+}
+
+// app.options('*', function(req, res, next) {
+//   console.log(req.header());
+//   console.log(res._headers);
+//   res.send(200);
+// });
 
 /*
  * API:
@@ -160,7 +185,7 @@ function fetchUser(req, res, next) {
 function allowAccessToken(req, res, next) {
   var token = req.query.token;
   if(!token || req.cookies.token) return next();
-  req.cookies.token = token;
+  // req.cookies.token = token;
   next();
 }
 

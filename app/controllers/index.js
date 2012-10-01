@@ -4,7 +4,6 @@ exports.index = function(req, res) {
       
   if(!user) return res.redirect('/login');
 
-
   res.render('index/index', {
     user : JSON.stringify(user),
     messages : JSON.stringify(messages)

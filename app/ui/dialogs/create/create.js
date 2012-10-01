@@ -7,7 +7,8 @@ var app = require('app'),
     superagent = require('superagent'),
     Backbone = require('backbone'),
     _ = require('underscore'),
-    Dialog = require('../base/base.js');
+    Dialog = require('../base/base.js'),
+    Group = require('/models/group.js');
 
 /**
  * Add Style
@@ -70,21 +71,36 @@ Create.prototype.create = function() {
       $el;
 
   // Temporary
-  this.$el.find('input').each(function() {
+  this.$el.find('input, textarea').each(function() {
     $el = $(this);
-    json[$el.attr('name')] = $el.val();
+    var name = $el.attr('name') || $el.attr('class');
+    json[name] = $el.val();
   });
 
-  if(!json.id) return this.close();
-  
-  superagent
-    .post('api.localhost')
-    .send(json)
-    .end(function(r) {
-      if(!r.ok) return console.error(r.text);
-      console.log(r.body);
-    });
+  var group = new Group(json);
+  group.save({}, {
+    crossDomain: true,
+    xhrFields: { 'withCredentials': true }
+  });
 
-  app.collection.groups.add(data);
-  this.close();
+  // superagent
+  //   .post('http://api.localhost:8080/groups')
+  //   .set('withCredentials', true)
+  //   .send(group.toJSON())
+  //   .end(function(res) {
+  //     if(!res.ok) console.log(res.body);
+  //     console.log('Success!');
+  //   });
+  // if(!json.id) return this.close();
+  
+  // superagent
+  //   .post('api.localhost')
+  //   .send(json)
+  //   .end(function(r) {
+  //     if(!r.ok) return console.error(r.text);
+  //     console.log(r.body);
+  //   });
+
+  // app.collection.groups.add(data);
+  // this.close();
 };

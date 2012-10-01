@@ -51,7 +51,7 @@ var controllers = join(__dirname, 'controllers'),
     index = require(controllers + '/index'),
     authorize = require(controllers + '/authorize');
 
-app.get('/test/dialog', function(req, res) {
+app.get('/test/dialog', fetchUser, fetchMessages, function(req, res) {
   res.render('../ui/dialogs/test.jade');
 });
 
@@ -113,7 +113,7 @@ function fetchMessages(req, res, next) {
 
 // app.get('/groups/:id/edit', function(req, res, next) {
 //   res.render('index/index.mu', {
-//     layout : 'layouts/base/base.mu',
+//     layout : 'layouts/ba se/base.mu',
 //     user : JSON.stringify(users[0]),
 //     messages : JSON.stringify(messages),
 //     title : "nimbis"
