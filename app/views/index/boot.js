@@ -43,7 +43,7 @@ app.collection.messages = new Messages(messages);
 // console.log('token', token);
 
 var io = app.io = new eio.Socket({
-  host : 'ws.localhost',
+  host : 'ws.nimbis.com',
   port: 8080
 });
 
