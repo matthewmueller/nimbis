@@ -66,7 +66,8 @@ function allowCORS(req, res, next){
   res.set('Access-Control-Allow-Methods', 'GET, POST');
   res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
   res.set('Access-Control-Allow-Credentials', true);
-  console.log('method', req.method);
+
+  // Respond OK if the method is OPTIONS
   if(req.method === 'OPTIONS') {
     return res.send(200);
   } else {
