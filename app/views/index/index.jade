@@ -1,10 +1,14 @@
 extends ../layout/layout
 
-prepend scripts
-  script(type='text/javascript', src='engine.io.js')
+append styles
+  link(href='/views/index/jay.css', rel='stylesheet')
+
+append scripts
+  script(type='text/javascript', src='/engine.io.js')
   script(type='text/javascript')
     window.user = !{user}
     window.messages = !{messages}
+  script(src='/views/index/jay.js', type='text/javascript')
 
 block content
   #wrapper

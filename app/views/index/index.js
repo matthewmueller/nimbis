@@ -42,7 +42,8 @@ var User = require('/models/user.js'),
 Index.prototype.routes = {
   'messages/:id' : 'openMessage',
   'groups/:id/edit' : 'editGroup',
-  'join/' : 'joinGroup'
+  'join/' : 'joinGroup',
+  'create/' : 'createGroup'
 };
 
 /**
@@ -120,6 +121,14 @@ Index.prototype.boot = function() {
     self.navigate('join/', { trigger : true , replace: true });
   });
 
+  /**
+   * Enable the create button
+   */
+  
+  $('button.create').on('click', function(e) {
+    self.navigate('create/', { trigger : true , replace: true });
+  });
+
   return this;
 };
 
@@ -182,11 +191,19 @@ Index.prototype.closeDialog = function() {
 };
 
 /**
- * `joinGroup` route
+ * `/join` - join group route
  */
 
 Index.prototype.joinGroup = function() {
   var JoinDialog = require('/ui/join-dialog/join-dialog.js');
   var joinDialog = new JoinDialog();
   $('#dialog-container').html(joinDialog.render().el);
+};
+
+/**
+ * `/create` - create group route
+ */
+
+Index.prototype.createGroup = function() {
+  
 };

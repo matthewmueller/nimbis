@@ -50,9 +50,13 @@ var controllers = join(__dirname, 'controllers'),
     index = require(controllers + '/index'),
     authorize = require(controllers + '/authorize');
 
+app.get('/test/dialog', function(req, res) {
+  res.render('../ui/dialogs/test.jade');
+});
+
 app.get('/', fetchUser, fetchMessages, index.index);
-app.get('/join', index.index);
-app.get('/messages/:id', index.index);
+app.get('/join', fetchUser, fetchMessages, index.index);
+app.get('/messages/:id', fetchUser, fetchMessages, index.index);
 
 // Login/Logout
 app.get('/login', authorize.index);

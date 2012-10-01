@@ -6,11 +6,13 @@ var bus = require('bus'),
 /*
   Add style
 */
+
 require('./dialog.styl');
 
 /*
   Expose Group
 */
+
 var Dialog = module.exports = Backbone.View.extend();
 
 /*
