@@ -2,7 +2,7 @@
  * Normalize the page
  */
 
-require('/vendor/normalize.css');
+// require('/vendor/normalize.css');
 
 /**
  * Load the layout style

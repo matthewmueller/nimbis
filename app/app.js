@@ -16,6 +16,7 @@ var express = require('express'),
 
 jay.root(__dirname)
    .main('boot.js')
+   .include('/vendor/normalize.css')
    .include('hogan.js', '/vendor/hogan.js')
    .alias('app', '/support/app.js')
    .alias('jquery', '/vendor/jquery.js')
@@ -55,7 +56,13 @@ app.get('/test/dialog', function(req, res) {
 });
 
 app.get('/', fetchUser, fetchMessages, index.index);
+
+// Pass-throughs
+// TODO: Find a cleaner way to do this, should *all* pass-through?
+// - I kind of doubt it, probably want to be explicit, annoying though..
 app.get('/join', fetchUser, fetchMessages, index.index);
+app.get('/create', fetchUser, fetchMessages, index.index);
+
 app.get('/messages/:id', fetchUser, fetchMessages, index.index);
 
 // Login/Logout

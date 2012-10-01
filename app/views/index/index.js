@@ -79,8 +79,7 @@ Index.prototype.boot = function() {
   var self = this,
       GroupList = require('/ui/group-list/group-list.js'),
       MessageList = require('/ui/message-list/message-list.js'),
-      ShareMessage = require('/ui/share-message/share-message.js'),
-      JoinDialog = require('/ui/join-dialog/join-dialog.js');
+      ShareMessage = require('/ui/share-message/share-message.js');
 
   /**
    * Load the `group-list` view
@@ -195,9 +194,10 @@ Index.prototype.closeDialog = function() {
  */
 
 Index.prototype.joinGroup = function() {
-  var JoinDialog = require('/ui/join-dialog/join-dialog.js');
-  var joinDialog = new JoinDialog();
-  $('#dialog-container').html(joinDialog.render().el);
+  var Join = require('/ui/dialogs/join/join.js'),
+      join = new Join();
+
+  $('#dialog-container').html(join.render().el);
 };
 
 /**
@@ -205,5 +205,8 @@ Index.prototype.joinGroup = function() {
  */
 
 Index.prototype.createGroup = function() {
-  
+  var Create = require('/ui/dialogs/create/create.js'),
+      create = new Create();
+      
+  $('#dialog-container').html(create.render().el);
 };

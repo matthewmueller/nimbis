@@ -13,59 +13,59 @@ var app = require('app'),
  * Add Style
  */
 
-require('./join.styl');
+require('./create.styl');
 
 /**
- * Export Join
+ * Export Create
  */
 
-var Join = module.exports = Dialog.extend();
+var Create = module.exports = Dialog.extend();
 
 /**
  * Events
  */
 
-Join.prototype.events =  {
+Create.prototype.events =  {
   'click .cancel' : 'close',
-  'click .join' : 'join'
+  'click .create' : 'create'
 };
 
 /**
  * Dialog classname
  */
 
-Join.prototype.className = 'join-dialog';
+Create.prototype.className = 'create-dialog';
 
 /**
  * Template
  */
 
-Join.prototype.body = require('./body.mu');
+Create.prototype.body = require('./body.mu');
 
 /**
  * Defaults
  */
 
-Join.prototype.defaults = {
-  header : 'Join a new group'
+Create.prototype.defaults = {
+  header : 'Create a new group'
 };
 
 /**
  * Initialize
  */
 
-Join.prototype.initialize = function() {
+Create.prototype.initialize = function() {
   // Call parent
   Dialog.prototype.initialize.apply(this, arguments);
   
   this.button('cancel', 'cancel');
-  this.button('join', 'join');
+  this.button('create', 'create');
 };
 
 /*
  * Done
  */
-Join.prototype.join = function() {
+Create.prototype.create = function() {
   var json = {},
       $el;
 

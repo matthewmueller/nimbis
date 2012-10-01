@@ -7,11 +7,17 @@ var bus = require('bus'),
     Backbone = require('backbone'),
     _ = require('underscore');
 
+/**
+ * Make sure dom library is set
+ */
+
+if(!Backbone.$) Backbone.setDomLibrary($);
+
 /*
   Add style
 */
 
-require('./dialog.styl');
+require('./base.styl');
 
 /**
  * Expose Dialog
@@ -20,23 +26,11 @@ require('./dialog.styl');
 var Dialog = module.exports = Backbone.View.extend();
 
 /**
- * Dialog classname
- */
-
-Dialog.prototype.className = 'dialog';
-
-/**
  * Templates
  */
 
 Dialog.prototype.template = require('./base.mu');
 Dialog.prototype.body = require('./body.mu');
-
-/**
- * Buttons
- */
-
-Dialog.prototype._buttons = {};
 
 /**
  * Defaults
@@ -50,16 +44,36 @@ Dialog.prototype.defaults = {
 */
 Dialog.prototype.initialize = function(attrs) {
   _.bindAll(this, 'render', 'close', '_maybeClose', '_maybeConfirm');
-  this.attributes = _.defaults(attrs || {}, this.defaults);
+  this.attrs = _.extend(this.defaults, attrs || {});
+  this.buttons = [];
+};
+
+/**
+ * Create a button
+ */
+
+Dialog.prototype.button = function(text, cls) {
+  cls = cls || '';
+
+  this.buttons.push($('<button>').text(text).addClass(cls));
+  return this;
 };
 
 /*
   Render `Dialog`
 */
 Dialog.prototype.render = function() {
-  if(!this.attributes.body) this.attributes.body = this.body({});
-  var html = this.template(this.attributes);
+  if(!this.buttons.length) {
+    this.button('cancel');
+    this.button('save');
+  }
+  
+  var html = this.template(this.attrs);
+
+  // $('.footer', html).append.apply($('.footer', html), this.buttons);
   this.$el.addClass('dialog').html(html);
+  this.$el.find('.body').append(this.body({}));
+  this.$el.find('.footer').append(this.buttons);
 
   // Listen for global keystrokes
   $(document.body).bind('keydown', this._maybeClose);
