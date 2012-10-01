@@ -51,7 +51,7 @@ app.configure(function() {
   app.use(express.session({
     store : redisStore,
     secret : 'keyboard cat',
-    // cookie : { domain : 'localhost' },
+    cookie : { domain : '.nimbis.com' },
     key : 'token'
   }));
   app.use(express['static'](__dirname + '/cms'));
@@ -62,11 +62,11 @@ app.configure(function() {
  */
 
 function allowCORS(req, res, next){
-  res.set('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.set('Access-Control-Allow-Origin', 'http://nimbis.com:8080');
   res.set('Access-Control-Allow-Methods', 'GET, POST');
   res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
   res.set('Access-Control-Allow-Credentials', true);
-
+  console.log('method', req.method);
   if(req.method === 'OPTIONS') {
     return res.send(200);
   } else {

@@ -75,7 +75,7 @@ function fetchUser(req, res, next) {
   if(!token) return res.redirect('/login');
 
   request
-    .get('api.localhost:8080/users')
+    .get('api.nimbis.com:8080/users')
     .set('Cookie', 'token=' + token)
     .end(function(r) {
       if(!r.ok) return res.redirect('/login');
@@ -92,7 +92,7 @@ function fetchMessages(req, res, next) {
   if(!user) return next();
 
   request
-    .get('api.localhost:8080/messages')
+    .get('api.nimbis.com:8080/messages')
     .set('Cookie', 'token=' + token)
     .end(function(r) {
       if(!r.ok) return next();

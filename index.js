@@ -28,9 +28,9 @@ server.on('upgrade', es.handleUpgrade.bind(es));
  * Configure the virtual hosts
  */
 
-vhost.use(express.vhost('api.localhost', api));
-vhost.use(express.vhost('ws.localhost', ws));
-vhost.use(express.vhost('localhost', app));
+vhost.use(express.vhost('api.nimbis.com', api));
+vhost.use(express.vhost('ws.nimbis.com', ws));
+vhost.use(express.vhost('nimbis.com', app));
 
 /**
  * Bind to a port
