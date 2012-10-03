@@ -67,43 +67,43 @@ ShareMessage.prototype.share = function(e) {
   var $el = this.$el,
       $message = $el.find('.message'),
       author = app.model.user.toJSON(),
-      groupsCollection = [];
+      groups = [];
 
   // Integrate with instant-token
   // var groups = $el.find('.instant-token-item').map(function() {
   //   return $(this).text();
   // });
   
-  var groups = $el.find('.share-with').val().split(',');
+  var shareWith = $el.find('.share-with').val().split(',');
 
   // Temporary until auto-complete
-  _.each(groups, function(name) {
-    name = $.trim(name);
+  _.each(shareWith, function(name) {
+    name = name.replace(/^\s+/, '').replace(/\s+$/, '');
     var group = app.collection.groups.find(function(group) {
       return (group.get('name').toLowerCase() === name.toLowerCase());
     });
 
-    if(group)
-      groupsCollection.push(group);
+    if(group) groups.push(group.id);
   });
 
   // We don't have any groups, so don't create a message
-  if(!groupsCollection.length) {
+  if(!groups.length) {
     console.log("No groups found:", groups);
     return;
   }
 
-
-  var messageModel = new Message({
+  var message = new Message({
     message : $message.val(),
-    groups  : new Groups(groupsCollection),
+    groups  : groups,
     author : author
   });
 
+  message.save({}, {
+    xhrFields: { 'withCredentials': true }
+  });
+
   // Add message to the Messages collection
-  this.collection.add(messageModel);
-  
-  messageModel.save();
+  this.collection.add(message);
 
   this.clear();
   this.shrink();

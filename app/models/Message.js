@@ -2,19 +2,34 @@ var Backbone = require('backbone'),
     User = require('./user.js'),
     Comments = require('/collections/comments.js');
 
-/*
-  Export Message
-*/
+/**
+ * Export message
+ */
+
 var Message = module.exports = Backbone.Model.extend();
 
-/*
-  Model Name
-*/
+/**
+ * Model name
+ */
+
 Message.prototype.name = 'message';
 
-/*
-  Set the defaults
-*/
+/**
+ * Set the URL
+ */
+
+Message.prototype.url = 'http://api.nimbis.com:8080/messages';
+
+/**
+ * Set up the default ID for Mongo
+ */
+
+Message.prototype.idAttribute = '_id';
+
+/**
+ * Set the defaults
+ */
+
 Message.prototype.defaults = {
   message  : "",
   author   : {},
@@ -23,25 +38,26 @@ Message.prototype.defaults = {
   date : "Now"
 };
 
-/*
-  `Message` model will use socket.io as it's transport
-*/
-Message.prototype.sync = require('../support/backbone/sync.socket.js');
+/**
+ *`Message` model will use socket.io as it's transport
+ */
 
-/*
-  Use a recursive `toJSON`
-*/
+Message.prototype.sync = require('/support/backbone/sync.socket.js');
+
+/**
+ * Use a recursive `toJSON`
+ */
+
 Message.prototype.toJSON = require('../support/backbone/toJSON.recursive.js');
 
-/*
-  Initialize the `Message` model
-*/
+/**
+ * Initialize the `Message` model
+ */
+
 Message.prototype.initialize = function() {
   var groups = this.get('groups'),
       author = this.get('author'),
       comments = this.get('comments');
-
-
 
   this.set({
     'comments' : new Comments(comments),

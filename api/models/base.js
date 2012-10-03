@@ -309,6 +309,9 @@ Base.findAll = function(queries, fn) {
       pending = queries.length,
       out = [],
       model;
+  
+  // If we don't have any queries, return right away
+  if(!pending) return fn(null, []);
 
   queries.forEach(function(query, i) {
     if(typeof query === 'string') query = { _id : query };

@@ -10,8 +10,11 @@ require('normalize.css');
 
 var $ = require('jquery'),
     Join = require('./join/join.js');
-    Create = require('./create/create.js');
+    Create = require('./create/create.js'),
+    Groups = require('/collections/groups.js'),
+    app = require('app');
 
+app.collection.groups = new Groups();
 
 var join = new Join();
 $('.out').html(join.render().el);

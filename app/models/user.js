@@ -29,6 +29,12 @@ User.prototype.defaults = {
   lastName : ""
 };
 
+/**
+ * Set up the default ID for Mongo
+ */
+
+User.prototype.idAttribute = '_id';
+
 /*
   Use a recursive `toJSON`
 */

@@ -82,7 +82,6 @@ Join.prototype.join = function() {
     .send(json)
     .end(function(r) {
       if(!r.ok) return console.error(r.text);
-      console.log(r.body);
     });
 
   app.collection.groups.add(data);

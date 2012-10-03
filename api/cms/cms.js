@@ -13,7 +13,7 @@ $(function() {
     });
 
     var request = superagent[method](action);
-    request = (method === 'POST') ? request.send(query) : request;
+    request = (method === 'post') ? request.send(query) : request;
     request.end(function(res) {
         if(!res.ok) out.text(res.text);
         else out.html(syntaxHighlight(res.body));

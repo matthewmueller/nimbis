@@ -8,6 +8,13 @@ var Comment = module.exports = Backbone.Model.extend();
 */
 Comment.prototype.name = 'comment';
 
+/**
+ * Set up the default ID for Mongo
+ */
+
+Comment.prototype.idAttribute = '_id';
+
+
 /*
   Set the defaults
 */

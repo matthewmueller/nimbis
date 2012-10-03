@@ -78,29 +78,15 @@ Create.prototype.create = function() {
   });
 
   var group = new Group(json);
+
+  // Save it
   group.save({}, {
-    crossDomain: true,
     xhrFields: { 'withCredentials': true }
   });
 
-  // superagent
-  //   .post('http://api.localhost:8080/groups')
-  //   .set('withCredentials', true)
-  //   .send(group.toJSON())
-  //   .end(function(res) {
-  //     if(!res.ok) console.log(res.body);
-  //     console.log('Success!');
-  //   });
-  // if(!json.id) return this.close();
-  
-  // superagent
-  //   .post('api.localhost')
-  //   .send(json)
-  //   .end(function(r) {
-  //     if(!r.ok) return console.error(r.text);
-  //     console.log(r.body);
-  //   });
+  // Add to the groups collection
+  app.collection.groups.add(group);
 
-  // app.collection.groups.add(data);
-  // this.close();
+  // Close the dialog
+  this.close();
 };

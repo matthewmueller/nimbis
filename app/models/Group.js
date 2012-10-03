@@ -17,6 +17,12 @@ Group.prototype.url = 'http://api.nimbis.com:8080/groups';
 */
 Group.prototype.name = 'group';
 
+/**
+ * Set up the default ID for Mongo
+ */
+
+Group.prototype.idAttribute = '_id';
+
 /*
   Set the defaults
 */

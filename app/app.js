@@ -89,6 +89,7 @@ function fetchMessages(req, res, next) {
       user = req.user,
       messages = req.messages = [];
 
+
   if(!user) return next();
 
   request

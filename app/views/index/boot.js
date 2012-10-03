@@ -26,6 +26,8 @@ var user = app.model.user = new User(window.user),
     groups = app.collection.groups = app.model.user.get('groups'),
     messages = window.messages;
 
+messages = _(messages).filter(function(message) { return !!(message); });
+
 _(messages).each(function(message) {
   // Link message group IDs to group models
   message.groups = _.map(message.groups, function(group) { return groups.get(group); });

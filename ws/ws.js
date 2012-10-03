@@ -1,17 +1,20 @@
 var express = require('express'),
+    superagent = require('superagent'),
     engine = require('engine.io'),
     app = module.exports = express(),
     es = app.es = new engine.Server(),
     routes = require('./routes');
 
-app.use(express.cookieParser());
-app.use(authenticate);
-app.use(app.router);
-app.use(es.handleRequest.bind(es));
+app.configure(function() {
+  app.use(express.cookieParser());
+  app.use(authenticate);
+  app.use(app.router);
+  app.use(es.handleRequest.bind(es));
+});
 
 es.on('connection', function(socket) {
   var headers = socket.transport.request.headers;
-  console.log('headers', headers);
+  // console.log('headers', headers);
   for(var route in routes) {
     // socket.on(route, routes(routes[route]));
   }

@@ -1,4 +1,5 @@
-var Backbone = require('backbone'),
+var app = require('app'),
+    Backbone = require('backbone'),
     _ = require('underscore'),
     bus = require('/support/bus.js'),
     List = require('/ui/list/list.js');
@@ -47,6 +48,15 @@ MessageList.prototype.bind = function() {
 
   // Bind Messages
   this.collection.on('add', function(message) {
+    var groups = message.get('groups');
+    
+    // Should be an easier way... we're recovering what we removed before saving..
+    // groups = _.map(groups, function(group) {
+    //   return app.collection.groups.get(group);
+    // });
+
+    // message.set('groups', groups, { silent : true });
+
     self.render();
     self.bindMessage(message);
   });
@@ -73,7 +83,10 @@ MessageList.prototype.bindMessage = function(message) {
   comments.on('remove', this.render);
 
   // Bind Groups
-  groups.on('change', this.render);
+  groups.forEach(function(group) {
+    group = app.collection.groups.get(group);
+    group.on('change', this.render);
+  });
 
   return this;
 };

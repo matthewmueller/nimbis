@@ -21,19 +21,14 @@ exports.index = function(req, res, next) {
 
 // POST /users
 // watch "curl -d \"name=matt&email=matt@matt.com&password=test\" localhost:8080/users"
-exports.create = function(req, res) {
-  var body = req.body,
-      user = new User(body);
-  
-  // users.insert(user.json(), function(err, user) {
-  //   if(err) res.send(err);
-  //   res.send(201, user);
-  // });
-  user.save(function(err, model) {
-    if(err) throw err;
+exports.create = function(req, res, next) {
+  var body = req.body;
+  console.log(body);
+  User.create(body, function(err, model) {
+    if(err) return next(err);
+    console.log(model);
     res.send(201, model);
   });
-
 };
 
 // GET /users/:id
