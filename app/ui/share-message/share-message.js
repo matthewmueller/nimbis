@@ -98,9 +98,7 @@ ShareMessage.prototype.share = function(e) {
     author : author
   });
 
-  message.save({}, {
-    xhrFields: { 'withCredentials': true }
-  });
+  message.save();
 
   // Add message to the Messages collection
   this.collection.add(message);

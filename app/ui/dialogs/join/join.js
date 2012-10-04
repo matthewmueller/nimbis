@@ -76,14 +76,15 @@ Join.prototype.join = function() {
   });
 
   if(!json.id) return this.close();
-  
+
+  console.log(superagent.post('api.nimbis.com:8080/join').xhr);
   superagent
-    .post('api.localhost')
+    .post('api.nimbis.com:8080/join')
     .send(json)
-    .end(function(r) {
-      if(!r.ok) return console.error(r.text);
+    .end(function(res) {
+      if(!res.ok) return console.error(res.text);
+      app.collection.groups.add(res.body);
+      this.close();
     });
 
-  app.collection.groups.add(data);
-  this.close();
 };

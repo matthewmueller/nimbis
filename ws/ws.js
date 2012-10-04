@@ -1,5 +1,4 @@
 var express = require('express'),
-    superagent = require('superagent'),
     engine = require('engine.io'),
     app = module.exports = express(),
     es = app.es = new engine.Server(),
@@ -7,28 +6,35 @@ var express = require('express'),
 
 app.configure(function() {
   app.use(express.cookieParser());
-  app.use(authenticate);
   app.use(app.router);
   app.use(es.handleRequest.bind(es));
 });
 
 es.on('connection', function(socket) {
-  var headers = socket.transport.request.headers;
-  // console.log('headers', headers);
-  for(var route in routes) {
-    // socket.on(route, routes(routes[route]));
-  }
+  var cookie = socket.transport.request.headers.cookie,
+      token = cookie.match('(token=.+)')[1];
+
+  if(!token) return socket.close();
+
+  socket.on('message', function(message) {
+    message = JSON.parse(message);
+        
+    var event = message.event,
+        data = message.data,
+        route = routes[event];
+
+    if(!route) return console.error('Cannot find route for websocket event', event);
+
+    route.call(socket, data, token, function(err, body) {
+      if(err) return console.error(err);
+    });
+  });
+
 });
 
 app.get('/', function(req, res) {
   res.send('socket server running');
 });
-
-function authenticate(req, res, next) {
-  // res.send(404);
-  console.log(req.cookies);
-  next();
-}
 
 // Listen if we are running this file directly
 if(!module.parent) {

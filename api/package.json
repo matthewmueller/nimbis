@@ -13,7 +13,8 @@
     "underscore": "*",
     "validator": "*",
     "connect-redis": "*",
-    "jade": "~0.27.5"
+    "jade": "~0.27.5",
+    "superagent": "~0.9.5"
   },
   "devDependencies": {
     "mocha": "*",
