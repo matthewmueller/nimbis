@@ -65,13 +65,9 @@ exports.join = function(req, res) {
     if(err) return res.send(500, { error : err });
     else if(!group) return res.send(500, { error : 'Cannot find group' });
 
-    user.push('groups', {
-      id : group.id,
-      name : group.get('name'),
-      color : group.get('color')
-    }, function(err, doc) {
-      if(err) return res.send(err);
-      return res.send(200, group);
+    user.join(group, function(err) {
+      if(err) return res.send(500, { error : err });
+      res.send(200, group);
     });
   });
 };

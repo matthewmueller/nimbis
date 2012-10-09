@@ -109,10 +109,10 @@ ShareMessage.prototype.share = function(e) {
     });
 
   // Send through the websocket
-  app.io.send({
+  app.io.send(JSON.stringify({
     event : 'message:create',
-    data : JSON.stringify(json)
-  });
+    data : json
+  }));
 
   // Add message to the Messages collection
   this.collection.add(message);

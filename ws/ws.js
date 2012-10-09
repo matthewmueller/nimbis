@@ -19,6 +19,7 @@ es.on('connection', function(socket) {
   if(!token) return socket.close();
 
   socket.on('message', function(message) {
+    console.log(message);
     message = JSON.parse(message);
         
     var event = message.event,
