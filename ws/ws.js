@@ -1,35 +1,64 @@
 var express = require('express'),
+    _ = require('underscore'),
     engine = require('engine.io'),
+    request = require('superagent'),
     app = module.exports = express(),
     es = app.es = new engine.Server(),
     routes = require('./routes');
 
+/**
+ * Groups -> Connected users
+ */
+
+var Groups = {};
+
+/**
+ * Configuration
+ */
+
 app.configure(function() {
   app.use(express.cookieParser());
   app.use(app.router);
+  app.use(fetchGroups);
   app.use(es.handleRequest.bind(es));
 });
 
-es.on('connection', function(socket) {
-  var cookie = socket.transport.request.headers.cookie,
-      token = cookie.match('(token=.+)')[1];
+/**
+ * Handle the connection
+ */
 
-  // We should get user here, and build groupId : [users] hash
-  // GET /groups
-  if(!token) return socket.close();
+es.on('connection', function(socket) {
+  var clients = socket.server.clients,
+      groups = socket.transport.request.groups;
+
+  if(!groups) return socket.close();
+
+  groups = _.pluck(groups, '_id');
+  groups.forEach(function(group) {
+    if(!Groups[group]) Groups[group] = [];
+    Groups[group].push(socket.id);
+  });
 
   socket.on('message', function(message) {
-    console.log(message);
-    message = JSON.parse(message);
-        
-    var event = message.event,
-        data = message.data,
-        route = routes[event];
+    var sockets = [];
+    groups.forEach(function(group) {
+      sockets = sockets.concat(Groups[group]);
+    });
 
-    if(!route) return console.error('Cannot find route for websocket event', event);
+    sockets = _.uniq(sockets);
+    sockets = _.without(sockets, socket.id);
+    
+    sockets.forEach(function(socket) {
+      var client = clients[socket];
+      if(!client) return;
+      client.send(message);
+    });
+  });
 
-    route.call(socket, data, token, function(err, body) {
-      if(err) return console.error(err);
+  socket.on('close', function() {
+    groups.forEach(function(group) {
+      Groups[group] = _.without(Groups[group] || [], socket.id);
+      if(!Groups[group].length) delete Groups[group];
     });
   });
 
@@ -38,6 +67,24 @@ es.on('connection', function(socket) {
 app.get('/', function(req, res) {
   res.send('socket server running');
 });
+
+/**
+ * Fetch a user
+ */
+
+function fetchGroups(req, res, next) {
+  var token = req.cookies.token;
+  if(!token) return res.redirect('/login');
+
+  request
+    .get('api.nimbis.com:8080/groups')
+    .set('Cookie', 'token=' + token)
+    .end(function(r) {
+      if(!r.ok) return res.redirect('/login');
+      req.groups = r.body;
+      next();
+    });
+}
 
 // Listen if we are running this file directly
 if(!module.parent) {

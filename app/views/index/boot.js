@@ -41,8 +41,6 @@ app.collection.messages = new Messages(messages);
 /**
  * Set up engine.io
  */
-// var token = cookie('token');
-// console.log('token', token);
 
 var io = app.io = new eio.Socket({
   host : 'ws.nimbis.com',

@@ -128,6 +128,14 @@ Index.prototype.boot = function() {
     self.navigate('create/', { trigger : true , replace: true });
   });
 
+  // REFACTOR!
+  app.io.on('message', function(data) {
+    data = JSON.parse(data);
+    if(data.event === 'message:create') {
+      app.collection.messages.add(data.data);
+    }
+  });
+
   return this;
 };
 

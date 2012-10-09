@@ -1,6 +1,6 @@
 var superagent = require('superagent');
 
-exports['message:create'] = function(message, cookie, fn) {
+exports['message:create'] = function(message, fn) {
 
   // Save the message
   // superagent
