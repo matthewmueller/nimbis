@@ -126,6 +126,9 @@ ShareMessage.prototype.share = function(e) {
 */
 ShareMessage.prototype.expand = function() {
   this.$el.find('.more').slideDown(100);
+
+  // Don't like this, but only way I can think to not cause scrolling
+  $('#middle').addClass('expanded');
 };
 
 /*
@@ -133,6 +136,9 @@ ShareMessage.prototype.expand = function() {
 */
 ShareMessage.prototype.shrink = function() {
   this.$el.find('.more').slideUp(100);
+
+  // Don't like this, but only way I can think to not cause scrolling
+  $('#middle').removeClass('expanded');
 };
 
 /*
