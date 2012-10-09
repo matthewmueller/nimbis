@@ -66,7 +66,8 @@ Join.prototype.initialize = function() {
  * Done
  */
 Join.prototype.join = function() {
-  var json = {},
+  var self = this,
+      json = {},
       $el;
 
   // Temporary
@@ -77,14 +78,14 @@ Join.prototype.join = function() {
 
   if(!json.id) return this.close();
 
-  console.log(superagent.post('api.nimbis.com:8080/join').xhr);
   superagent
-    .post('api.nimbis.com:8080/join')
+    .post('http://api.nimbis.com:8080/join')
     .send(json)
     .end(function(res) {
       if(!res.ok) return console.error(res.text);
+      console.log(res.body);
       app.collection.groups.add(res.body);
-      this.close();
+      self.close();
     });
 
 };

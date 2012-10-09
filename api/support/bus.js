@@ -47,7 +47,7 @@ exports.on = function(obj, message, action, fn) {
 exports.emit = function() {
   var args = Array.prototype.slice.call(arguments),
       message = args.shift();
-
+  console.log(message);
   events.findOne({ message : message }, function(err, data)  {
     if(err) return console.error(err);
     else if(!data) return console.error('bus: cannot find message!');

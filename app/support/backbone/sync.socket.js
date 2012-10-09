@@ -1,9 +1,10 @@
 /*
-  Websocket implementation of Backbone.sync
+ * Websocket implementation of Backbone.sync
+ *
+ * Based on the LocalStorage implementation:
+ * http://documentcloud.github.com/backbone/docs/backbone-localstorage.html
+ */
 
-  Based on the LocalStorage implementation:
-  http://documentcloud.github.com/backbone/docs/backbone-localstorage.html
-*/
 var app = require('app'),
     Backbone = require('backbone');
 

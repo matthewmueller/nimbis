@@ -1,3 +1,4 @@
+
 /**
  * Module exports.
  */
@@ -173,7 +174,6 @@ EventEmitter.prototype.emit = function (name) {
 
   return true;
 };
-
 /*!
  * superagent
  * Copyright (c) 2012 TJ Holowaychuk <tj@vision-media.ca>
@@ -279,22 +279,49 @@ EventEmitter.prototype.emit = function (name) {
   }
 
   /**
+   * Escape HTML
+   *
+   * @param {String} str
+   * @return {String}
+   */
+
+  function escapeHTML(str) {
+      return str.split('&').join('&amp;').split('<').join('&lt;').split('"').join('&quot;');
+  }
+
+  /**
+   * Resolve the URL - based on http://stackoverflow.com/a/472729/145435
+   *
+   * @param {String} url
+   * @return {String}
+   */
+  
+  function resolveUrl(url) {
+      var el= document.createElement('div');
+      el.innerHTML= '<a href="'+escapeHTML(url)+'">x</a>';
+      return el.firstChild.href;
+  }
+
+  /**
    * Determine if we are requesting a cross-domain website
    *
-   * @return {Boolean}
    * @param {String} url
+   * @return {Boolean}
    * @api private
    */
 
   function isCrossDomain(url) {
-    var el = document.createElement('a'),
-        port = window.location.port ||
-          ('https:' == window.location.protocol ? 443 : 80);
-    
-    el.href = (~url.indexOf('http')) ? url : 'http://' + url;
+    url = resolveUrl(url);
 
-    return el.host !== window.location.hostname
-      || el.port != port;
+    var a = document.createElement('a'),
+        location = window.location;
+
+    // Use <a> tag to pull apart url
+    a.href = url;
+
+    return a.hostname !== location.hostname
+        || a.protocol !== location.protocol
+        || a.port != location.port;
   }
 
   /**

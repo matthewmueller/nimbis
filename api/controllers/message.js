@@ -46,7 +46,6 @@ exports.create = function(req, res) {
   // Create a message
   Message.create(body, function(err, message) {
     if(err) return res.send(500, { error : err });
-
     groups.forEach(function(id) {
       // Optimistic (no error handling), might need tweeking
       bus.emit(['group', id, 'message'].join(':'), message);

@@ -14,6 +14,8 @@ es.on('connection', function(socket) {
   var cookie = socket.transport.request.headers.cookie,
       token = cookie.match('(token=.+)')[1];
 
+  // We should get user here, and build groupId : [users] hash
+  // GET /groups
   if(!token) return socket.close();
 
   socket.on('message', function(message) {

@@ -1,20 +1,20 @@
 var $ = require('jquery'),
     _ = require('underscore'),
     app = require('app'),
+    superagent = require('superagent'),
     Backbone = require('backbone'),
     Message = require('/models/message.js'),
     Groups = require('/collections/groups.js');
-    // instant = require('/support/instant/instant.js');
 
-/*
-  Add styling
-*/
+/**
+ * Add styling
+ */
+
 require('./share-message.styl');
-// require('/support/instant/instant.css');
 
-/*
-  Expose ShareMessage
-*/
+/**
+ * Expose ShareMessage
+ */
 
 var ShareMessage = module.exports = Backbone.View.extend();
 
@@ -98,7 +98,21 @@ ShareMessage.prototype.share = function(e) {
     author : author
   });
 
-  message.save();
+  var json = message.toJSON();
+
+  // Send to the API
+  superagent
+    .post('http://api.nimbis.com:8080/messages')
+    .send(json)
+    .end(function(res) {
+      if(!res.ok) console.error(res.text);
+    });
+
+  // Send through the websocket
+  app.io.send({
+    event : 'message:create',
+    data : JSON.stringify(json)
+  });
 
   // Add message to the Messages collection
   this.collection.add(message);

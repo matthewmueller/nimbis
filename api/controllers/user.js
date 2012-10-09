@@ -71,7 +71,7 @@ exports.join = function(req, res) {
       color : group.get('color')
     }, function(err, doc) {
       if(err) return res.send(err);
-      return res.send(200);
+      return res.send(200, group);
     });
   });
 };
