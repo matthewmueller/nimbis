@@ -1,33 +1,89 @@
 var express = require('express'),
-    superagent = require('superagent'),
+    _ = require('underscore'),
     engine = require('engine.io'),
+    request = require('superagent'),
     app = module.exports = express(),
     es = app.es = new engine.Server(),
     routes = require('./routes');
 
+/**
+ * Groups -> Connected users
+ */
+
+var Groups = {};
+
+/**
+ * Configuration
+ */
+
 app.configure(function() {
   app.use(express.cookieParser());
-  app.use(authenticate);
   app.use(app.router);
+  app.use(fetchGroups);
   app.use(es.handleRequest.bind(es));
 });
 
+/**
+ * Handle the connection
+ */
+
 es.on('connection', function(socket) {
-  var headers = socket.transport.request.headers;
-  // console.log('headers', headers);
-  for(var route in routes) {
-    // socket.on(route, routes(routes[route]));
-  }
+  var clients = socket.server.clients,
+      groups = socket.transport.request.groups;
+
+  if(!groups) return socket.close();
+
+  groups = _.pluck(groups, '_id');
+  groups.forEach(function(group) {
+    if(!Groups[group]) Groups[group] = [];
+    Groups[group].push(socket.id);
+  });
+
+  socket.on('message', function(message) {
+    var sockets = [];
+    groups.forEach(function(group) {
+      sockets = sockets.concat(Groups[group]);
+    });
+
+    sockets = _.uniq(sockets);
+    sockets = _.without(sockets, socket.id);
+    
+    sockets.forEach(function(socket) {
+      var client = clients[socket];
+      if(!client) return;
+      client.send(message);
+    });
+  });
+
+  socket.on('close', function() {
+    groups.forEach(function(group) {
+      Groups[group] = _.without(Groups[group] || [], socket.id);
+      if(!Groups[group].length) delete Groups[group];
+    });
+  });
+
 });
 
 app.get('/', function(req, res) {
   res.send('socket server running');
 });
 
-function authenticate(req, res, next) {
-  // res.send(404);
-  console.log(req.cookies);
-  next();
+/**
+ * Fetch a user
+ */
+
+function fetchGroups(req, res, next) {
+  var token = req.cookies.token;
+  if(!token) return res.redirect('/login');
+
+  request
+    .get('api.nimbis.com:8080/groups')
+    .set('Cookie', 'token=' + token)
+    .end(function(r) {
+      if(!r.ok) return res.redirect('/login');
+      req.groups = r.body;
+      next();
+    });
 }
 
 // Listen if we are running this file directly

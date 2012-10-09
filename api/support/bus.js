@@ -48,17 +48,20 @@ exports.emit = function() {
   var args = Array.prototype.slice.call(arguments),
       message = args.shift();
 
-  events.findOne({ message : message }, function(err, data)  {
+  events.find({ message : message }, function(err, evs)  {
     if(err) return console.error(err);
-    else if(!data) return console.error('bus: cannot find message!');
-    var name = data.name,
-        // A bit specific
-        Model = models[name] || (models[name] = require('../models/' + name));
+    else if(!evs || !evs.length) return console.error('bus: cannot find event!');
 
-    Model.find(data.id, function(err, model) {
-      if(err) return console.error(err);
-      else if(!model) return console.error('bus: cannot find model!');
-      model[data.action].apply(model, args);
+    evs.forEach(function(ev) {
+      var name = ev.name,
+          // A bit specific.. refactor
+          Model = models[name] || (models[name] = require('../models/' + name));
+      
+      Model.find(ev.id, function(err, model) {
+        if(err) return console.error(err);
+        else if(!model) return console.error('bus: cannot find model!');
+        model[ev.action].apply(model, args);
+      });
     });
   });
 };

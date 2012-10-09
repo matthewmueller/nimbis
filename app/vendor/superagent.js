@@ -183,7 +183,7 @@ EventEmitter.prototype.emit = function (name) {
 ;(function(){
 
   var Emitter = EventEmitter;
-  
+
   /**
    * Noop.
    */
@@ -219,18 +219,6 @@ EventEmitter.prototype.emit = function (name) {
     ? function(s) { return s.trim(); }
     : function(s) { return s.replace(/(^\s*|\s*$)/g, ''); };
 
- /**
-  * Check if `obj` is a function.
-  *
-  * @param {Mixed} obj
-  * @return {Boolean}
-  * @api private
-  */
-  
-  function isFunction(obj) {
-    return 'function' == typeof obj;
-  }
-
   /**
    * Check if `obj` is an object.
    *
@@ -240,7 +228,7 @@ EventEmitter.prototype.emit = function (name) {
    */
 
   function isObject(obj) {
-    return null != obj && 'object' == typeof obj;
+    return obj === Object(obj);
   }
 
   /**
@@ -276,10 +264,10 @@ EventEmitter.prototype.emit = function (name) {
     */
 
   function parseString(str) {
-    var obj = {}
-      , pairs = str.split('&')
-      , parts
-      , pair;
+    var obj = {};
+    var pairs = str.split('&');
+    var parts;
+    var pair;
 
     for (var i = 0, len = pairs.length; i < len; ++i) {
       pair = pairs[i];
@@ -288,6 +276,52 @@ EventEmitter.prototype.emit = function (name) {
     }
 
     return obj;
+  }
+
+  /**
+   * Escape HTML
+   *
+   * @param {String} str
+   * @return {String}
+   */
+
+  function escapeHTML(str) {
+      return str.split('&').join('&amp;').split('<').join('&lt;').split('"').join('&quot;');
+  }
+
+  /**
+   * Resolve the URL - based on http://stackoverflow.com/a/472729/145435
+   *
+   * @param {String} url
+   * @return {String}
+   */
+  
+  function resolveUrl(url) {
+      var el= document.createElement('div');
+      el.innerHTML= '<a href="'+escapeHTML(url)+'">x</a>';
+      return el.firstChild.href;
+  }
+
+  /**
+   * Determine if we are requesting a cross-domain website
+   *
+   * @param {String} url
+   * @return {Boolean}
+   * @api private
+   */
+
+  function isCrossDomain(url) {
+    url = resolveUrl(url);
+
+    var a = document.createElement('a'),
+        location = window.location;
+
+    // Use <a> tag to pull apart url
+    a.href = url;
+
+    return a.hostname !== location.hostname
+        || a.protocol !== location.protocol
+        || a.port != location.port;
   }
 
   /**
@@ -304,11 +338,11 @@ EventEmitter.prototype.emit = function (name) {
    */
 
   request.types = {
-      html: 'text/html'
-    , json: 'application/json'
-    , urlencoded: 'application/x-www-form-urlencoded'
-    , 'form': 'application/x-www-form-urlencoded'
-    , 'form-data': 'application/x-www-form-urlencoded'
+    html: 'text/html',
+    json: 'application/json',
+    urlencoded: 'application/x-www-form-urlencoded',
+    'form': 'application/x-www-form-urlencoded',
+    'form-data': 'application/x-www-form-urlencoded'
   };
 
   /**
@@ -321,8 +355,8 @@ EventEmitter.prototype.emit = function (name) {
    */
 
    request.serialize = {
-       'application/x-www-form-urlencoded': serialize
-     , 'application/json': JSON.stringify
+     'application/x-www-form-urlencoded': serialize,
+     'application/json': JSON.stringify
    };
 
    /**
@@ -335,8 +369,8 @@ EventEmitter.prototype.emit = function (name) {
     */
 
   request.parse = {
-      'application/x-www-form-urlencoded': parseString
-    , 'application/json': JSON.parse
+    'application/x-www-form-urlencoded': parseString,
+    'application/json': JSON.parse
   };
 
   /**
@@ -349,12 +383,12 @@ EventEmitter.prototype.emit = function (name) {
    */
 
   function parseHeader(str) {
-    var lines = str.split(/\r?\n/)
-      , fields = {}
-      , index
-      , line
-      , field
-      , val;
+    var lines = str.split(/\r?\n/);
+    var fields = {};
+    var index;
+    var line;
+    var field;
+    var val;
 
     lines.pop(); // trailing CRLF
 
@@ -538,6 +572,7 @@ EventEmitter.prototype.emit = function (name) {
     this.unauthorized = 401 == status;
     this.notAcceptable = 406 == status;
     this.notFound = 404 == status;
+    this.forbidden = 403 == status;
   };
 
   /**
@@ -572,6 +607,21 @@ EventEmitter.prototype.emit = function (name) {
 
   Request.prototype = new Emitter;
   Request.prototype.constructor = Request;
+
+  /**
+   * Abort the request.
+   *
+   * @return {Request}
+   * @api public
+   */
+
+  Request.prototype.abort = function(){
+    if (this.aborted) return;
+    this.xhr.abort();
+    this.emit('abort');
+    this.aborted = true;
+    return this;
+  };
 
   /**
    * Set header `field` to `val`, or multiple fields with one object.
@@ -656,7 +706,6 @@ EventEmitter.prototype.emit = function (name) {
    *
    *       // querystring
    *       request.get('/search')
-   *         .send({ search: 'query' })
    *         .end(callback)
    *
    *       // multiple data "writes"
@@ -701,7 +750,6 @@ EventEmitter.prototype.emit = function (name) {
    */
 
   Request.prototype.send = function(data){
-    if ('GET' == this.method) return this.query(data);
     var obj = isObject(data);
     var type = this.header['content-type'];
 
@@ -739,10 +787,13 @@ EventEmitter.prototype.emit = function (name) {
    */
 
   Request.prototype.end = function(fn){
-    var self = this
-      , xhr = this.xhr = getXHR()
-      , query = this._query
-      , data = this._data;
+    var self = this;
+    var xhr = this.xhr = getXHR();
+    var query = this._query;
+    var data = this._data;
+
+    // If we're requesting cross-domain, add the `withCredentials` field
+    if(isCrossDomain(this.url)) xhr.withCredentials = true;
 
     // store callback
     this.callback = fn || noop;
@@ -827,8 +878,8 @@ EventEmitter.prototype.emit = function (name) {
 
   request.get = function(url, data, fn){
     var req = request('GET', url);
-    if (isFunction(data)) fn = data, data = null;
-    if (data) req.send(data);
+    if ('function' == typeof data) fn = data, data = null;
+    if (data) req.query(data);
     if (fn) req.end(fn);
     return req;
   };
@@ -845,7 +896,7 @@ EventEmitter.prototype.emit = function (name) {
 
   request.head = function(url, data, fn){
     var req = request('HEAD', url);
-    if (isFunction(data)) fn = data, data = null;
+    if ('function' == typeof data) fn = data, data = null;
     if (data) req.send(data);
     if (fn) req.end(fn);
     return req;

@@ -1,9 +1,10 @@
 /*
-  Websocket implementation of Backbone.sync
+ * Websocket implementation of Backbone.sync
+ *
+ * Based on the LocalStorage implementation:
+ * http://documentcloud.github.com/backbone/docs/backbone-localstorage.html
+ */
 
-  Based on the LocalStorage implementation:
-  http://documentcloud.github.com/backbone/docs/backbone-localstorage.html
-*/
 var app = require('app'),
     Backbone = require('backbone');
 
@@ -17,11 +18,11 @@ exports.create = function(model, options) {
       data = model.toJSON();
 
   // Send the model data to the server
-  if(app.socket) {
+  if(app.io) {
     console.log('Sending data through socket', event, data);
-    app.socket.emit(event, data);
+    app.io.send(JSON.stringify({ event : event, data : data }));
   } else {
-    // throw new Error('app.socket is not present');
+    throw new Error('app.io is not present');
   }
 };
 
