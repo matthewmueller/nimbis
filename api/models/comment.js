@@ -1,5 +1,4 @@
-var Base = require('./base'),
-    List = require('../structures/list');
+var Base = require('./base');
 
 var Comment = module.exports = Base.extend();
 
@@ -33,14 +32,14 @@ Comment.prototype.initialize = function() {
 /*
  * Add comment to the list after we save
  */
-Comment.prototype.onSave = function(model, fn) {
-  var list = new List(),
-      messageId = model.get('messageId');
+// Comment.prototype.onSave = function(model, fn) {
+//   var list = new List(),
+//       messageId = model.get('messageId');
 
-  // Example - list:message:123abc:comments
-  list.key = 'list:message:'+ messageId +':comments';
-  list.unshift(model.id, function(err) {
-    return fn(err, model);
-  });
+//   // Example - list:message:123abc:comments
+//   list.key = 'list:message:'+ messageId +':comments';
+//   list.unshift(model.id, function(err) {
+//     return fn(err, model);
+//   });
 
-};
+// };

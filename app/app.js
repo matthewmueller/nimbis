@@ -15,8 +15,9 @@ var express = require('express'),
  */
 
 jay.root(__dirname)
-   // .main('boot.js')
    .include('/vendor/normalize.css')
+   // Include this, because we want our UI tests to inherit
+   .include('/views/layout/layout.styl')
    .include('hogan.js', '/vendor/hogan.js')
    .alias('app', '/support/app.js')
    .alias('jquery', '/vendor/jquery.js')

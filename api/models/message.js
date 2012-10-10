@@ -2,7 +2,6 @@
 
 var _ = require('underscore'),
     Base = require('./base'),
-    List = require('../structures/list'),
     utils = require('../support/utils'),
     isArray = Array.isArray,
     after = utils.after;
@@ -71,46 +70,3 @@ Message.prototype.save = function(fn) {
 
   Base.prototype.save.apply(this, arguments);
 };
-
-// /**
-//  * Sanitize the input
-//  */
-
-// Message.prototype.sanitize = function(attrs) {
-//   var groups = attrs.groups;
-
-//   if(groups) {
-//     groups = (isArray(groups)) ? groups : [groups];
-//     groups = (typeof groups[0] === 'string') ? groups : _.pluck(groups, 'id');
-//     attrs.groups = groups;
-//   }
-
-//   return attrs;
-// };
-
-// /*
-//  * Extend save to add messages to group lists
-//  */
-// Message.prototype.onSave = function(model, fn) {
-
-//   var groups = model.get('groups'),
-//       list = new List(),
-//       messageId = model.get('id'),
-//       finished = after(groups.length);
-
-//   function done(err) {
-//     if(err) return fn(err);
-//     else if(finished()) {
-//       return fn(null, model);
-//     }
-//   }
-
-//   // Add messageID to each group
-//   _.each(groups, function(group) {
-//     // Example Key - list:group:sah123j:messages
-//     list.key = 'list:group:'+ group +':messages';
-//     list.unshift(messageId, done);
-//   });
-
-// };
-

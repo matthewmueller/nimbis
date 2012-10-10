@@ -1,10 +1,4 @@
 /**
- * Extend the layout
- */
-
-var layout = require('../layout/layout.js');
-
-/**
  * Add index styling
  */
 
@@ -119,6 +113,10 @@ Index.prototype.initialize = function() {
 
   io.on('error', function() {
     console.error('Could not connect to engine.io');
+  });
+
+  io.on('close', function() {
+    console.log('socket closed');
   });
 
   /**

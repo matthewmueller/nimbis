@@ -39,18 +39,6 @@ Message.prototype.defaults = {
 };
 
 /**
- *`Message` model will use socket.io as it's transport
- */
-
-Message.prototype.sync = require('/support/backbone/sync.socket.js');
-
-/**
- * Use a recursive `toJSON`
- */
-
-Message.prototype.toJSON = require('../support/backbone/toJSON.recursive.js');
-
-/**
  * Initialize the `Message` model
  */
 

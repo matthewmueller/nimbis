@@ -25,16 +25,6 @@ Comment.prototype.defaults = {
 };
 
 /*
-  Use a recursive `toJSON`
-*/
-Comment.prototype.toJSON = require('../support/backbone/toJSON.recursive.js');
-
-/*
-  `Comment` model will use socket.io as it's transport
-*/
-Comment.prototype.sync = require('../support/backbone/sync.socket.js');
-
-/*
   Initialize the comment
 */
 Comment.prototype.initialize = function() {

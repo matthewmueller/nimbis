@@ -2,11 +2,8 @@ var _ = require('underscore'),
     bus = require('../support/bus'),
     Message = require('../models/message'),
     User = require('../models/user'),
-    Groups = require('../collections/groups'),
     Group = require('../models/group'),
-    List = require('../structures/List'),
-    isArray = Array.isArray,
-    after = require('../support/utils').after;
+    isArray = Array.isArray;
 
 // GET /messages
 // curl localhost:8080/messages

@@ -4,12 +4,7 @@
 
 var _ = require('underscore'),
     bus = require('../support/bus'),
-    Backbone = require('Backbone'),
-    monk = require('../support/monk'),
     Base = require('./base'),
-    Groups = require('../collections/groups'),
-    Messages = require('../collections/messages'),
-    Index = require('../structures/Hash'),
     utils = require('../support/utils'),
     isArray = Array.isArray,
     makeId = utils.makeId;
@@ -121,71 +116,6 @@ User.prototype.addMessage = function(message, fn) {
 
   this.push('messages', message.id, { unique : true }, fn);
 };
-
-// User.prototype.fetch = function(fn) {
-//   var model = this,
-//       col = monk().get(this.name),
-//       email = this.get('email');
-
-//   if(!email) return fn(null, false);
-
-//   col.findOne({ email : email }, function(err, doc) {
-//     if(err) return fn(err);
-//     model.set(doc, { silent : true });
-//     return fn(null, model);
-//   });
-// };
-
-/*
- * Save the index after save
- *
- * fn - callback function
- *
- */
-// User.prototype.onSave = function(model, fn) {
-//   var index,
-//       wait = 0,
-//       db = monk().get(this.name);
-//       username = model.get('username'),
-//       email = model.get('email');
-//   // function done(err) {
-//   //   if(err) return fn(err);
-
-//   //   else if(--wait <= 0) {
-//   //     return fn(err, model);
-//   //   }
-//   // }
-
-//   // if(username) {
-//   //   wait++;
-//   //   index = new Index('index:username:id');
-//   //   index.set(username, model.id, done);
-//   // }
-
-//   if(email) {
-//     db.index('email', { unique: true });
-//   }
-
-//   // if(email) {
-//   //   wait++;
-//   //   index = new Index('index:email:id');
-//   //   index.set(email, model.id, done);
-//   // }
-
-// };
-
-/*
- * Authenticate
- */
-// User.prototype.authenticate = function(enteredPassword) {
-//   var attrs = this.toJSON();
-
-//   // Encrypt the entered password
-//   enteredPassword = this.encrypt(attrs.salt, enteredPassword);
-
-//   // Return true if authenticated, false otherwise
-//   return (enteredPassword === attrs.password);
-// };
 
 // Static Properties
 // -----------------
