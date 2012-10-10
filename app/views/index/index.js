@@ -12,7 +12,6 @@ var $ = require('jquery'),
     _ = require('underscore'),
     app = require('app'),
     bus = require('bus'),
-    request = require('superagent'),
     Backbone = require('backbone');
 
 /**
@@ -115,8 +114,8 @@ Index.prototype.initialize = function() {
     console.error('Could not connect to engine.io');
   });
 
-  io.on('close', function() {
-    console.log('socket closed');
+  io.on('close', function(message) {
+    console.log('socket closed - ' + message);
   });
 
   /**
