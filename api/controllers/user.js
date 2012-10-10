@@ -15,6 +15,9 @@ exports.index = function(req, res, next) {
   User.find(userId, function(err, user) {
     if(err) return next(err);
     if(!user) return next();
+
+    // TODO: user shouldn't send down messages array, password, salt
+    // and some other things...
     res.send(user);
   });
 };

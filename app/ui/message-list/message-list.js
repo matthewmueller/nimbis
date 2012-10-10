@@ -48,7 +48,7 @@ MessageList.prototype.bind = function() {
 
   // Bind Messages
   this.collection.on('add', function(message) {
-    var groups = message.get('groups');
+    var groups = message.groups;
     
     // Should be an easier way... we're recovering what we removed before saving..
     // groups = _.map(groups, function(group) {
@@ -75,8 +75,8 @@ MessageList.prototype.bind = function() {
   as changes in the group color
 */
 MessageList.prototype.bindMessage = function(message) {
-  var comments = message.get('comments'),
-      groups = message.get('groups');
+  var comments = message.comments,
+      groups = message.groups;
 
   // Bind Comments
   comments.on('add', this.render);
@@ -97,14 +97,14 @@ MessageList.prototype.bindMessage = function(message) {
 
 MessageList.prototype.unbindMessage = function() {};
 
-/*
-  loadChat
-*/
+/**
+ * Will need to be optimistic when we create a new message,
+ * but for clicking on existing messages with "_id"'s
+ */
 MessageList.prototype.open = function(e) {
   var cid = e.currentTarget.getAttribute('data-cid'),
-      model = this.collection.getByCid(cid);
+      model = this.collection.getByCid(cid),
+      id = model.id || cid;
 
-  // Trigger open event
-  bus.trigger('message-list:open', model);
-
+  app.index.navigate('messages/' + id, { trigger : true });
 };

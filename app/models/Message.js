@@ -1,4 +1,5 @@
-var Backbone = require('backbone'),
+var app = require('app'),
+    Backbone = require('backbone'),
     User = require('./user.js'),
     Comments = require('/collections/comments.js');
 
@@ -43,20 +44,25 @@ Message.prototype.defaults = {
  */
 
 Message.prototype.initialize = function() {
-  var groups = this.get('groups'),
-      author = this.get('author'),
-      comments = this.get('comments');
+  var attrs = this.attributes,
+      groups = attrs.groups,
+      len = groups.length;
 
-  this.set({
-    'comments' : new Comments(comments),
-    'author' : new User(author)
-  }, { silent : true });
+  // Set up the comments
+  this.comments = new Comments(attrs.comments || []);
+  delete attrs['comments'];
 
-  // This one is easier, we just instantiate a new comment collection
-  // this.set('comments', new App.Collections.Comments(comments));
+  // Set up the author
+  this.author = new User(attrs.author);
+  delete attrs['author'];
 
-  // Instantiate the author object
-  // this.set('author', new App.Models.User(author));
+  // Set up the groups
+  this.groups = [];
+  for(var i = 0; i < len; i++) {
+    this.groups[i] = app.collection.groups.get(groups[i]);
+  }
+  this.groups = new Groups(this.groups);
+  delete attrs['groups'];
 };
 
 Message.prototype.validate = function(attrs) {
@@ -68,6 +74,23 @@ Message.prototype.validate = function(attrs) {
   // console.log(attrs.groups);
   // if(!attrs.groups.size())
     // return 'Message should not be shown';
+};
+
+/**
+ * Custom toJSON function
+ * @return {object}
+ */
+Message.prototype.toJSON = function() {
+  json = this.attributes;
+  json.groups = this.groups.pluck('_id');
+  json.comments = this.comments.pluck('_id');
+
+  json.author = {
+    name : this.author.get('name'),
+    _id : this.author.id
+  };
+
+  return json;
 };
 
 /*

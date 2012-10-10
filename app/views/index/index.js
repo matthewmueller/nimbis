@@ -31,7 +31,6 @@ var Index = module.exports = Backbone.Router.extend();
  */
 
 Index.prototype.routes = {
-  '' : 'root',
   'messages/:id' : 'openMessage',
   'groups/:id/edit' : 'editGroup',
   'join' : 'joinGroup',
@@ -65,28 +64,28 @@ Index.prototype.initialize = function() {
       User = require('/models/user.js'),
       Messages = require('/collections/messages.js'),
       Groups = require('/collections/groups.js');
-  
+
   /**
    * Instantiate the models and collections
    */
 
   var user = app.model.user = new User(window.user),
-      groups = app.collection.groups = app.model.user.get('groups'),
+      groups = app.collection.groups = user.groups,
       messages = window.messages;
 
-  messages = _(messages).filter(function(message) { return !!(message); });
+  // _(messages).each(function(message) {
+  //   if(!message) return;
+  //   // Link message group IDs to group models
+  //   message.groups = _.map(message.groups, function(id) { return groups.get(id); });
+  //   // Remove any groups that weren't part of user's groups
+  //   message.groups = _.compact(message.groups);
+  // });
 
-  _(messages).each(function(message) {
-    // Link message group IDs to group models
-    message.groups = _.map(message.groups, function(group) { return groups.get(group); });
-    // Remove any groups that weren't part of user's groups
-    message.groups = new Groups(_.compact(message.groups));
-  });
   // Create model from messages json blob
-  app.collection.messages = new Messages(messages);
+  messages = app.collection.messages = new Messages(messages);
 
   /**
-   * Paint the page
+   * Render the page
    */
   
   this.render();
@@ -130,11 +129,7 @@ Index.prototype.initialize = function() {
     self[action].call(self, payload.data);
   });
 
-  /**
-   * Start the backbone history
-   */
-  
-  Backbone.history.start({pushState: true});
+  return this;
 };
 
 /**
@@ -205,19 +200,13 @@ Index.prototype.render = function() {
  * @param  {model|message-id} message
  */
 
-Index.prototype.openMessage = function(message) {
+Index.prototype.openMessage = function(messageId) {
   var MessageHeader = require('/ui/message-header/message-header.js'),
       CommentList = require('/ui/comment-list/comment-list.js'),
       ShareComment = require('/ui/share-comment/share-comment.js');
 
   // If an ID is passed, get the model
-  message = _.isString(message) ? app.collection.messages.get(message) : message;
-
-  // Update the URL
-  if(!message.isNew())
-    this.navigate('messages/' + message.get('id'));
-  else
-    this.navigate('');
+  var message = app.collection.messages.get(messageId);
 
   // Load the MessageHeader view
   var messageHeader = new MessageHeader({
@@ -226,12 +215,12 @@ Index.prototype.openMessage = function(message) {
 
   // Load the CommentList view
   var commentList = new CommentList({
-    collection : message.get('comments')
+    collection : message.comments
   });
 
   var shareComment = new ShareComment({
     messageID : message.get('id'),
-    collection : message.get('comments')
+    collection : message.comments
   });
 
   var placeholder = $('<div></div>');
@@ -293,15 +282,22 @@ Index.prototype.addMessage = function(message) {
 /**
  * Add a comment
  *
- * @param {object} message
+ * @param {object} comment
  */
 
-Index.prototype.addMessage = function(message) {
-  app.collection.messages.add(message);
+Index.prototype.addComment = function(comment) {
+  app.collection.comments.add(comment);
 };
 
 /**
  * Boot up
  */
 
-app.index = new Index();
+var index = app.index = new Index();
+
+/**
+ * Start the backbone history
+ */
+
+Backbone.history.start({pushState: true});
+

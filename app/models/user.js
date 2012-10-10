@@ -49,9 +49,7 @@ User.prototype.idAttribute = '_id';
   Initialize the model
 */
 User.prototype.initialize = function() {
-  var name = this.get('firstName') + ' ' + this.get('lastName');
-  this.set('fullName', name);
-
-  var groups = new Groups(this.get('groups'));
-  this.set('groups', groups);
+  var attrs = this.attributes;
+  this.groups = new Groups(attrs.groups);
+  delete attrs['groups'];
 };
