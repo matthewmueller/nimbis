@@ -1,10 +1,4 @@
 /**
- * Extend the layout
- */
-
-var layout = require('../layout/layout.js');
-
-/**
  * Add index styling
  */
 
@@ -22,28 +16,36 @@ var $ = require('jquery'),
     Backbone = require('backbone');
 
 /**
+ * Use jQuery as the Backbone DOM Library
+ */
+
+Backbone.setDomLibrary($);
+
+/**
  * Export the `Index` router
  */
 
 var Index = module.exports = Backbone.Router.extend();
 
 /**
- * Load in the models and collections
- */
-
-var User = require('/models/user.js'),
-    Messages = require('/collections/messages.js'),
-    Groups = require('/collections/groups.js');
-
-/**
  * `Index` routing
  */
 
 Index.prototype.routes = {
+  '' : 'root',
   'messages/:id' : 'openMessage',
   'groups/:id/edit' : 'editGroup',
-  'join/' : 'joinGroup',
-  'create/' : 'createGroup'
+  'join' : 'joinGroup',
+  'create' : 'createGroup'
+};
+
+/**
+ * `Index` socket events
+ */
+
+Index.prototype.socketEvents = {
+  'message:create' : 'addMessage',
+  'comment:create' : 'addComment'
 };
 
 /**
@@ -61,21 +63,86 @@ Index.prototype.events = {
 
 Index.prototype.initialize = function() {
   var self = this;
+      User = require('/models/user.js'),
+      Messages = require('/collections/messages.js'),
+      Groups = require('/collections/groups.js');
+  
+  /**
+   * Instantiate the models and collections
+   */
 
-  // Bind the events - should probably be moved into a base router but... for now it's fine
+  var user = app.model.user = new User(window.user),
+      groups = app.collection.groups = app.model.user.get('groups'),
+      messages = window.messages;
+
+  messages = _(messages).filter(function(message) { return !!(message); });
+
+  _(messages).each(function(message) {
+    // Link message group IDs to group models
+    message.groups = _.map(message.groups, function(group) { return groups.get(group); });
+    // Remove any groups that weren't part of user's groups
+    message.groups = new Groups(_.compact(message.groups));
+  });
+  // Create model from messages json blob
+  app.collection.messages = new Messages(messages);
+
+  /**
+   * Paint the page
+   */
+  
+  this.render();
+
+  /**
+   * Bind bus events
+   */
+
   _.each(this.events, function(action, event) {
     bus.on(event, function(payload) {
       return self[action].call(self, payload);
     });
   });
 
+  /**
+   * Set up engine.io
+   */
+
+  var io = app.io = new eio.Socket({
+    host : 'ws.nimbis.com',
+    port: 8080
+  });
+
+  io.on('error', function() {
+    console.error('Could not connect to engine.io');
+  });
+
+  io.on('close', function() {
+    console.log('socket closed');
+  });
+
+  /**
+   * Bind socket events
+   */
+  
+  app.io.on('message', function(payload) {
+    payload = JSON.parse(payload);
+    if(!payload.event || !payload.data) return;
+    var action = self.socketEvents[payload.event];
+    if(!action || !self[action]) return;
+    self[action].call(self, payload.data);
+  });
+
+  /**
+   * Start the backbone history
+   */
+  
+  Backbone.history.start({pushState: true});
 };
 
 /**
- * Render `Index`
+ * Paint the page
  */
 
-Index.prototype.boot = function() {
+Index.prototype.render = function() {
   var self = this,
       GroupList = require('/ui/group-list/group-list.js'),
       MessageList = require('/ui/message-list/message-list.js'),
@@ -111,13 +178,12 @@ Index.prototype.boot = function() {
 
   $('#middle').append(app.view.messageList.render().el);
 
-
   /**
    * Enable the join button
    */
   
   $('button.join').on('click', function(e) {
-    self.navigate('join/', { trigger : true , replace: true });
+    self.navigate('join', { trigger : true , replace: true });
   });
 
   /**
@@ -125,23 +191,15 @@ Index.prototype.boot = function() {
    */
   
   $('button.create').on('click', function(e) {
-    self.navigate('create/', { trigger : true , replace: true });
-  });
-
-  // REFACTOR!
-  app.io.on('message', function(data) {
-    data = JSON.parse(data);
-    if(data.event === 'message:create') {
-      app.collection.messages.add(data.data);
-    }
+    self.navigate('create', { trigger : true , replace: true });
   });
 
   return this;
 };
 
-/**********/
-/* Routes */
-/**********/
+//-----------
+// URL Routes
+//-----------
 
 /**
  * `openMessage` route
@@ -198,7 +256,7 @@ Index.prototype.closeDialog = function() {
 };
 
 /**
- * `/join` - join group route
+ * /join - join group route
  */
 
 Index.prototype.joinGroup = function() {
@@ -209,7 +267,7 @@ Index.prototype.joinGroup = function() {
 };
 
 /**
- * `/create` - create group route
+ * /create - create group route
  */
 
 Index.prototype.createGroup = function() {
@@ -218,3 +276,33 @@ Index.prototype.createGroup = function() {
       
   $('#dialog-container').html(create.render().el);
 };
+
+//--------------
+// Socket Routes
+//--------------
+
+/**
+ * Add a message
+ *
+ * @param {object} message
+ */
+
+Index.prototype.addMessage = function(message) {
+  app.collection.messages.add(message);
+};
+
+/**
+ * Add a comment
+ *
+ * @param {object} message
+ */
+
+Index.prototype.addMessage = function(message) {
+  app.collection.messages.add(message);
+};
+
+/**
+ * Boot up
+ */
+
+app.index = new Index();

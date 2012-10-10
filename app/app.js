@@ -15,8 +15,9 @@ var express = require('express'),
  */
 
 jay.root(__dirname)
-   .main('boot.js')
    .include('/vendor/normalize.css')
+   // Include this, because we want our UI tests to inherit
+   .include('/views/layout/layout.styl')
    .include('hogan.js', '/vendor/hogan.js')
    .alias('app', '/support/app.js')
    .alias('jquery', '/vendor/jquery.js')
@@ -44,111 +45,68 @@ app.configure('development', function() {
 });
 
 /**
- * Controllers
+ * Routes
  */
 
 var controllers = join(__dirname, 'controllers'),
     index = require(controllers + '/index'),
     authorize = require(controllers + '/authorize');
 
-app.get('/test/dialog', fetchUser, fetchMessages, function(req, res) {
-  res.render('../ui/dialogs/test.jade');
-});
-
-app.get('/', fetchUser, fetchMessages, index.index);
+// Index
+app.get('/', fetchData, index.index);
 
 // Pass-throughs
 // TODO: Find a cleaner way to do this, should *all* pass-through?
 // - I kind of doubt it, probably want to be explicit, annoying though..
-app.get('/join', fetchUser, fetchMessages, index.index);
-app.get('/create', fetchUser, fetchMessages, index.index);
-
-app.get('/messages/:id', fetchUser, fetchMessages, index.index);
+app.get('/join', fetchData, index.index);
+app.get('/create', fetchData, index.index);
+app.get('/messages/:id', fetchData, index.index);
 
 // Login/Logout
 app.get('/login', authorize.index);
 app.post('/login', authorize.create);
 app.get('/logout', authorize.destroy);
 
-function fetchUser(req, res, next) {
+// Test dialog route
+app.get('/test/dialog', fetchData, function(req, res) {
+  res.render('../ui/dialogs/test.jade');
+});
+
+/**
+ * Fetch the user and message data from the API
+ */
+
+function fetchData(req, res, next) {
   var token = req.cookies.token;
+      pending = 2;
+
   if(!token) return res.redirect('/login');
 
+  // Fetch user data
   request
     .get('api.nimbis.com:8080/users')
     .set('Cookie', 'token=' + token)
     .end(function(r) {
       if(!r.ok) return res.redirect('/login');
       req.user = r.body;
-      next();
+      if(!--pending) return next();
     });
-}
 
-function fetchMessages(req, res, next) {
-  var token = req.cookies.token,
-      user = req.user,
-      messages = req.messages = [];
-
-
-  if(!user) return next();
-
+  // Fetch the messages
   request
     .get('api.nimbis.com:8080/messages')
     .set('Cookie', 'token=' + token)
     .end(function(r) {
       if(!r.ok) return next();
       req.messages = r.body;
-      return next();
+      if(!--pending) return next();
     });
 }
 
-// Refactor
-// app.get('/messages/:id', function(req, res, next) {
-//   res.render('index/index.mu', {
-//     layout : 'layouts/base/base.mu',
-//     user : JSON.stringify(users[0]),
-//     messages : JSON.stringify(messages),
-//     title : "nimbis"
-//   });
-// });
+/**
+ * Listen if we are running this file directly
+ */
 
-// app.get('/groups/:id/edit', function(req, res, next) {
-//   res.render('index/index.mu', {
-//     layout : 'layouts/ba se/base.mu',
-//     user : JSON.stringify(users[0]),
-//     messages : JSON.stringify(messages),
-//     title : "nimbis"
-//   });
-// });
-
-// app.get('/join', function(req, res, next) {
-//   res.render('index/index.mu', {
-//     layout : 'layouts/base/base.mu',
-//     user : JSON.stringify(users[0]),
-//     messages : JSON.stringify(messages),
-//     title : "nimbis"
-//   });
-// });
-
-// app.get('/workspace/:workspace?', function(req, res) {
-//   res.render('workspace/workspace.mu', {
-//     layout : 'layouts/base/base.mu',
-//     user : JSON.stringify(users[0]),
-//     messages : JSON.stringify(messages),
-//     title : "nimbis workspace"
-//   });
-// });
-
-// app.get('/', function(req, res) {
-//   res.render('index/index.mu', {
-//     layout : 'layouts/base/base.mu',
-//     user : JSON.stringify(users[0]),
-//     messages : JSON.stringify(messages),
-//     title : "nimbis"
-//   });
-// });
-
-// Listen if we are running this file directly
 if(!module.parent) {
   var port = process.argv[2] || 8080;
   app.listen(port);

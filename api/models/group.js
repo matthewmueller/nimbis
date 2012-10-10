@@ -1,6 +1,4 @@
 var _ = require('underscore'),
-    monk = require('../support/monk'),
-    Users = require('../collections/users'),
     Base = require('./base');
 
 /*

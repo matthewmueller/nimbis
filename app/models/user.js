@@ -36,11 +36,6 @@ User.prototype.defaults = {
 User.prototype.idAttribute = '_id';
 
 /*
-  Use a recursive `toJSON`
-*/
-User.prototype.toJSON = require('../support/backbone/toJSON.recursive.js');
-
-/*
   Attribute functions
 */
 // User.prototype.attributes = {
