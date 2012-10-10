@@ -6,7 +6,6 @@ var app = require('app'),
     $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
-    // cookie = require('/vendor/cookie'),
     Index = require('./index.js'),
     User = require('/models/user'),
     Messages = require('/collections/messages'),
@@ -62,4 +61,4 @@ index.boot();
  * Start the HTML5 history
  */
 
-Backbone.history.start({pushState: true});
+// Backbone.history.start({pushState: true});
