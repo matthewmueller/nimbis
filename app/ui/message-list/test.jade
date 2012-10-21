@@ -1,0 +1,16 @@
+html 
+  head
+    title test message-list
+    link(href='/ui/message-list/jay.css', rel='stylesheet')
+    style
+      .out {
+        width: 100%;
+        height: 200px;
+      }
+  body
+    h2 Message-list tests
+    div.out
+    script(type='text/javascript')
+      window.user = !{user};
+      window.messages = !{messages};
+    script(src='/ui/message-list/jay.js', type='text/javascript')
