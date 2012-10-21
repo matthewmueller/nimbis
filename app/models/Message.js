@@ -1,6 +1,7 @@
 var app = require('app'),
     Backbone = require('backbone'),
     User = require('./user.js'),
+    Groups = require('/collections/groups.js'),
     Comments = require('/collections/comments.js');
 
 /**
@@ -61,6 +62,7 @@ Message.prototype.initialize = function() {
   for(var i = 0; i < len; i++) {
     this.groups[i] = app.collection.groups.get(groups[i]);
   }
+  // console.log(this.groups);
   this.groups = new Groups(this.groups);
   delete attrs['groups'];
 };
@@ -77,11 +79,24 @@ Message.prototype.validate = function(attrs) {
 };
 
 /**
- * Custom toJSON function
+ * Extend toJSON function
  * @return {object}
  */
 Message.prototype.toJSON = function() {
-  json = this.attributes;
+  var json = this.attributes;
+  json.groups = this.groups.toJSON();
+  json.comments = this.comments.length;
+  json.author = this.author.toJSON();
+
+  return json;
+};
+
+/**
+ * Serialize is used to send the right information to the server
+ * @return {[type]} [description]
+ */
+Message.prototype.serialize = function() {
+  var json = this.attributes;
   json.groups = this.groups.pluck('_id');
   json.comments = this.comments.pluck('_id');
 

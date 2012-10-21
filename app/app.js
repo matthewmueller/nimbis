@@ -67,10 +67,20 @@ app.get('/login', authorize.index);
 app.post('/login', authorize.create);
 app.get('/logout', authorize.destroy);
 
-// Test dialog route
-app.get('/test/dialog', fetchData, function(req, res) {
-  res.render('../ui/dialogs/test.jade');
+// Test a UI component
+app.get('/ui/:component/test', fetchData, function(req, res) {
+  var component = req.params.component,
+      p = join(__dirname, 'ui', component, 'test');
+
+  res.render(p, {
+    user : JSON.stringify(req.user),
+    messages : JSON.stringify(req.messages)
+  });
 });
+// // Test dialog route
+// app.get('/test/dialog', fetchData, function(req, res) {
+//   res.render('../ui/dialogs/test');
+// });
 
 /**
  * Fetch the user and message data from the API

@@ -13,8 +13,7 @@
       {{/groups}}
     </div><!-- .groups -->
 
-    <div class="comments">{{comments.length}}
-    </div>
+    <!-- <div class="comments">{{comments}}</div> -->
 
   </div><!-- .messageInfo -->
 </div><!--- .message-container -->

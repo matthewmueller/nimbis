@@ -1,10 +1,4 @@
 /**
- * Make sure we're normalizing
- */
-
-require('normalize.css');
-
-/**
  * Module dependencies
  */
 

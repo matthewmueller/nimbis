@@ -1,4 +1,5 @@
 var app = require('app'),
+    $ = require('jquery'),
     Backbone = require('backbone'),
     _ = require('underscore'),
     bus = require('/support/bus.js'),
@@ -9,20 +10,35 @@ var app = require('app'),
 */
 require('./message-list.styl');
 
-/*
-  Expose MessageList, which extends List
-*/
-var MessageList = module.exports = List.extend();
+/**
+ * Make sure dom library is set
+ */
 
-/*
-  `MessageList` classname
-*/
-MessageList.prototype.className = 'message-list';
+if(!Backbone.$) Backbone.setDomLibrary($);
+
+/**
+ * Export MessageList
+ */
+
+var MessageList = module.exports = Backbone.View.extend();
+
+/**
+ * MessageList tag name
+ */
+
+MessageList.prototype.tagName = 'ul';
+
+/**
+ * `MessageList` classname
+ */
+
+MessageList.prototype.className = 'list message-list';
+
 
 /*
   `MessageList` message-list Template
 */
-MessageList.prototype.itemTemplate = require('./message-list.mu');
+MessageList.prototype.messageTemplate = require('./message-list.mu');
 
 /*
   `MessageList` events
@@ -34,10 +50,32 @@ MessageList.prototype.events = {
 /*
   Initialize `MessageList`
 */
+
 MessageList.prototype.initialize = function() {
   _.bindAll(this, 'render');
   
-  this.on('rendered', this.bind);
+  // Set up the binding
+  // this.on('rendered', this.bind);
+};
+
+/**
+ * Render `MessageList`
+ */
+
+MessageList.prototype.render = function() {
+  var messages = this.collection.map(this.renderMessage.bind(this));
+  this.$el.append(messages);
+  return this;
+};
+
+/**
+ * Render a single message
+ */
+
+MessageList.prototype.renderMessage = function(message) {
+  var json = message.toJSON();
+  json.cid = message.cid;
+  return this.messageTemplate(json);
 };
 
 /*
@@ -106,5 +144,5 @@ MessageList.prototype.open = function(e) {
       model = this.collection.getByCid(cid),
       id = model.id || cid;
 
-  app.index.navigate('messages/' + id, { trigger : true });
+  this.trigger('open', model);
 };

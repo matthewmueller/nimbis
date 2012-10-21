@@ -60,7 +60,7 @@ Index.prototype.events = {
  */
 
 Index.prototype.initialize = function() {
-  var self = this;
+  var self = this,
       User = require('/models/user.js'),
       Messages = require('/collections/messages.js'),
       Groups = require('/collections/groups.js');
@@ -70,8 +70,9 @@ Index.prototype.initialize = function() {
    */
 
   var user = app.model.user = new User(window.user),
+      // Note: user.groups is already a groups collection
       groups = app.collection.groups = user.groups,
-      messages = window.messages;
+      messages = app.collection.messages = new Messages(window.messages);
 
   // _(messages).each(function(message) {
   //   if(!message) return;
@@ -82,7 +83,7 @@ Index.prototype.initialize = function() {
   // });
 
   // Create model from messages json blob
-  messages = app.collection.messages = new Messages(messages);
+  // messages = app.collection.messages = new Messages(messages);
 
   /**
    * Render the page
@@ -188,6 +189,12 @@ Index.prototype.render = function() {
     self.navigate('create', { trigger : true , replace: true });
   });
 
+  /**
+   * Bindings
+   */
+  
+  app.view.messageList.on('open', this.openMessage.bind(this));
+
   return this;
 };
 
@@ -200,13 +207,13 @@ Index.prototype.render = function() {
  * @param  {model|message-id} message
  */
 
-Index.prototype.openMessage = function(messageId) {
+Index.prototype.openMessage = function(message) {
   var MessageHeader = require('/ui/message-header/message-header.js'),
       CommentList = require('/ui/comment-list/comment-list.js'),
       ShareComment = require('/ui/share-comment/share-comment.js');
-
+  console.log(message);
   // If an ID is passed, get the model
-  var message = app.collection.messages.get(messageId);
+  // var message = app.collection.messages.get(messageId);
 
   // Load the MessageHeader view
   var messageHeader = new MessageHeader({
