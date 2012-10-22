@@ -1,0 +1,27 @@
+.list {
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(0,0,0,0.2);
+}
+
+.list li {
+  list-style: none;
+}
+
+.list li a {
+  display: block;
+  padding: 5px 30px 5px 12px;
+  text-decoration: none;
+  border-top: 1px solid #eee;
+  color: #2e2e2e;
+  outline: none;
+}
+
+.list li:first-child a {
+  border-top: none;
+}
+
+.list li a:hover,
+.list li.selected a {
+  background: #f1faff;
+}

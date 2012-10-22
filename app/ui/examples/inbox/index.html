@@ -1,0 +1,23 @@
+<html>
+<head>
+  <title> Component</title>
+  <link rel="stylesheet" href="../../build/build.css">
+  <link rel="stylesheet" type="text/css" href="inbox.css">
+</head>
+<body>
+  <script id="message-template" type="text/template">
+    <div class="message">{{message}}</div>
+    <div class="more clearfix">
+      <span class="groups">
+        {{#groups}}
+          <span class="group" style="background-color:{{color}}">{{name}}</span>
+        {{/groups}}
+      </span>
+    </div>
+    <div class="date">{{date}}</div>
+  </script>
+
+  <script src="../../build/build.js" type="text/javascript"></script>
+  <script src="inbox.js" type="text/javascript"></script>
+</body>
+</html>

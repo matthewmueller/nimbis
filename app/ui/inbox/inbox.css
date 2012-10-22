@@ -1,0 +1,73 @@
+.inbox {
+  overflow-y: scroll;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  border-top: 1px solid #E0E0E0;
+  list-style-type: none;
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-overflow-scrolling: touch;
+  /* Fixes scrollbar from appearing on top
+     I can imagine other consequences of this attribute though.. */
+}
+
+.inbox li {
+  position: relative;
+  padding: 0 5px;
+  border-bottom: 1px solid #E0E0E0;
+  background: white;
+  cursor: pointer;
+}
+
+.inbox li:hover {
+  background: #f2f2f2;
+}
+.inbox li:hover .more {
+  background: #f2f2f2;
+}
+
+.inbox .message {
+  overflow: hidden;
+  padding: 6px 0;
+  color: #444;
+  white-space: nowrap;
+}
+
+.inbox .more {
+  position: absolute;
+  top: 6px;
+  right: 0;
+  padding: 3px 3px 3px 2px;
+  background-color: white;
+  line-height: 16px;
+}
+  
+.inbox .groups {
+  float: left;  
+}
+  
+.inbox .group {
+    float: left;
+    margin: 0px 2px;
+    padding: 0 10px;
+    border-radius: 5px;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 800;
+    font-variant: small-caps;
+    font-size : 11px;
+}
+
+.inbox .group:first-child {
+  margin-left: 0px;
+}
+
+.inbox .comments {
+  float: left;
+  padding: 0px 1px 0 2px;
+  min-width: 20px;
+  color: #c4c4c4;
+  text-align: center;
+  font-weight: bold;
+  font-size: x-small;
+}
