@@ -1,310 +1,107 @@
 /**
- * Add index styling
+ * Module dependencies
+ */
+
+var App = require('app'),
+    page = require('page'),
+    IO = require('io');
+
+/**
+ * Data Model and Collection Dependencies
+ */
+
+var User = require('/models/user.js'),
+    Groups = require('/collections/groups.js'),
+    Messages = require('/collections/messages.js');
+
+/**
+ * UI Dependencies
+ */
+
+var GroupList = require('/ui/group-list/group-list.js'),
+    Inbox = require('/ui/inbox/inbox.js');
+
+/**
+ * Style Dependencies
  */
 
 require('./index.styl');
 
 /**
- * Module dependencies
+ * Initialize the Models and Collections
  */
 
-var $ = require('jquery'),
-    _ = require('underscore'),
-    app = require('app'),
-    bus = require('bus'),
-    Backbone = require('backbone');
+var user = new User(window.user),
+    groups = user.groups,
+    messages = new Messages;
+
+// var app = new App({
+//   user : window.user,
+//   messages : window.messages
+// });
 
 /**
- * Use jQuery as the Backbone DOM Library
+ * Initialize websockets
  */
 
-Backbone.setDomLibrary($);
+var io = new IO({
+  host : 'ws.nimbis.com',
+  port: 8080
+});
+
+io.on('open', function() {
+  console.log('opened websockets');
+});
 
 /**
- * Export the `Index` router
+ * Build the `Group List`
  */
 
-var Index = module.exports = Backbone.Router.extend();
+var groupList = new GroupList;
+groupList.add(groups.toJSON());
+groupList.el.appendTo('#left');
 
 /**
- * `Index` routing
+ * Build the `Inbox`
  */
 
-Index.prototype.routes = {
-  'messages/:id' : 'openMessage',
-  'groups/:id/edit' : 'editGroup',
-  'join' : 'joinGroup',
-  'create' : 'createGroup'
-};
+var inbox = new Inbox;
+inbox.el.appendTo('#middle');
 
 /**
- * `Index` socket events
- */
-
-Index.prototype.socketEvents = {
-  'message:create' : 'addMessage',
-  'comment:create' : 'addComment'
-};
-
-/**
- * `Index` events
- */
-
-Index.prototype.events = {
-  'message-list:open' : 'openMessage',
-  'dialog:close' : 'closeDialog'
-};
-
-/**
- * Initialize `Index`
- */
-
-Index.prototype.initialize = function() {
-  var self = this,
-      User = require('/models/user.js'),
-      Messages = require('/collections/messages.js'),
-      Groups = require('/collections/groups.js');
-
-  /**
-   * Instantiate the models and collections
-   */
-
-  var user = app.model.user = new User(window.user),
-      // Note: user.groups is already a groups collection
-      groups = app.collection.groups = user.groups,
-      messages = app.collection.messages = new Messages(window.messages);
-
-  // _(messages).each(function(message) {
-  //   if(!message) return;
-  //   // Link message group IDs to group models
-  //   message.groups = _.map(message.groups, function(id) { return groups.get(id); });
-  //   // Remove any groups that weren't part of user's groups
-  //   message.groups = _.compact(message.groups);
-  // });
-
-  // Create model from messages json blob
-  // messages = app.collection.messages = new Messages(messages);
-
-  /**
-   * Render the page
-   */
-  
-  this.render();
-
-  /**
-   * Bind bus events
-   */
-
-  _.each(this.events, function(action, event) {
-    bus.on(event, function(payload) {
-      return self[action].call(self, payload);
-    });
-  });
-
-  /**
-   * Set up engine.io
-   */
-
-  var io = app.io = new eio.Socket({
-    host : 'ws.nimbis.com',
-    port: 8080
-  });
-
-  io.on('error', function() {
-    console.error('Could not connect to engine.io');
-  });
-
-  io.on('close', function(message) {
-    console.log('socket closed - ' + message);
-  });
-
-  /**
-   * Bind socket events
-   */
-  
-  app.io.on('message', function(payload) {
-    payload = JSON.parse(payload);
-    if(!payload.event || !payload.data) return;
-    var action = self.socketEvents[payload.event];
-    if(!action || !self[action]) return;
-    self[action].call(self, payload.data);
-  });
-
-  return this;
-};
-
-/**
- * Paint the page
- */
-
-Index.prototype.render = function() {
-  var self = this,
-      GroupList = require('/ui/group-list/group-list.js'),
-      MessageList = require('/ui/message-list/message-list.js'),
-      ShareMessage = require('/ui/share-message/share-message.js');
-
-  /**
-   * Load the `group-list` view
-   */
-
-  app.view.groupList = new GroupList({
-    collection : app.collection.groups
-  });
-
-  $('#left').append(app.view.groupList.render().el);
-
-  /**
-   * Load the `share-message` view
-   */
-  
-  app.view.shareMessage = new ShareMessage({
-    collection: app.collection.messages
-  });
-
-  $('#middle').append(app.view.shareMessage.render().el);
-
-  /**
-   * Load the `message-list` view
-   */
-
-  app.view.messageList = new MessageList({
-    collection : app.collection.messages
-  });
-
-  $('#middle').append(app.view.messageList.render().el);
-
-  /**
-   * Enable the join button
-   */
-  
-  $('button.join').on('click', function(e) {
-    self.navigate('join', { trigger : true , replace: true });
-  });
-
-  /**
-   * Enable the create button
-   */
-  
-  $('button.create').on('click', function(e) {
-    self.navigate('create', { trigger : true , replace: true });
-  });
-
-  /**
-   * Bindings
-   */
-  
-  app.view.messageList.on('open', this.openMessage.bind(this));
-
-  return this;
-};
-
-//-----------
-// URL Routes
-//-----------
-
-/**
- * `openMessage` route
- * @param  {model|message-id} message
- */
-
-Index.prototype.openMessage = function(message) {
-  var MessageHeader = require('/ui/message-header/message-header.js'),
-      CommentList = require('/ui/comment-list/comment-list.js'),
-      ShareComment = require('/ui/share-comment/share-comment.js');
-  console.log(message);
-  // If an ID is passed, get the model
-  // var message = app.collection.messages.get(messageId);
-
-  // Load the MessageHeader view
-  var messageHeader = new MessageHeader({
-    model : message
-  });
-
-  // Load the CommentList view
-  var commentList = new CommentList({
-    collection : message.comments
-  });
-
-  var shareComment = new ShareComment({
-    messageID : message.get('id'),
-    collection : message.comments
-  });
-
-  var placeholder = $('<div></div>');
-
-  placeholder
-    .append(messageHeader.render().el)
-    .append(commentList.render().el)
-    .append(shareComment.render().el);
-
-  $('#right').html(placeholder);
-};
-
-/**
- * `closeDialog` route
+ * Example bindings
  *
- * Simply reset the navigation
- *
- */
-Index.prototype.closeDialog = function() {
-  this.navigate('/');
-};
-
-/**
- * /join - join group route
+ * TODO: Think about how I can move most of this out of index.js,
+ * or if I shouldn't. Keep in mind `groups` needs to be present
  */
 
-Index.prototype.joinGroup = function() {
-  var Join = require('/ui/dialogs/join/join.js'),
-      join = new Join();
+messages.on('add', function(message) {
+  var ids = message.attributes.groups,
+      len = ids.length,
+      models = [];
 
-  $('#dialog-container').html(join.render().el);
-};
+  for(var i = 0; i < len; i++) {
+    models[i] = groups.get(ids[i]).toJSON();
+  }
 
-/**
- * /create - create group route
- */
+  var json = message.toJSON();
+  json.groups = models;
+  inbox.add(json);
+});
 
-Index.prototype.createGroup = function() {
-  var Create = require('/ui/dialogs/create/create.js'),
-      create = new Create();
-      
-  $('#dialog-container').html(create.render().el);
-};
+messages.add(window.messages);
 
-//--------------
-// Socket Routes
-//--------------
+// var inbox = new Inbox;
+// inbox.add(app.messages.toJSON());
+// inbox.el.appendTo('#middle');
 
-/**
- * Add a message
- *
- * @param {object} message
- */
+// app.messages.on('add', function(message) {
+//   message.attributes.message = 'lol';
+//   console.log('message', message.toJSON());
+// });
 
-Index.prototype.addMessage = function(message) {
-  app.collection.messages.add(message);
-};
+// app.messages.add({
+//   message : 'sup'
+// });
 
-/**
- * Add a comment
- *
- * @param {object} comment
- */
-
-Index.prototype.addComment = function(comment) {
-  app.collection.comments.add(comment);
-};
-
-/**
- * Boot up
- */
-
-var index = app.index = new Index();
-
-/**
- * Start the backbone history
- */
-
-Backbone.history.start({pushState: true});
-
+// console.log(app.messages.at(app.messages.length-1).toJSON());

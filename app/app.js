@@ -20,9 +20,13 @@ jay.root(__dirname)
    .include('/views/layout/layout.styl')
    .include('hogan.js', '/vendor/hogan.js')
    .alias('app', '/support/app.js')
+   .alias('io', '/support/io.js')
    .alias('jquery', '/vendor/jquery.js')
    .alias('underscore', '/vendor/underscore.js')
    .alias('backbone', '/vendor/backbone.js')
+   .alias('emitter', '/vendor/emitter.js')
+   .alias('page', '/vendor/page.js')
+   .alias('minstache', '/vendor/minstache.js')
    .alias('superagent', '/vendor/superagent.js')
    .alias('bus', '/support/bus.js');
 
@@ -77,10 +81,6 @@ app.get('/ui/:component/test', fetchData, function(req, res) {
     messages : JSON.stringify(req.messages)
   });
 });
-// // Test dialog route
-// app.get('/test/dialog', fetchData, function(req, res) {
-//   res.render('../ui/dialogs/test');
-// });
 
 /**
  * Fetch the user and message data from the API

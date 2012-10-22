@@ -57,14 +57,16 @@ Message.prototype.initialize = function() {
   this.author = new User(attrs.author);
   delete attrs['author'];
 
+
+  // TODO: FIX ME
   // Set up the groups
-  this.groups = [];
-  for(var i = 0; i < len; i++) {
-    this.groups[i] = app.collection.groups.get(groups[i]);
-  }
-  // console.log(this.groups);
-  this.groups = new Groups(this.groups);
-  delete attrs['groups'];
+  // this.groups = [];
+  // for(var i = 0; i < len; i++) {
+  //   this.groups[i] = app.groups.get(groups[i]);
+  // }
+  // // console.log(this.groups);
+  // this.groups = new Groups(this.groups);
+  // delete attrs['groups'];
 };
 
 Message.prototype.validate = function(attrs) {
@@ -82,14 +84,14 @@ Message.prototype.validate = function(attrs) {
  * Extend toJSON function
  * @return {object}
  */
-Message.prototype.toJSON = function() {
-  var json = this.attributes;
-  json.groups = this.groups.toJSON();
-  json.comments = this.comments.length;
-  json.author = this.author.toJSON();
+// Message.prototype.toJSON = function() {
+//   var json = this.attributes;
+//   json.groups = this.groups.toJSON();
+//   json.comments = this.comments.length;
+//   json.author = this.author.toJSON();
 
-  return json;
-};
+//   return json;
+// };
 
 /**
  * Serialize is used to send the right information to the server

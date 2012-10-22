@@ -1,3 +1,9 @@
+/**
+ * CHANGES MADE:
+ *
+ * - Added emit as Backbone.Event
+ */
+
 //     Backbone.js 0.9.2
 
 //     (c) 2010-2012 Jeremy Ashkenas, DocumentCloud Inc.
@@ -180,6 +186,9 @@
   // Aliases for backwards compatibility.
   Events.bind   = Events.on;
   Events.unbind = Events.off;
+
+  // Add emit as alias
+  Events.emit   = Events.trigger;
 
   // Backbone.Model
   // --------------
