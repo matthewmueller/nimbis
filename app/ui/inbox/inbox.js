@@ -59,5 +59,5 @@ Inbox.prototype.addMessage = function(message) {
 
   var json = message.toJSON();
   json.groups = models;
-  this.add(json);
+  this.shift(json);
 };

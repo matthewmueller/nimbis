@@ -18,46 +18,27 @@ module.exports = IO;
 function IO(options) {
   var socket = this.socket = new EIO.Socket(options || {});
   Emitter.call(this);
-
-  // Events
-  socket.on('open', this.open.bind(this));
-  socket.on('close', this.close.bind(this));
-  socket.on('error', this.error.bind(this));
   socket.on('message', this.message.bind(this));
 }
 
 /**
- * Called when the socket is opened
+ * Send data to the server
  *
+ * @param {String} event
+ * @param {Mixed, ...} message
  * @return {IO}
+ * @api public
  */
 
-IO.prototype.open = function() {
-  this.emit('open');
-  return this;
-};
+IO.prototype.send = function() {
+  var message = Array.prototype.slice.call(arguments),
+      event = message.shift();
 
-/**
- * Called when the socket is closed
- *
- * @param {Object} message
- * @return {IO}
- */
+  this.socket.send(JSON.stringify({
+    event : event,
+    message : message
+  }));
 
-IO.prototype.close = function(message) {
-  this.emit('close', message);
-  return this;
-};
-
-/**
- * Called when an error has occurred
- *
- * @param {Object} message
- * @return {IO}
- */
-
-IO.prototype.error = function(message) {
-  this.emit('error', message);
   return this;
 };
 
@@ -69,6 +50,7 @@ IO.prototype.error = function(message) {
  */
 
 IO.prototype.message = function(message) {
-  this.emit('message', message);
+  message = JSON.parse(message);
+  this.emit.apply(this, [message.event].concat(message.message));
   return this;
 };

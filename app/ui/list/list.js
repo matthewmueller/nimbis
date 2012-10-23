@@ -84,23 +84,25 @@ List.prototype.identifier = function(item) {};
  * `select` event. If a `slug` is present, it will also fire the event
  * `slug`, passing the `obj`.
  *
- * @param {Array} arr
+ * @param {Object} obj
  * @param {Function} fn
+ * @param:private {Boolean} prepend
  * @return {List}
  * @api public
  */
 
-List.prototype.add = function(obj, fn) {
+List.prototype.add = function(obj, fn, prepend) {
   // This is to make up for backbone passing extra params through "add"
   fn = (fn && 'function' == typeof fn) ? fn : function() {};
   
   var self = this,
+      action = (prepend) ? 'prependTo' : 'appendTo',
       json = (obj.toJSON) ? obj.toJSON() : obj,
       cid = this.cid++,
       el = $(this.tpl(json));
 
   el.addClass('list-item-' + cid)
-    .appendTo(this.el)
+    [action](this.el)
     .click(function(e) {
       e.preventDefault();
       e.stopPropagation();
@@ -113,6 +115,19 @@ List.prototype.add = function(obj, fn) {
   this.items[cid] = obj;
 
   return this;
+};
+
+/**
+ * Add an item to the top of the list
+ *
+ * @param {Object} obj
+ * @param {Function} fn
+ * @return {List}
+ * @api public
+ */
+
+List.prototype.shift = function(obj, fn) {
+  return this.add(obj, fn, true);
 };
 
 /**

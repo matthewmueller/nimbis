@@ -29,19 +29,6 @@ var GroupList = require('/ui/group-list/group-list.js'),
 require('./index.styl');
 
 /**
- * Initialize websockets
- */
-
-var io = new IO({
-  host : 'ws.nimbis.com',
-  port: 8080
-});
-
-io.on('open', function() {
-  console.log('opened websockets');
-});
-
-/**
  * Initialize the Models and Collections
  */
 
@@ -81,9 +68,37 @@ var inbox = new Inbox({
 inbox.el.appendTo('#middle');
 
 /**
- * Boot up the application
+ * Render the application
  */
 
 user.set(window.user);
 groups.add(window.user.groups);
 messages.add(window.messages);
+
+
+/**
+ * Initialize websockets
+ */
+
+var io = new IO({
+  host : 'ws.nimbis.com',
+  port: 8080
+});
+
+io.socket.on('error', function() {
+  throw new Error('IO: Could not open websocket');
+});
+
+/**
+ * Handle message sharing and recieving
+ */
+
+messageBox.on('share', function(message) {
+  io.send('message', message.toJSON());
+});
+
+io.on('message', function(message) {
+  messages.add(message);
+});
+
+

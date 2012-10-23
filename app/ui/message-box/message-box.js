@@ -108,8 +108,9 @@ MessageBox.prototype.share = function(e) {
     groups : ids
   });
 
-  message.save();
+  this.emit('share', message);
 
+  message.save();
   message.on('error', function(message, res) {
     throw new Error('Message-Box: Cannot save message', res.text);
   });
