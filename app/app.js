@@ -2,12 +2,14 @@
  * Module dependencies
  */
 
-var express = require('express'),
+var fs = require('fs'),
+    readdir = fs.readdirSync,
+    path = require('path'),
+    join = path.join,
+    express = require('express'),
     jay = require('jay'),
     cons = require('consolidate'),
-    path = require('path'),
     request = require('superagent'),
-    join = path.join,
     app = module.exports = express();
 
 /**
@@ -21,6 +23,7 @@ jay.root(__dirname)
    .include('hogan.js', '/vendor/hogan.js')
    .alias('app', '/support/app.js')
    .alias('io', '/support/io.js')
+   .alias('router', '/support/router.js')
    .alias('events', '/support/events.js')
    .alias('jquery', '/vendor/jquery.js')
    .alias('underscore', '/vendor/underscore.js')
@@ -30,6 +33,14 @@ jay.root(__dirname)
    .alias('minstache', '/vendor/minstache.js')
    .alias('superagent', '/vendor/superagent.js')
    .alias('bus', '/support/bus.js');
+
+/**
+ * Add the client-side routes
+ */
+
+readdir(join(__dirname, 'routes')).forEach(function(route) {
+  jay.include(join('/routes', route));
+});
 
 /**
  * Configuration

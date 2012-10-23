@@ -2,9 +2,16 @@
  * Module dependencies
  */
 
-var App = require('app'),
+var $ = require('jquery'),
+    App = require('app'),
     page = require('page'),
     IO = require('io');
+
+/**
+ * Style Dependencies
+ */
+
+require('./index.styl');
 
 /**
  * Data Model and Collection Dependencies
@@ -23,10 +30,17 @@ var GroupList = require('/ui/group-list/group-list.js'),
     Inbox = require('/ui/inbox/inbox.js');
 
 /**
- * Style Dependencies
+ * Setup client-side routes
  */
 
-require('./index.styl');
+var routes = ['join'];
+
+routes.forEach(function(route) {
+  route = '/' + route;
+  page(route, require('/routes' + route));
+});
+
+page();
 
 /**
  * Initialize the Models and Collections
@@ -100,5 +114,10 @@ messageBox.on('share', function(message) {
 io.on('message', function(message) {
   messages.add(message);
 });
+
+/**
+ * Set up the routes
+ */
+
 
 
