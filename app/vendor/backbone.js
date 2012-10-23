@@ -2,6 +2,8 @@
  * CHANGES MADE:
  *
  * - Added emit as Backbone.Event
+ * - Add the `withCredentials` option by default
+ * - Added `require('jquery')` as last option
  */
 
 //     Backbone.js 0.9.2
@@ -45,7 +47,7 @@
   if (!_ && (typeof require !== 'undefined')) _ = require('underscore');
 
   // For Backbone's purposes, jQuery, Zepto, or Ender owns the `$` variable.
-  var $ = root.jQuery || root.Zepto || root.ender;
+  var $ = root.jQuery || root.Zepto || root.ender || require('jquery');
 
   // Set the JavaScript library that will be used for DOM manipulation and
   // Ajax calls (a.k.a. the `$` variable). By default Backbone will use: jQuery,

@@ -19,6 +19,7 @@ var User = require('/models/user.js'),
  */
 
 var GroupList = require('/ui/group-list/group-list.js'),
+    MessageBox = require('/ui/message-box/message-box.js'),
     Inbox = require('/ui/inbox/inbox.js');
 
 /**
@@ -26,19 +27,6 @@ var GroupList = require('/ui/group-list/group-list.js'),
  */
 
 require('./index.styl');
-
-/**
- * Initialize the Models and Collections
- */
-
-var user = new User(window.user),
-    groups = user.groups,
-    messages = new Messages;
-
-// var app = new App({
-//   user : window.user,
-//   messages : window.messages
-// });
 
 /**
  * Initialize websockets
@@ -54,54 +42,48 @@ io.on('open', function() {
 });
 
 /**
+ * Initialize the Models and Collections
+ */
+
+var user = new User,
+    groups = new Groups,
+    messages = new Messages;
+
+/**
  * Build the `Group List`
  */
 
-var groupList = new GroupList;
-groupList.add(groups.toJSON());
+var groupList = new GroupList({
+  groups : groups
+});
+
 groupList.el.appendTo('#left');
+
+/**
+ * Build the `Message Box`
+ */
+
+var messageBox = new MessageBox({
+  groups : groups,
+  messages : messages
+});
+messageBox.el.appendTo('#middle');
 
 /**
  * Build the `Inbox`
  */
 
-var inbox = new Inbox;
+var inbox = new Inbox({
+  groups : groups,
+  messages : messages
+});
+
 inbox.el.appendTo('#middle');
 
 /**
- * Example bindings
- *
- * TODO: Think about how I can move most of this out of index.js,
- * or if I shouldn't. Keep in mind `groups` needs to be present
+ * Boot up the application
  */
 
-messages.on('add', function(message) {
-  var ids = message.attributes.groups,
-      len = ids.length,
-      models = [];
-
-  for(var i = 0; i < len; i++) {
-    models[i] = groups.get(ids[i]).toJSON();
-  }
-
-  var json = message.toJSON();
-  json.groups = models;
-  inbox.add(json);
-});
-
+user.set(window.user);
+groups.add(window.user.groups);
 messages.add(window.messages);
-
-// var inbox = new Inbox;
-// inbox.add(app.messages.toJSON());
-// inbox.el.appendTo('#middle');
-
-// app.messages.on('add', function(message) {
-//   message.attributes.message = 'lol';
-//   console.log('message', message.toJSON());
-// });
-
-// app.messages.add({
-//   message : 'sup'
-// });
-
-// console.log(app.messages.at(app.messages.length-1).toJSON());

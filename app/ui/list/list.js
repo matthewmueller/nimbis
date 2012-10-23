@@ -61,7 +61,23 @@ List.prototype.tpl = function(text) {
 };
 
 /**
- * Add list item with the given `arr` and optional callback `fn`.
+ * Identifier, used to identify list items. This allows
+ * you to remove menu items by passing in models or
+ * refresh single elements
+ *
+ * Example:
+ *
+ * function(item) {
+ *   return item.cid;
+ * }
+ *
+ * TODO: Finish me
+ */
+
+List.prototype.identifier = function(item) {};
+
+/**
+ * Add list item with the given `obj` and optional callback `fn`.
  * Emits an `add` event with the supplied `obj`.
  *
  * When the item is clicked `fn()` will be invoked, along with firing a
@@ -74,25 +90,14 @@ List.prototype.tpl = function(text) {
  * @api public
  */
 
-List.prototype.add = function(arr, fn) {
-  arr = Array.isArray(arr) ? arr : [arr];
-  var len = arr.length;
+List.prototype.add = function(obj, fn) {
+  // This is to make up for backbone passing extra params through "add"
+  fn = (fn && 'function' == typeof fn) ? fn : function() {};
   
-  for(var i = 0; i < len; i++) this.addItem(arr[i], fn);
-  return this;
-};
-
-/**
- * Add a single list item
- *
- * @param {Object}   obj
- * @param {Function} fn
- */
-
-List.prototype.addItem = function(obj, fn) {
   var self = this,
+      json = (obj.toJSON) ? obj.toJSON() : obj,
       cid = this.cid++,
-      el = $(this.tpl(obj));
+      el = $(this.tpl(json));
 
   el.addClass('list-item-' + cid)
     .appendTo(this.el)
@@ -101,7 +106,7 @@ List.prototype.addItem = function(obj, fn) {
       e.stopPropagation();
       self.emit('select', obj);
       self.emit('select:'+cid, obj);
-      if(fn) fn(obj);
+      fn(obj);
     });
 
   this.emit('add', obj);
