@@ -1,0 +1,32 @@
+<!-- Load the ShareMessage View -->
+<include src="../index.html" />
+
+<!-- Load the MessageList view -->
+<include src="/views/MessageList/index.html" />
+
+<div id="wrapper">
+  <div id="share"></div>
+  <br />
+  <div id="messages"></div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+  /*
+    Test messages
+  */
+  var message = App.JSON.messages[1];
+  message.groups = new App.Collections.Groups(App.JSON.groups[1]);
+  var messageCollection = new App.Collections.Messages(message);
+    
+  var shareView = new App.Views.ShareMessage();
+  
+  var messageView = new App.Views.MessageList();
+  messageView.collection = messageCollection;
+  
+  shareView.collection = messageCollection;
+  
+  $('#share').append(shareView.render().el);
+  $('#messages').append(messageView.render().el);
+  
+</script>
+  

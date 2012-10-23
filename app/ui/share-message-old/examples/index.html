@@ -1,0 +1,18 @@
+<include src="../index.html" />
+
+<div id="wrapper"></div>
+
+<script type="text/javascript" charset="utf-8">
+  /*
+    Test messages
+  */
+  
+  var messageCollection = new App.Collections.Messages();
+    
+  var shareView = new App.Views.ShareMessage();
+  
+  shareView.collection = messageCollection;
+  
+  $('#wrapper').append(shareView.render().el);
+  
+</script>
