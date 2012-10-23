@@ -54,6 +54,7 @@ var messageBox = new MessageBox({
   groups : groups,
   messages : messages
 });
+
 messageBox.el.appendTo('#middle');
 
 /**
@@ -74,7 +75,6 @@ inbox.el.appendTo('#middle');
 user.set(window.user);
 groups.add(window.user.groups);
 messages.add(window.messages);
-
 
 /**
  * Initialize websockets
