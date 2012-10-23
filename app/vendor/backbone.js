@@ -2,7 +2,7 @@
  * CHANGES MADE:
  *
  * - Added emit as Backbone.Event
- * - Add the `withCredentials` option by default
+ * - Add the xhr field `withCredentials : true` by default
  * - Added `require('jquery')` as last option
  */
 
@@ -1330,7 +1330,7 @@
     options || (options = {});
 
     // Default JSON-request options.
-    var params = {type: type, dataType: 'json'};
+    var params = {type: type, dataType: 'json', xhrFields : { withCredentials : true }};
 
     // Ensure that we have a URL.
     if (!options.url) {
