@@ -5,7 +5,7 @@ $(function() {
         action = $this.attr('action'),
         method = $this.attr('method'),
         out = $this.find('.out'),
-        query = $this.find('input:text, input:password').toJSON();
+        query = $this.find('input:text, input:password, textarea').toJSON();
 
     // Replace param :key with value
     Object.keys(query).forEach(function(key) {
@@ -85,5 +85,37 @@ $(function() {
 
     return new RegExp('^' + path + '$', sensitive ? '' : 'i');
   }
+
+
+  /**
+   * Use Local Storage to store values
+   */
+  
+  $('form').submit(function() {
+    var $this = $(this),
+        action = $this.attr('action');
+
+    $this.find('input:text, input:password, textarea').each(function() {
+      var $this = $(this),
+          name = $this.attr('name'),
+          key = action + '|' + name;
+
+      localStorage.setItem(key, $this.val());
+    });
+  });
+
+  $('form').each(function() {
+    var $this = $(this),
+        action = $this.attr('action');
+
+    $this.find('input:text, input:password, textarea').each(function() {
+      var $this = $(this),
+          name = $this.attr('name'),
+          key = action + '|' + name,
+          item = localStorage.getItem(key);
+      
+      if(item) $this.val(item);
+    });
+  });
 
 });

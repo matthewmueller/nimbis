@@ -75,3 +75,27 @@ body
     input(type='text', placeholder='groups', name='groups')
     input(type='submit', value='Create message')
     pre.out
+
+  hr
+
+  h2 comments
+
+  h3 GET /messages/:messageId/comments
+  form(method='get', action='/messages/:messageId/comments')
+    input(type='text', placeholder='message ID', name='messageId')
+    input(type='submit', value='Get comments')
+    pre.out
+
+  h3 GET /messages/comments/:id
+  form(method='get', action='messages/comments/:id')
+    input(type='text', placeholder='id', name='id')
+    input(type='submit', value='Get comment')
+    pre.out
+
+  h3 POST /messages/:messageId/comments
+
+  form(method='post', action='/messages/:messageId/comments')
+    input(type='text', placeholder='message ID', name='messageId')
+    input(type='text', placeholder='comment', name='comment')
+    input(type='submit', value='Create comment')
+    pre.out

@@ -145,16 +145,17 @@ app.post('/join', fetchUser, user.join);
  * Messages
  */
 
-app.post('/messages', fetchUser, message.create);
 app.get('/messages', fetchUser, message.index);
+app.post('/messages', fetchUser, message.create);
 app.get('/messages/:id', fetchUser, message.show);
 
 /**
  * Comments
  */
 
-app.post('/messages/:message/comments', fetchUser, comment.create);
-app.get('/messages/:message/comments', fetchUser, comment.index);
+app.get('/messages/:messageId/comments', fetchUser, comment.index);
+app.post('/messages/:messageId/comments', fetchUser, comment.create);
+app.get('/messages/comments/:id', fetchUser, comment.show);
 
 
 /**

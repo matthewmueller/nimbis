@@ -26,10 +26,9 @@ exports.index = function(req, res, next) {
 // watch "curl -d \"name=matt&email=matt@matt.com&password=test\" localhost:8080/users"
 exports.create = function(req, res, next) {
   var body = req.body;
-  console.log(body);
+
   User.create(body, function(err, model) {
     if(err) return next(err);
-    console.log(model);
     res.send(201, model);
   });
 };

@@ -302,9 +302,13 @@ Base.find = function(query, fn) {
 
 /**
  * Find all the models
+ *
+ * TODO: Should send queries straight to mongo with 'find $in'
  */
 
 Base.findAll = function(queries, fn) {
+  queries = isArray(queries) ? queries : [queries];
+
   var self = this,
       pending = queries.length,
       out = [],
