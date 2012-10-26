@@ -3,22 +3,25 @@
  */
 
 var $ = require('jquery'),
-    Dialog = require('/ui/dialogs/join/join.js');
+    JoinDialog = require('/ui/dialogs/join/join.js'),
+    CreateDialog = require('/ui/dialogs/create/create.js');
 
 /**
  * /join
- * 
+ *
  * Show the `join dialog`. Allows users to join new groups
  */
 
 exports.join = function() {
-  var dialog = new Dialog();
+  var dialog = new JoinDialog();
   $('#dialog-container').html(dialog.render().el);
   return this;
 };
 
 exports.new = function() {
-  console.log('lol');
+  var dialog = new CreateDialog();
+  $('#dialog-container').html(dialog.render().el);
+  return this;
 };
 
 exports.edit = function() {
