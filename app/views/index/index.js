@@ -127,20 +127,23 @@ io.on('message', function(message) {
 
 /**
  * Setup client-side routes
+ *
+ * TODO: Add to a router, so we can start reusing variables.
+ * router.add('/messages/:messageId/comments', 'comments.index');
  */
 
-var routes = ['groups'],
-    routeMap = require('route-map');
+var route = {
+  groups : require('/routes/groups'),
+  comments : require('/routes/comments')
+};
 
-routes.forEach(function(route) {
-  var fns = require('/routes/' + route),
-      mapping;
+// Groups
+page('/groups/join', route.groups.join);
+page('/groups/new', route.groups.new);
+page('/groups/:id/edit', route.groups.edit);
 
-  for(var r in fns) {
-    mapping = '/' + [route, routeMap[r] || r].join('/');
-    page(mapping, fns[r]);
-  }
-});
+// Comments
+page('/messages/:messageId/comments', route.comments.index);
 
 // Start the history
 page();
@@ -159,6 +162,8 @@ $('.create').click(function() {
   page('/groups/new');
 });
 
+// TODO: This should be in routes...
 inbox.on('select', function(message) {
   commentList.load(message._id);
+  page('/messages/' + message._id + '/comments');
 });
