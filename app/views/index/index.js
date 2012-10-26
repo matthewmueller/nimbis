@@ -33,13 +33,20 @@ var GroupList = require('/ui/group-list/group-list.js'),
  * Setup client-side routes
  */
 
-var routes = ['join'];
+var routes = ['groups'],
+    routeMap = require('route-map');
 
 routes.forEach(function(route) {
-  route = '/' + route;
-  page(route, require('/routes' + route));
+  var fns = require('/routes/' + route),
+      mapping;
+
+  for(var r in fns) {
+    mapping = '/' + [route, routeMap[r] || r].join('/');
+    page(mapping, fns[r]);
+  }
 });
 
+// Start the history
 page();
 
 /**
@@ -114,10 +121,3 @@ messageBox.on('share', function(message) {
 io.on('message', function(message) {
   messages.add(message);
 });
-
-/**
- * Set up the routes
- */
-
-
-

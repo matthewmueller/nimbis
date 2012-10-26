@@ -6,6 +6,8 @@ var fs = require('fs'),
     readdir = fs.readdirSync,
     path = require('path'),
     join = path.join,
+    basename = path.basename,
+    extname = path.extname,
     express = require('express'),
     jay = require('jay'),
     cons = require('consolidate'),
@@ -23,7 +25,7 @@ jay.root(__dirname)
    .include('hogan.js', '/vendor/hogan.js')
    .alias('app', '/support/app.js')
    .alias('io', '/support/io.js')
-   .alias('router', '/support/router.js')
+   .alias('route-map', '/support/route-map.js')
    .alias('events', '/support/events.js')
    .alias('jquery', '/vendor/jquery.js')
    .alias('underscore', '/vendor/underscore.js')
@@ -33,14 +35,6 @@ jay.root(__dirname)
    .alias('minstache', '/vendor/minstache.js')
    .alias('superagent', '/vendor/superagent.js')
    .alias('bus', '/support/bus.js');
-
-/**
- * Add the client-side routes
- */
-
-readdir(join(__dirname, 'routes')).forEach(function(route) {
-  jay.include(join('/routes', route));
-});
 
 /**
  * Configuration
@@ -54,6 +48,7 @@ app.configure(function() {
   app.use(express.cookieParser('keyboard cat'));
   app.use(express['static'](join(__dirname, 'build')));
   app.use(express['static'](join(__dirname, 'vendor')));
+  app.use(app.router);
 });
 
 app.configure('development', function() {
@@ -71,12 +66,21 @@ var controllers = join(__dirname, 'controllers'),
 // Index
 app.get('/', fetchData, index.index);
 
+/**
+ * Add the client-side routes
+ */
+
+readdir(join(__dirname, 'routes')).forEach(function(route) {
+  jay.include(join('/routes', route));
+  var r = route.replace(/\.\w+$/, '');
+  app.get('/' + r, fetchData, index.index);
+  app.get('/' + r + '/*', fetchData, index.index);
+});
+
 // Pass-throughs
 // TODO: Find a cleaner way to do this, should *all* pass-through?
 // - I kind of doubt it, probably want to be explicit, annoying though..
-app.get('/join', fetchData, index.index);
-app.get('/create', fetchData, index.index);
-app.get('/messages/:id', fetchData, index.index);
+// app.get('/groups/join', fetchData, index.index);
 
 // Login/Logout
 app.get('/login', authorize.index);
