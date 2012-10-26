@@ -4,7 +4,7 @@
 
 var $ = require('jquery'),
     Emitter = require('emitter'),
-    events = require('events'),
+    Events = require('events'),
     Message = require('/models/message'),
     template = require('./message-box.mu')();
 
@@ -35,19 +35,22 @@ function MessageBox(ds) {
   if(!groups || !messages) throw new Error('MessageBox: missing required data to initialize');
   
   this.el = $(template);
-  events.call(this, this.el, this.events);
 
-  Emitter.call(this);
+  this.bind('click .message', 'expand')
+      .bind('click .share', 'share');
 }
 
 /**
- * Bind Events
+ * Mixin `Emitter`
  */
 
-MessageBox.prototype.events = {
-  'click .message' : 'expand',
-  'click .share' : 'share'
-};
+Emitter(MessageBox.prototype);
+
+/**
+ * Mixin `Events`
+ */
+
+Events(MessageBox.prototype);
 
 /**
  * Expand the message box

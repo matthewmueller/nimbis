@@ -2,15 +2,15 @@
  * Module dependencies
  */
 
- var User = require('/models/user.js'),
-     Messages = require('/collections/messages.js'),
-     Groups = require('/collections/groups.js');
+ // var User = require('/models/user.js'),
+ //     Messages = require('/collections/messages.js'),
+ //     Groups = require('/collections/groups.js');
 
 /**
- * Export `App`
+ * Export `app`
  */
 
-module.exports = App;
+module.exports = {};
 
 /**
  * Initialize the `App`
@@ -18,11 +18,22 @@ module.exports = App;
  * @return {App}
  */
 
-function App(json) {
-  if(!json.user || !json.messages)
-    throw new Error('App: Cannot load app, missing JSON data');
+// function App(data) {
+//   if(!data.user || !data.groups || !data.messages) {
+//     throw new Error('App: Cannot load app, missing data');
+//   }
 
-  this.user = new User(json.user);
-  this.groups = this.user.groups;
-  this.messages = new Messages(json.messages);
-}
+//   if(typeof App.instance === 'object') {
+//     return App.instance;
+//   }
+
+//   // Cache the instance
+//   App.instance = this;
+
+//   // Save the data
+//   for(var key in data) {
+//     this[key] = data[key];
+//   }
+
+//   return this;
+// }

@@ -13,4 +13,13 @@ Comments.prototype.name = 'comments';
 /*
   Add the `Comment` Model
 */
+
 Comments.prototype.model = require('/models/comment.js');
+
+/**
+ * Initialize
+ */
+
+Comments.prototype.initialize = function(attrs) {
+  // console.log(attrs);
+};

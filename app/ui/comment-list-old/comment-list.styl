@@ -1,0 +1,46 @@
+.comment-list
+  
+  .comment-container
+    color : black
+    list-style : none
+    padding: 7px 7px
+    color: #444
+    
+    &:first-child
+      border-top: none
+    
+    &:last-child
+      border-bottom: none
+
+    .icon
+      width: 32px
+      height: 32px
+      background-color: #EBF2F8
+      float: left
+
+    .container
+      padding: 5px
+      border-radius: 5px
+      background-color: white
+      margin-left: 43px
+
+      .author
+        font-weight: 700
+
+      .date
+        float:right
+        color: #B0B0B0
+        opacity: 0
+        font-size: 90%
+        -webkit-transition: opacity .2s;
+
+      .comment
+        margin-top: 7px
+        margin-bottom: 7px
+
+  .comment-container:hover
+    .date
+      opacity: 1
+
+  #comment-box
+    min-width: 550px

@@ -1,46 +1,68 @@
-var _ = require('underscore'),
-    Backbone = require('backbone'),
-    List = require('../list/list.js');
+/**
+ * Module dependencies
+ */
 
-/*
-  Add Style
-*/
+var List = require('/ui/list/list.js'),
+    Comments = require('/collections/comments.js');
+    template = require('./comment-list.mu'),
+    superagent = require('superagent'),
+    mu = require('minstache');
+
+/**
+ * Add `comment-list.styl`
+ */
+
 require('./comment-list.styl');
 
-/*
-  Expose CommentList, which extends List
-*/
+/**
+ * Comment collection cache
+ */
 
-var CommentList = module.exports = List.extend();
+var cache = {};
 
-/*
-  `CommentList` classname
-*/
-CommentList.prototype.className = 'comment-list';
+/**
+ * Export `CommentList`
+ */
 
-/*
-  `CommentList` Template
-*/
-CommentList.prototype.itemTemplate = require('./comment-list.mu');
+module.exports = CommentList;
 
-/*
-  Initialize `CommentList`
-*/
-CommentList.prototype.initialize = function() {
-  _.bindAll(this, 'render');
-  
-  // Bind once rendered
-  this.on('rendered', this.bind);
-};
+/**
+ * Initialize `CommentList`
+ */
 
-/*
-  `CommentList` Bindings
-*/
-CommentList.prototype.bind = function() {  
-  // Bind Collection
-  this.collection.on('add', this.render);
-  this.collection.on('remove', this.render);
-  
-  // Hack for now, should be once(..)
-  this.off('rendered', this.bind);
+function CommentList() {
+  if(!this instanceof CommentList) return new CommentList;
+
+  List.call(this);
+  this.template(template);
+  this.el.addClass('comment-list');
+}
+
+/**
+ * Inherit from `List.prototype`
+ */
+
+CommentList.prototype.__proto__ = List.prototype;
+
+/**
+ * Load the comment list with data
+ */
+
+CommentList.prototype.load = function(messageId) {
+  var comments = cache[messageId] || new Comments({ messageId : messageId });
+
+  comments.on('add', this.add.bind(this));
+
+  // comments.fetch();
+  // comments.on('error', function(comments, res) {
+  //   throw new Error('Comment-List: Cannot fetch comments', res.text);
+  // });
+
+  superagent
+    .get('http://api.nimbis.com:8080/messages/' + messageId + '/comments')
+    .end(function(res) {
+      if(!res.ok) throw new Error('Comment List: Unable to load data', res.text);
+      console.log(res.body);
+      comments.add(res.body);
+    });
 };

@@ -28,8 +28,8 @@ Comment.prototype.defaults = {
   Initialize the comment
 */
 Comment.prototype.initialize = function() {
-  var author = this.get('author');
-
+  // var author = this.get('author');
+  
   // Instantiate the author object
-  this.set('author', new User(author), { silent : true });
+  // this.set('author', new User(author), { silent : true });
 };

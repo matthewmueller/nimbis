@@ -97,18 +97,18 @@ Message.prototype.validate = function(attrs) {
  * Serialize is used to send the right information to the server
  * @return {[type]} [description]
  */
-Message.prototype.serialize = function() {
-  var json = this.attributes;
-  json.groups = this.groups.pluck('_id');
-  json.comments = this.comments.pluck('_id');
+// Message.prototype.serialize = function() {
+//   var json = this.attributes;
+//   json.groups = this.groups.pluck('_id');
+//   json.comments = this.comments.pluck('_id');
 
-  json.author = {
-    name : this.author.get('name'),
-    _id : this.author.id
-  };
+//   json.author = {
+//     name : this.author.get('name'),
+//     _id : this.author.id
+//   };
 
-  return json;
-};
+//   return json;
+// };
 
 /*
   Load the groups
