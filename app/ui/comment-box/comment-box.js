@@ -24,7 +24,7 @@ module.exports = CommentBox;
  * Initialize `CommentBox`
  */
 
-function CommentBox(ds) {
+function CommentBox() {
   if(!(this instanceof CommentBox)) return new CommentBox;
   this.el = $(template);
   this.bind('keydown .comment', 'share');

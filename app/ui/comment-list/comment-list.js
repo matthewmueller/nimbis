@@ -49,7 +49,8 @@ CommentList.prototype.__proto__ = List.prototype;
  */
 
 CommentList.prototype.load = function(messageId) {
-  var comments = cache[messageId] || new Comments({ messageId : messageId });
+  var self = this,
+      comments = cache[messageId] || new Comments({ messageId : messageId });
 
   comments.on('add', this.add.bind(this));
 
@@ -62,7 +63,7 @@ CommentList.prototype.load = function(messageId) {
     .get('http://api.nimbis.com:8080/messages/' + messageId + '/comments')
     .end(function(res) {
       if(!res.ok) throw new Error('Comment List: Unable to load data', res.text);
-      console.log(res.body);
+      self.clear();
       comments.add(res.body);
     });
 };

@@ -149,6 +149,20 @@ List.prototype.remove = function(cid) {
 };
 
 /**
+ * Clear list items
+ *
+ * @return {List}
+ * @api public
+ */
+
+List.prototype.clear = function() {
+  this.emit('clear');
+  this.el.html('');
+  this.items = {};
+  return this;
+};
+
+/**
  * Check if this list has an item with the given `slug`.
  *
  * @param {String} slug

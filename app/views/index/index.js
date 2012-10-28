@@ -42,6 +42,12 @@ var user = new User,
     messages = new Messages;
 
 /**
+ * Create the comment collections cache
+ */
+
+var commentsCache = {};
+
+/**
  * Build the `Group List`
  */
 
@@ -99,6 +105,13 @@ messages.add(window.messages);
 app.user = user;
 app.groups = groups;
 app.messages = messages;
+
+// Add the view instances to `app`
+app.groupList = groupList;
+app.messageBox = messageBox;
+app.inbox = inbox;
+app.commentList = commentList;
+app.commentBox = commentBox;
 
 /**
  * Initialize websockets
@@ -164,6 +177,26 @@ $('.create').click(function() {
 
 // TODO: This should be in routes...
 inbox.on('select', function(message) {
-  commentList.load(message._id);
   page('/messages/' + message._id + '/comments');
 });
+
+/**
+ * Load comments
+ */
+
+function loadComments(ctx, next) {
+  var messageId = ctx.params.messageId,
+      comments = commentsCache[messageId];
+
+  // This might not stay up to-date (maybe it could though..)
+  if(comments) return comments;
+  comments = new Comments;
+
+  superagent
+    .get('http://api.nimbis.com:8080/messages/' + messageId + '/comments')
+    .end(function(res) {
+      if(!res.ok) throw new Error('Comment List: Unable to load data', res.text);
+      commentsCache[messageId] = comments;
+      comments.add(res.body);
+    });
+}
