@@ -68,6 +68,11 @@ var messageBox = new MessageBox({
 
 messageBox.el.appendTo('#middle');
 
+messageBox.on('share', function(message) {
+  var comments = new Comments;
+  commentsCache[message._id] = comments;
+});
+
 /**
  * Build the `Inbox`
  */
@@ -90,8 +95,16 @@ commentList.el.appendTo('#right');
  * Build the `Comment Box`
  */
 
-var commentBox = new CommentBox;
+var commentBox = new CommentBox({
+  user : user
+});
+
 commentBox.el.appendTo('#right');
+
+commentBox.on('share', function(comment) {
+  var comments = commentList.comments;
+  comments.shift(comment);
+});
 
 /**
  * Render the application
@@ -134,8 +147,16 @@ messageBox.on('share', function(message) {
   io.send('message', message.toJSON());
 });
 
+commentBox.on('share', function(comment) {
+  io.send('comment', comment.toJSON());
+});
+
 io.on('message', function(message) {
   messages.add(message);
+});
+
+io.on('comment', function(comment) {
+  comments.add(comment);
 });
 
 /**
@@ -184,19 +205,18 @@ inbox.on('select', function(message) {
  * Load comments
  */
 
-function loadComments(ctx, next) {
-  var messageId = ctx.params.messageId,
-      comments = commentsCache[messageId];
+// function loadComments(ctx, next) {
+//   var messageId = ctx.params.messageId,
+//       comments = commentsCache[messageId];
 
-  // This might not stay up to-date (maybe it could though..)
-  if(comments) return comments;
-  comments = new Comments;
+//   // This might not stay up to-date (maybe it could though..)
+//   comments = (comments) ? comments : new Comments;
 
-  superagent
-    .get('http://api.nimbis.com:8080/messages/' + messageId + '/comments')
-    .end(function(res) {
-      if(!res.ok) throw new Error('Comment List: Unable to load data', res.text);
-      commentsCache[messageId] = comments;
-      comments.add(res.body);
-    });
-}
+//   superagent
+//     .get('http://api.nimbis.com:8080/messages/' + messageId + '/comments')
+//     .end(function(res) {
+//       if(!res.ok) throw new Error('Comment List: Unable to load data', res.text);
+//       commentsCache[messageId] = comments;
+//       comments.add(res.body);
+//     });
+// }

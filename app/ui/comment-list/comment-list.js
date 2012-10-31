@@ -54,10 +54,8 @@ CommentList.prototype.load = function(messageId) {
 
   comments.on('add', this.add.bind(this));
 
-  // comments.fetch();
-  // comments.on('error', function(comments, res) {
-  //   throw new Error('Comment-List: Cannot fetch comments', res.text);
-  // });
+  // Update the current comments collection
+  this.comments = comments;
 
   superagent
     .get('http://api.nimbis.com:8080/messages/' + messageId + '/comments')

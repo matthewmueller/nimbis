@@ -77,12 +77,8 @@ readdir(join(__dirname, 'routes')).forEach(function(route) {
   app.get('/' + r + '/*', fetchData, index.index);
 });
 
-// Pass-throughs
-// TODO: Find a cleaner way to do this, should *all* pass-through?
-// - I kind of doubt it, probably want to be explicit, annoying though..
-// app.get('/groups/join', fetchData, index.index);
-
 // Login/Logout
+// TODO: Move this out of "app.nimbis.com"
 app.get('/login', authorize.index);
 app.post('/login', authorize.create);
 app.get('/logout', authorize.destroy);
