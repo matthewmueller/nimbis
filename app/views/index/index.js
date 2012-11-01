@@ -142,6 +142,7 @@ commentBox.on('share', function(comment) {
 });
 
 io.on('message', function(message) {
+  console.log('recieving message...');
   messages.add(message);
 });
 

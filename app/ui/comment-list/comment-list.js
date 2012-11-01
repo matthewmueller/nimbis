@@ -78,10 +78,15 @@ CommentList.prototype.filter = function(messageId) {
  */
 
 CommentList.prototype.add = function(comment) {
-  var messageId = comment.get('messageId');
+  var messageId = comment.get('messageId'),
+      rawEl = this.el[0];
 
   // Note: Collections don't add duplicated by default, so no add is fired
   // when we click on same inbox item twice
   if(this.messageId === messageId) List.prototype.add.call(this, comment);
+
+  // Automatically scroll to the bottom
+  rawEl.scrollTop = rawEl.scrollHeight;
+  
   return this;
 };

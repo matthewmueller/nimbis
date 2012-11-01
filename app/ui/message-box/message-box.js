@@ -94,7 +94,8 @@ MessageBox.prototype.shrink = function(e) {
 MessageBox.prototype.share = function(e) {
   e.preventDefault();
 
-  var el = this.el,
+  var self = this,
+      el = this.el,
       groups = this.groups,
       messages = this.messages;
 
@@ -117,7 +118,7 @@ MessageBox.prototype.share = function(e) {
   message.on('sync', function(message, res) {
     // Pesimistic to make sure we have an ID for comments
     // Simpler, for now...
-    this.emit('share', message);
+    self.emit('share', message);
   
     // Add to the collection
     messages.add(message);
