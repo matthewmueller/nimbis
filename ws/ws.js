@@ -74,7 +74,8 @@ es.on('connection', function(socket) {
         messageId = comment.messageId;
 
     // TODO: Refactor. This is pretty ugly... and much of both `message` and
-    // `comment` can be merged into 1 function
+    // `comment` can be merged into 1 function, also we can use a message cache
+    // to save network calls
     request
       .get('api.nimbis.com:8080/messages/' + messageId)
       .set('Cookie', 'token=' + token)
