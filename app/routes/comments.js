@@ -1,3 +1,10 @@
+/**
+ * TODO... is this how all controllers should look?
+ *
+ * Probably not... we should be using comment.save() and comments.fetch()
+ * but we cannot make url's dynamic in backbone... i don't think?
+ */
+
 var jquery = require('jquery'),
     app = require('app'),
     comments = app.comments,
@@ -7,15 +14,9 @@ var jquery = require('jquery'),
 exports.index = function(ctx, next) {
   var messageId = ctx.params.messageId;
   
-  // Show the comments with the specified messageId
+  // Set up the views to respond to the right comments
   commentList.filter(messageId);
-
-  // Reset commentBox
-  commentBox.off('share');
-  commentBox.on('share', function(comment) {
-    comment.set('messageId', messageId);
-    comments.add(comment);
-  });
+  commentBox.active(messageId);
 
   // Load comments
   superagent

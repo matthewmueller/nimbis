@@ -3,6 +3,14 @@ var Backbone = require('backbone'),
 
 var Comment = module.exports = Backbone.Model.extend();
 
+/**
+ * Set the URL
+ */
+
+Comment.prototype.url = function() {
+  return 'http://api.nimbis.com:8080/messages/' + this.get('messageId') + '/comments';
+};
+
 /*
   Model Name
 */

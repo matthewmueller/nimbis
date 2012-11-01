@@ -27,10 +27,13 @@ module.exports = CommentBox;
  */
 
 function CommentBox(ds) {
+  ds = ds || {};
   if(!(this instanceof CommentBox)) return new CommentBox;
-  if(!ds.user) throw new Error('CommentBox: Missing required data to initialize');
+  if(!ds.user || !ds.comments) throw new Error('CommentBox: Missing required data to initialize');
 
   this.user = ds.user;
+  this.comments = ds.comments;
+
   this.el = $(template);
   this.bind('keydown .comment', 'share');
 }
@@ -48,6 +51,18 @@ Emitter(CommentBox.prototype);
 Events(CommentBox.prototype);
 
 /**
+ * Set the active messageId
+ *
+ * @param {String} messageId
+ * @return {CommentBox}
+ */
+
+CommentBox.prototype.active = function(messageId) {
+  this.messageId = messageId;
+  return this;
+};
+
+/**
  * Share the comment
  *
  * @param {Event} e
@@ -57,24 +72,26 @@ Events(CommentBox.prototype);
 CommentBox.prototype.share = function(e) {
   if(e.keyCode !== 13 || (e.shiftKey && e.keyCode === 13)) return;
   e.preventDefault();
-  console.log(this.user);
 
-  var comment = this.el.find('.comment').val().trim(),
+  var comments = this.comments,
+      comment = this.el.find('.comment').val().trim(),
       author = this.user.get('name');
+
   comment.replace(/\n/g, '<br>');
 
   comment = new Comment({
     comment : comment,
+    messageId : this.messageId,
     author : { name : author }
   });
 
   this.emit('share', comment);
 
-  // TODO: This probably needs to be done outside because of url funky-ness
-  // and we don't have the message id.
   comment.save();
-  comment.on('error', function(comment, res) {
-    throw new Error('Comment-Box: Cannot save comment', res.text);
+  comments.add(comment);
+
+  comment.on('error', function(model, res) {
+    throw new Error('Comment Box: Cannot save comment', res.text);
   });
 
   this.clear();

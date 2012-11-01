@@ -89,7 +89,8 @@ commentList.el.appendTo('#right');
  */
 
 var commentBox = new CommentBox({
-  user : user
+  user : user,
+  comments : comments
 });
 
 commentBox.el.appendTo('#right');
