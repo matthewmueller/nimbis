@@ -30,12 +30,17 @@ module.exports = CommentList;
  * Initialize `CommentList`
  */
 
-function CommentList() {
+function CommentList(ds) {
   if(!this instanceof CommentList) return new CommentList;
+  if(!ds || !ds.comments) throw new Error('CommentList: missing the required values');
+
+  this.comments = ds.comments;
 
   List.call(this);
   this.template(template);
   this.el.addClass('comment-list');
+
+  this.comments.on('add', this.add.bind(this));
 }
 
 /**
@@ -45,23 +50,38 @@ function CommentList() {
 CommentList.prototype.__proto__ = List.prototype;
 
 /**
- * Load the comment list with data
+ * Filter by a messageId
+ *
+ * @param {String} messageId
+ * @return {CommentList}
  */
 
-CommentList.prototype.load = function(messageId) {
-  var self = this,
-      comments = cache[messageId] || new Comments({ messageId : messageId });
+CommentList.prototype.filter = function(messageId) {
+  var comments = this.comments;
+      len = comments.length;
 
-  comments.on('add', this.add.bind(this));
+  this.messageId = messageId;
+  
+  this.clear();
+  comments.each(function(comment) {
+    this.add(comment);
+  }, this);
 
-  // Update the current comments collection
-  this.comments = comments;
+  return this;
+};
 
-  superagent
-    .get('http://api.nimbis.com:8080/messages/' + messageId + '/comments')
-    .end(function(res) {
-      if(!res.ok) throw new Error('Comment List: Unable to load data', res.text);
-      self.clear();
-      comments.add(res.body);
-    });
+/**
+ * Add a comment
+ *
+ * @param {Comment} comment
+ * @return {CommentList}
+ */
+
+CommentList.prototype.add = function(comment) {
+  var messageId = comment.get('messageId');
+
+  // Note: Collections don't add duplicated by default, so no add is fired
+  // when we click on same inbox item twice
+  if(this.messageId === messageId) List.prototype.add.call(this, comment);
+  return this;
 };

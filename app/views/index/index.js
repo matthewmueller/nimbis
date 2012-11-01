@@ -39,13 +39,8 @@ var GroupList = require('/ui/group-list/group-list.js'),
 
 var user = new User,
     groups = new Groups,
-    messages = new Messages;
-
-/**
- * Create the comment collections cache
- */
-
-var commentsCache = {};
+    messages = new Messages,
+    comments = new Comments;
 
 /**
  * Build the `Group List`
@@ -68,11 +63,6 @@ var messageBox = new MessageBox({
 
 messageBox.el.appendTo('#middle');
 
-messageBox.on('share', function(message) {
-  var comments = new Comments;
-  commentsCache[message._id] = comments;
-});
-
 /**
  * Build the `Inbox`
  */
@@ -88,7 +78,10 @@ inbox.el.appendTo('#middle');
  * Build the `Comment List`
  */
 
-var commentList = new CommentList;
+var commentList = new CommentList({
+  comments : comments
+});
+
 commentList.el.appendTo('#right');
 
 /**
@@ -100,11 +93,6 @@ var commentBox = new CommentBox({
 });
 
 commentBox.el.appendTo('#right');
-
-commentBox.on('share', function(comment) {
-  var comments = commentList.comments;
-  comments.shift(comment);
-});
 
 /**
  * Render the application
@@ -118,6 +106,7 @@ messages.add(window.messages);
 app.user = user;
 app.groups = groups;
 app.messages = messages;
+app.comments = comments;
 
 // Add the view instances to `app`
 app.groupList = groupList;
@@ -196,10 +185,18 @@ $('.create').click(function() {
   page('/groups/new');
 });
 
-// TODO: This should be in routes...
+/**
+ * Display comments
+ */
+
 inbox.on('select', function(message) {
-  page('/messages/' + message._id + '/comments');
+  page('/messages/' + message.id + '/comments');
 });
+
+messageBox.on('share', function(message) {
+  page('/messages/' + message.id + '/comments');
+});
+
 
 /**
  * Load comments

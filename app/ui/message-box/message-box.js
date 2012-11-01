@@ -111,15 +111,22 @@ MessageBox.prototype.share = function(e) {
     groups : ids
   });
 
-  this.emit('share', message);
 
   message.save();
+
+  message.on('sync', function(message, res) {
+    // Pesimistic to make sure we have an ID for comments
+    // Simpler, for now...
+    this.emit('share', message);
+  
+    // Add to the collection
+    messages.add(message);
+  });
+
   message.on('error', function(message, res) {
     throw new Error('Message-Box: Cannot save message', res.text);
   });
 
-  // Add to the collection
-  messages.add(message);
 
   this.shrink();
 };

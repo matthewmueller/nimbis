@@ -54,10 +54,10 @@ Inbox.prototype.addMessage = function(message) {
       models = [];
 
   for(var i = 0; i < len; i++) {
+    // TODO: This should be a groups model up until rendering
     models[i] = groups.get(ids[i]).toJSON();
   }
 
-  var json = message.toJSON();
-  json.groups = models;
-  this.shift(json);
+  message.set('groups', models);
+  this.shift(message);
 };
