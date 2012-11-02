@@ -2,51 +2,32 @@
  * Module dependencies
  */
 
-var bus = require('bus'),
-    $ = require('jquery'),
-    Backbone = require('backbone'),
-    _ = require('underscore');
+var $ = require('jquery'),
+    template = require('./base.mu');
 
 /**
- * Make sure dom library is set
+ * Add the `Dialog` style
  */
-
-if(!Backbone.$) Backbone.setDomLibrary($);
-
-/*
-  Add style
-*/
 
 require('./base.styl');
 
 /**
- * Expose Dialog
+ * Expose `Dialog`
  */
 
-var Dialog = module.exports = Backbone.View.extend();
+exports = module.exports = dialog;
+exports.Dialog = Dialog;
 
 /**
- * Templates
+ * Initialize a `Dialog` instance
  */
 
-Dialog.prototype.template = require('./base.mu');
-Dialog.prototype.body = require('./body.mu');
-
-/**
- * Defaults
- */
-Dialog.prototype.defaults = {
-  header : 'Header'
-};
-
-/*
-  Initialize `Dialog`
-*/
-Dialog.prototype.initialize = function(attrs) {
-  _.bindAll(this, 'render', 'close', '_maybeClose', '_maybeConfirm');
-  this.attrs = _.extend(this.defaults, attrs || {});
+function Dialog() {
+  title = title || 'header';
+  this.template = require('./base.mu');
+  this.el = $(template);
   this.buttons = [];
-};
+}
 
 /**
  * Create a button
@@ -54,9 +35,16 @@ Dialog.prototype.initialize = function(attrs) {
 
 Dialog.prototype.button = function(text, cls) {
   cls = cls || '';
-
   this.buttons.push($('<button>').text(text).addClass(cls));
   return this;
+};
+
+/**
+ * Closable
+ */
+
+Dialog.prototype.closable = function() {
+
 };
 
 /*

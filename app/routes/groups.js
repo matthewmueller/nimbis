@@ -3,8 +3,7 @@
  */
 
 var $ = require('jquery'),
-    JoinDialog = require('/ui/dialogs/join/join.js'),
-    CreateDialog = require('/ui/dialogs/create/create.js');
+    Join = require('/ui/dialogs/join/join.js');
 
 /**
  * /join
@@ -13,9 +12,24 @@ var $ = require('jquery'),
  */
 
 exports.join = function() {
-  var dialog = new JoinDialog();
-  $('#dialog-container').html(dialog.render().el);
-  return this;
+  var join = new Join('Join a new group');
+
+  join
+    .overlay()
+    .effect('scale')
+    .closable()
+    .button('Cancel')
+    .button('Join')
+    .show();
+
+  join.on('cancel', function() {
+    this.hide();
+  });
+
+  join.on('join', function() {
+    this.hide();
+  });
+
 };
 
 exports.new = function() {

@@ -1,0 +1,21 @@
+{
+  "name": "confirmation",
+  "description": "Confirmation component",
+  "version": "0.0.3",
+  "keywords": [
+    "confirmation",
+    "ui"
+  ],
+  "dependencies": {
+    "component/dialog": "*"
+  },
+  "scripts": [
+    "index.js",
+    "confirmation.js"
+  ],
+  "styles": [
+    "confirmation.css"
+  ],
+  "license": "MIT",
+  "repo": "https://raw.github.com/component/confirmation"
+}
